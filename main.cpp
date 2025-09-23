@@ -11,10 +11,11 @@
 #include "mainWindow.h"
 #include "commonDefines.h"
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
     QApplication app(argc, argv);
     MainWindow window;
-    int returnValue = 0;
+    int32_t returnValue = 0;
 
     window.show();
 

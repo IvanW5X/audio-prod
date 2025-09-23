@@ -33,8 +33,7 @@ target_link_libraries(AudioProd PRIVATE
     Qt6::Widgets
 )
 
-target_include_directories(AudioProd PRIVATE 
-    ${Qt6Widgets_INCLUDE_DIRS}
+target_include_directories(AudioProd PRIVATE
     ${CMAKE_SOURCE_DIR}/headers
     # ${CMAKE_SOURCE_DIR}/resources
 )

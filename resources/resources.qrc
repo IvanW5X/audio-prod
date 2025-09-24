@@ -2,5 +2,6 @@
 <RCC>
     <qresource prefix="/">
         <file>images/background.jpg</file>
+        <file>images/waveform_background.jpg</file>
     </qresource>
 </RCC>

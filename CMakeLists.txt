@@ -10,25 +10,28 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS 
     Core 
     Widgets
-    # QuickWidgets
+    Multimedia
 )
 
 qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/UIFiles)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles)
 
 qt_add_executable(AudioProd
-    # Headers for classes
-    headers/mainWindow.h
-
     # Resource file
     resources/resources.qrc
 
+    # Headers for classes
+    headers/mainWindow.h
+    headers/audioPlayer.h
+
     # UI files
-    UIFiles/mainWindow.ui
+    uiFiles/mainWindow.ui
+    uiFiles/audioPlayer.ui
     
     # Sources for classes
     sources/mainWindow.cpp
+    sources/audioPlayer.cpp
     main.cpp
 )
 
@@ -36,7 +39,7 @@ qt_add_executable(AudioProd
 target_link_libraries(AudioProd PRIVATE
     Qt6::Core
     Qt6::Widgets
-    # Qt6::QuickWidgets
+    Qt6::Multimedia
 )
 
 target_include_directories(AudioProd PRIVATE

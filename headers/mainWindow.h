@@ -10,11 +10,22 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QFileDialog>
+#include "audioPlayer.h"
 
 namespace Ui
 {
     class MainWindow;
+}
+
+// Stacked widget pages
+namespace Pages
+{
+    enum Pages_T
+    {
+        Home = 0,
+        Documentation,
+        AudioPlayer
+    };
 }
 
 class MainWindow : public QMainWindow
@@ -30,16 +41,17 @@ class MainWindow : public QMainWindow
         void init();
 
     signals:
-        void audioFileSelected(const QString FileName);
-
+        void audioFileSelected(const QString &FileName);
+              
+    public slots:
+    
     private slots:
         void onOpenAudioFileClicked();
-
-    public slots:
 
     private:
         // Member variables
         Ui::MainWindow *ui;
+        AudioPlayer *audioPlayer;
 
         // Disable copy constructor and assignment operator overload
         MainWindow(const MainWindow &) = delete;

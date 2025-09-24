@@ -6,11 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>803</width>
+    <height>654</height>
    </rect>
   </property>
   <property name="windowTitle">
+   <string>Audio Production</string>
+  </property>
+  <property name="Audio Production" stdset="0">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -174,6 +177,9 @@
      <height>33</height>
     </rect>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgba(0, 18, 81, 0.5);</string>
+   </property>
    <widget class="QMenu" name="menuHome">
     <property name="title">
      <string>Home</string>
@@ -186,8 +192,8 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_Audio_File"/>
     <addaction name="actionCreate_New_File"/>
+    <addaction name="actionOpen_Audio_File"/>
    </widget>
    <addaction name="menuHome"/>
    <addaction name="menuFile"/>

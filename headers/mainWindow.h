@@ -12,12 +12,6 @@
 #include <QMainWindow>
 #include <QFileDialog>
 
-#define DEBUG
-
-#ifdef DEBUG
-#include <iostream>
-#endif
-
 namespace Ui
 {
     class MainWindow;

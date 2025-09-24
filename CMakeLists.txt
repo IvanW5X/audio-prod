@@ -10,6 +10,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(Qt6 REQUIRED COMPONENTS 
     Core 
     Widgets
+    # QuickWidgets
 )
 
 qt_standard_project_setup()
@@ -35,6 +36,7 @@ qt_add_executable(AudioProd
 target_link_libraries(AudioProd PRIVATE
     Qt6::Core
     Qt6::Widgets
+    # Qt6::QuickWidgets
 )
 
 target_include_directories(AudioProd PRIVATE

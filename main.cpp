@@ -17,6 +17,7 @@ int main(int argc, char **argv)
     MainWindow window;
     int32_t returnValue = 0;
 
+    window.init();
     window.show();
 
     returnValue = app.exec();

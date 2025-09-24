@@ -1,1 +1,6 @@
 <!-- External resources -->
+<RCC>
+    <qresource prefix="/">
+        <file>images/vinyl_background.jpg</file>
+    </qresource>
+</RCC>

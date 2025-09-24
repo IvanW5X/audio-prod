@@ -13,7 +13,40 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralwidget"/>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="spacing">
+     <number>1</number>
+    </property>
+    <property name="leftMargin">
+     <number>1</number>
+    </property>
+    <property name="topMargin">
+     <number>1</number>
+    </property>
+    <property name="rightMargin">
+     <number>1</number>
+    </property>
+    <property name="bottomMargin">
+     <number>1</number>
+    </property>
+    <item>
+     <widget class="QStackedWidget" name="stackedWidget">
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="homePage">
+       <property name="styleSheet">
+        <string notr="true">#homePage {	
+	border-image: url(:/images/vinyl_background.jpg) 0 0 0 0 stretch stretch;
+}</string>
+       </property>
+      </widget>
+      <widget class="QWidget" name="documentsPage"/>
+     </widget>
+    </item>
+   </layout>
+  </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
@@ -27,33 +60,34 @@
     <property name="title">
      <string>Home</string>
     </property>
+    <addaction name="actionHome_Page"/>
     <addaction name="actionAbout"/>
-    <addaction name="actionDocs"/>
+    <addaction name="actionDocumentation"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionOpen_File"/>
+    <addaction name="actionOpen_Audio_File"/>
     <addaction name="actionCreate_New_File"/>
    </widget>
    <addaction name="menuHome"/>
    <addaction name="menuFile"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="QStatusBar" name="statusBar"/>
   <action name="actionAbout">
    <property name="text">
     <string>About</string>
    </property>
   </action>
-  <action name="actionDocs">
+  <action name="actionDocumentation">
    <property name="text">
-    <string>Docs</string>
+    <string>Documentation</string>
    </property>
   </action>
-  <action name="actionOpen_File">
+  <action name="actionOpen_Audio_File">
    <property name="text">
-    <string>Open File</string>
+    <string>Open Audio File</string>
    </property>
   </action>
   <action name="actionCreate_New_File">
@@ -61,7 +95,14 @@
     <string>Create New File</string>
    </property>
   </action>
+  <action name="actionHome_Page">
+   <property name="text">
+    <string>Home Page</string>
+   </property>
+  </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resources/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

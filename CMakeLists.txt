@@ -13,11 +13,15 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 
 qt_standard_project_setup()
+set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/UIFiles)
 
 qt_add_executable(AudioProd
     # Headers for classes
     headers/mainWindow.h
+
+    # Resource file
+    resources/resources.qrc
 
     # UI files
     UIFiles/mainWindow.ui
@@ -35,12 +39,12 @@ target_link_libraries(AudioProd PRIVATE
 
 target_include_directories(AudioProd PRIVATE
     ${CMAKE_SOURCE_DIR}/headers
-    # ${CMAKE_SOURCE_DIR}/resources
 )
 
 # Prevent the creation of a console window on Windows.
 # Create an application bundle on macOS.
 set_target_properties(AudioProd PROPERTIES
-    WIN32_EXECUTABLE ON
+    # TODO: set back to ON when done debugging messages through console
+    WIN32_EXECUTABLE OFF
     MACOSX_BUNDLE ON
 )

@@ -13,6 +13,7 @@
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QAudioOutput>
+#include <QIcon>
 
 namespace Ui
 {
@@ -30,6 +31,13 @@ class AudioController : public QWidget
 
         // Public APIs
         void init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput);
+
+    signals:
+
+    public slots:
+
+    private slots:
+        void onPlayPauseClicked();
 
     private:
         // Member variables

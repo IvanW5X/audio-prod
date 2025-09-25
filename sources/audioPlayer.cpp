@@ -48,9 +48,6 @@ void AudioPlayer::updateUiWithAudioFile(const QString &FileName)
     // update info in UI with meta data
     audioPlayer->setAudioOutput(audioOutput);
     audioPlayer->setSource(QUrl::fromLocalFile(FileName));
-    // audioOutput->setVolume(50);
-    // audioPlayer->play();
-
 }
 
 /// Gets the meta data from the audio file

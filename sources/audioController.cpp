@@ -35,9 +35,28 @@ void AudioController::init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput)
         // TODO: error handle instead
         return;
     }
+    this->audioPlayer = audioPlayer;
+    this->audioOutput = audioOutput;
+
+    // Connect signals and slots
+    (void) connect(ui->playPauseButton, &QPushButton::clicked, this, &AudioController::onPlayPauseClicked);
+}
+
+// Changes the icon and plays/pauses the audio
+void AudioController::onPlayPauseClicked()
+{
+    const bool IsAudioPlaying = audioPlayer->isPlaying();
+    QIcon updatedIcon = QIcon();
+
+    if (IsAudioPlaying)
+    {
+        updatedIcon = QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart);
+        audioPlayer->pause();
+    }
     else
     {
-        this->audioPlayer = audioPlayer;
-        this->audioOutput = audioOutput;
+        updatedIcon = QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackPause);
+        audioPlayer->play();
     }
+    ui->playPauseButton->setIcon(updatedIcon);
 }

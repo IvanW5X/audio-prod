@@ -21,7 +21,8 @@ qt_add_executable(AudioProd
     # Resource file
     resources/resources.qrc
 
-    # Headers for classes
+    # Headers
+    utils/commonDefines.h
     headers/mainWindow.h
     headers/audioPlayer.h
     headers/audioController.h
@@ -33,7 +34,7 @@ qt_add_executable(AudioProd
     uiFiles/audioController.ui
     uiFiles/waveForm.ui
     
-    # Sources for classes
+    # Sources
     sources/mainWindow.cpp
     sources/audioPlayer.cpp
     sources/audioController.cpp
@@ -49,8 +50,8 @@ target_link_libraries(AudioProd PRIVATE
 )
 
 target_include_directories(AudioProd PRIVATE
-    ${CMAKE_SOURCE_DIR}/headers
     ${CMAKE_SOURCE_DIR}/utils
+    ${CMAKE_SOURCE_DIR}/headers
 )
 
 # Prevent the creation of a console window on Windows.

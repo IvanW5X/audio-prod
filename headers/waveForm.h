@@ -22,9 +22,13 @@ class WaveForm : public QWidget
     Q_OBJECT
 
     public:
+        // Constructor and Destructor
         explicit WaveForm(QWidget *parent = nullptr);
         ~WaveForm();
 
+        // Public APIs
+        void init();
+
     private:
-    
+        Ui::WaveForm *ui;
 };

@@ -8,16 +8,25 @@
  **********************************************************/
 
 #include "waveForm.h"
+#include "ui_waveForm.h"
 
 // Constructor
 WaveForm::WaveForm(QWidget *parent) :
-    QWidget(parent)
+    QWidget(parent),
+    ui(new Ui::WaveForm)
 {
-    setAutoFillBackground(true);
+    ui->setupUi(this);
+    this->setAttribute(Qt::WA_StyledBackground);
 }
 
 // Destructor
 WaveForm::~WaveForm()
+{
+    delete ui;
+}
+
+// Initializes the wave form to a default state
+void WaveForm::init()
 {
 
 }

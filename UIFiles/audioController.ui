@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>615</width>
-    <height>204</height>
+    <height>206</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,6 +34,9 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <layout class="QHBoxLayout" name="volumeLayout">
+        <property name="spacing">
+         <number>10</number>
+        </property>
         <item>
          <widget class="QLabel" name="volume">
           <property name="font">
@@ -80,6 +83,9 @@
         </item>
         <item>
          <widget class="QSlider" name="volumeSlider">
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
+          </property>
           <property name="maximum">
            <number>100</number>
           </property>
@@ -95,8 +101,14 @@
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <item>
          <layout class="QVBoxLayout" name="durationLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
           <item>
            <spacer name="verticalSpacer">
             <property name="orientation">
@@ -115,6 +127,9 @@
           </item>
           <item>
            <widget class="QSlider" name="durationSlider">
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="orientation">
              <enum>Qt::Orientation::Horizontal</enum>
             </property>
@@ -271,6 +286,9 @@
             <pointsize>16</pointsize>
             <bold>true</bold>
            </font>
+          </property>
+          <property name="cursor">
+           <cursorShape>PointingHandCursor</cursorShape>
           </property>
           <property name="styleSheet">
            <string notr="true">#loadNewAudioFileButton {

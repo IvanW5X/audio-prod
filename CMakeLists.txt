@@ -30,6 +30,8 @@ qt_add_executable(AudioProd
     # UI files
     uiFiles/mainWindow.ui
     uiFiles/audioPlayer.ui
+    uiFiles/audioController.ui
+    uiFiles/waveForm.ui
     
     # Sources for classes
     sources/mainWindow.cpp
@@ -48,6 +50,7 @@ target_link_libraries(AudioProd PRIVATE
 
 target_include_directories(AudioProd PRIVATE
     ${CMAKE_SOURCE_DIR}/headers
+    ${CMAKE_SOURCE_DIR}/utils
 )
 
 # Prevent the creation of a console window on Windows.

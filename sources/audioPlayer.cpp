@@ -33,6 +33,8 @@ AudioPlayer::~AudioPlayer()
 void AudioPlayer::init()
 {
     // TODO: intialize audio player, default UI, and connect signals
+    ui->audioController->init(audioPlayer, audioOutput);
+    ui->waveForm->init();
     return;
 }
 

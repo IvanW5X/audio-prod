@@ -22,7 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->stackedWidget->setCurrentIndex(Pages::Home);
 
     // Note: The home page and documentation page area already in the stacked widget
-    //       by default in the .ui file
+    //       by default in the .ui file, so no need to add them in
     // Add other pages
     ui->stackedWidget->addWidget(audioPlayer);
 }

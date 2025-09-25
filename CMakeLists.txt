@@ -24,6 +24,8 @@ qt_add_executable(AudioProd
     # Headers for classes
     headers/mainWindow.h
     headers/audioPlayer.h
+    headers/audioController.h
+    headers/waveForm.h
 
     # UI files
     uiFiles/mainWindow.ui
@@ -32,6 +34,8 @@ qt_add_executable(AudioProd
     # Sources for classes
     sources/mainWindow.cpp
     sources/audioPlayer.cpp
+    sources/audioController.cpp
+    sources/waveForm.cpp
     main.cpp
 )
 

@@ -12,7 +12,7 @@
 #include "audioPlayer.h"
 #include "commonDefines.h"
 
-// #define DEBUG
+#define DEBUG
 
 int main(int argc, char **argv)
 {
@@ -30,7 +30,9 @@ int main(int argc, char **argv)
 
 #else
 
-
+    AudioPlayer player;
+    player.init();
+    player.show();
 
 #endif // DEBUG
 

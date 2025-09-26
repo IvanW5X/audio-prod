@@ -46,12 +46,17 @@ class MainWindow : public QMainWindow
     public slots:
     
     private slots:
+        void onHomePageClicked();
+        void onDocumentationClicked();
         void onOpenAudioFileClicked();
 
     private:
         // Member variables
         Ui::MainWindow *ui;
         AudioPlayer *audioPlayer;
+
+        // Helper functions
+        void changePage(const Pages::Pages_T NewPage);
 
         // Disable copy constructor and assignment operator overload
         MainWindow(const MainWindow &) = delete;

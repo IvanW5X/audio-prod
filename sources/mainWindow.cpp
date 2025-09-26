@@ -23,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Note: The home page and documentation page area already in the stacked widget
     //       by default in the .ui file, so no need to add them in
-    // Add other pages
     ui->stackedWidget->addWidget(audioPlayer);
 }
 
@@ -40,12 +39,24 @@ void MainWindow::init()
     // Initialize member variables
     audioPlayer->init();
 
-    // Connect UI triggers with slots
+    // Connect signals and slots
+    (void) connect(ui->actionHome_Page, &QAction::triggered, this, &MainWindow::onHomePageClicked);
+    (void) connect(ui->actionDocumentation, &QAction::triggered, this, &MainWindow::onDocumentationClicked);
     (void) connect(ui->actionOpen_Audio_File, &QAction::triggered, this, &MainWindow::onOpenAudioFileClicked);
+    (void) connect(this, &MainWindow::audioFileSelected, audioPlayer, &AudioPlayer::updateAudioPlayer);
+}
 
-    // Connect custom signals with slots
-    (void) connect(this, &MainWindow::audioFileSelected, audioPlayer, &AudioPlayer::updateUiWithAudioFile);
+// Directs the user to the home page using the menu bar
+void MainWindow::onHomePageClicked()
+{
+    // TODO: add some logic here before going to home page;
+    changePage(Pages::Home);
+}
 
+// TODO: Figure out implementation details for this
+void MainWindow::onDocumentationClicked()
+{
+    changePage(Pages::Documentation);
 }
 
 // Gets the name of the selected audio file and emits a signal when successful
@@ -56,9 +67,34 @@ void MainWindow::onOpenAudioFileClicked()
                                                           QDir::homePath(),
                                                           tr("Audio Files (*.mp3 *.wav *.flac);;All Files (*.*)"));
 
-    if (!FilePath.isEmpty())
+    if (FilePath.isEmpty()) return;
+
+    if (audioPlayer->isValidAudioFile(FilePath))
     {
-        ui->stackedWidget->setCurrentIndex(Pages::AudioPlayer);
+        changePage(Pages::AudioPlayer);
         emit audioFileSelected(FilePath);
+    }
+}
+
+// Handles logic that needs to happen before switching pages
+void MainWindow::changePage(const Pages::Pages_T NewPage)
+{
+    const int32_t CurrentPage = ui->stackedWidget->currentIndex();
+
+    if (CurrentPage == Pages::Home)
+    {
+        ui->stackedWidget->setCurrentIndex(NewPage);
+    }
+    else if (CurrentPage == Pages::Documentation)
+    {
+        ui->stackedWidget->setCurrentIndex(NewPage);
+    }
+    else if (CurrentPage == Pages::AudioPlayer)
+    {
+        // TODO:
+        // is an audio loaded in the media player?
+            // reset audio player and output -- function from audioPlayer
+
+        ui->stackedWidget->setCurrentIndex(NewPage);
     }
 }

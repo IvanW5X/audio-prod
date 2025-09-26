@@ -1,5 +1,6 @@
 /**********************************************************
- * Description: Header file for the audio player widget
+ * Description: Header file for the audio player widget. Serves
+ *  as the audio player page containing the supporting subwidgets
  * 
  * Date: 2025-09-23
  * 
@@ -27,8 +28,6 @@ typedef struct
     QString artist;
     QString album;
     QString Genre;
-
-
 } AudioData_T;
 
 class AudioPlayer : public QWidget
@@ -42,19 +41,14 @@ class AudioPlayer : public QWidget
 
         // Public APIs
         void init();
+        bool isValidAudioFile(const QString &FileName);
 
     signals:
-        void playTrack();
-        void pauseTrack();
-        void adjustVolume(const float NewVolume);
 
     public slots:
-        void updateUiWithAudioFile(const QString &FileName);
+        void updateAudioPlayer(const QString &FileName);
 
     private slots:
-        // void onPlayTrack();
-        // void onPauseTrack();
-        // void onAdjustVolume();
 
     private:
         // Member variables
@@ -64,7 +58,7 @@ class AudioPlayer : public QWidget
 
         // Helper functions
         // void drawWaveForm();
-        AudioData_T getAudioData();
+        AudioData_T getAudioData(QMediaPlayer *player);
 
         // Disable copy constructor and assignment operator overload
         AudioPlayer(const AudioPlayer &) = delete;

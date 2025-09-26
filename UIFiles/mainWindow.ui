@@ -224,6 +224,7 @@
     <addaction name="actionHome_Page"/>
     <addaction name="actionAbout"/>
     <addaction name="actionDocumentation"/>
+    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuFile">
     <property name="title">
@@ -258,6 +259,11 @@
   <action name="actionHome_Page">
    <property name="text">
     <string>Home Page</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
    </property>
   </action>
  </widget>

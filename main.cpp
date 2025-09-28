@@ -11,10 +11,10 @@
 #include "mainWindow.h"
 #include "commonDefines.h"
 
-#include "waveForm.h"
-#include "audioPlayer.h"
+#include "waveFormWidget.h"
+#include "audioPlayerWidget.h"
 
-#define DEBUG
+// #define DEBUG
 
 int main(int argc, char **argv)
 {
@@ -32,7 +32,7 @@ int main(int argc, char **argv)
 
 #else
 
-    WaveForm waveForm;
+    WaveFormWidget waveForm;
     waveForm.init();
 
     waveForm.show();

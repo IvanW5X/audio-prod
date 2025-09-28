@@ -1,0 +1,53 @@
+/**********************************************************
+ * Description: Header file for the wave form widget.
+ * Computes and draws the wave form of an audio file
+ * 
+ * Date: 2025-09-24
+ * 
+ * Author: Ivan Wong
+ * 
+ **********************************************************/
+
+#pragma once
+
+#include "commonDefines.h"
+#include <QWidget>
+#include <QAudioDecoder>
+#include <QAudioFormat>
+#include <QUrl>
+#include <QEventLoop>
+#include <vector>
+
+namespace Ui
+{
+    class WaveFormWidget;
+}
+
+class WaveFormWidget : public QWidget
+{
+    Q_OBJECT
+
+    public:
+        // Constructor and Destructor
+        explicit WaveFormWidget(QWidget *parent = nullptr);
+        ~WaveFormWidget();
+
+        // Public APIs
+        void init();
+        
+    signals:
+        
+    public slots:
+        void onUpdateWaveForm(const QString &FileName);
+        
+    private slots:
+        
+    private:
+        // Member variables
+        Ui::WaveFormWidget *ui;
+        QAudioDecoder *decoder;
+        std::vector<float_t> audioSamples;
+
+        // Helper functions
+        void updateAudioSamples(const QString &FileName);
+};

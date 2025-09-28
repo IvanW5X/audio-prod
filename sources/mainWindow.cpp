@@ -14,7 +14,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    audioPlayer(new AudioPlayer(this))
+    audioPlayer(new AudioPlayerWidget(this))
 {
     // Setup UI elements
     ui->setupUi(this);
@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete audioPlayer;
 }
 
 // Initializes the main window
@@ -41,7 +40,7 @@ void MainWindow::init()
     (void) connect(ui->actionHome_Page, &QAction::triggered, this, &MainWindow::onHomePageClicked);
     (void) connect(ui->actionDocumentation, &QAction::triggered, this, &MainWindow::onDocumentationClicked);
     (void) connect(ui->actionOpen_Audio_File, &QAction::triggered, this, &MainWindow::onOpenAudioFileClicked);
-    (void) connect(this, &MainWindow::audioFileSelected, audioPlayer, &AudioPlayer::updateAudioPlayer);
+    (void) connect(this, &MainWindow::audioFileSelected, audioPlayer, &AudioPlayerWidget::onUpdateAudioPlayer);
 }
 
 // Directs the user to the home page using the menu bar

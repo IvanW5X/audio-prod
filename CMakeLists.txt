@@ -30,21 +30,24 @@ qt_add_executable(AudioProd
 
     # Headers
     headers/mainWindow.h
-    headers/audioPlayer.h
-    headers/audioController.h
-    headers/waveForm.h
+    headers/audioControllerWidget.h
+    headers/audioDataWidget.h
+    headers/audioPlayerWidget.h
+    headers/waveFormWidget.h
 
     # UI files
     uiFiles/mainWindow.ui
-    uiFiles/audioPlayer.ui
-    uiFiles/audioController.ui
-    uiFiles/waveForm.ui
+    uiFiles/audioControllerWidget.ui
+    uiFiles/audioDataWidget.ui
+    uiFiles/audioPlayerWidget.ui
+    uiFiles/waveFormWidget.ui
     
     # Sources
     sources/mainWindow.cpp
-    sources/audioPlayer.cpp
-    sources/audioController.cpp
-    sources/waveForm.cpp
+    sources/audioControllerWidget.cpp
+    sources/audioDataWidget.cpp
+    sources/audioPlayerWidget.cpp
+    sources/waveFormWidget.cpp
     main.cpp
 )
 

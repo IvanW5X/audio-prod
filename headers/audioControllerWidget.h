@@ -10,26 +10,26 @@
 
 #pragma once
 
+#include "utils.h"
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QIcon>
 #include <QFileDialog>
-#include "utils.h"
 
 namespace Ui
 {
-    class AudioController;
+    class AudioControllerWidget;
 }
 
-class AudioController : public QWidget
+class AudioControllerWidget : public QWidget
 {
     Q_OBJECT
 
     public:
         // Constructor and Destructor
-        explicit AudioController(QWidget *parent = nullptr);
-        ~AudioController();
+        explicit AudioControllerWidget(QWidget *parent = nullptr);
+        ~AudioControllerWidget();
 
         // Public APIs
         void init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput);
@@ -38,7 +38,7 @@ class AudioController : public QWidget
         void newAudioFileSelected(const QString &FileName);
 
     public slots:
-        void updateUi(const QString &FileName, const bool Enable);
+        void onUpdateAudioController(const QString &FileName);
 
     private slots:
         void onPlayPauseClicked();
@@ -46,7 +46,7 @@ class AudioController : public QWidget
 
     private:
         // Member variables
-        Ui::AudioController *ui;
+        Ui::AudioControllerWidget *ui;
         QMediaPlayer *audioPlayer;
         QAudioOutput *audioOutput;
 };

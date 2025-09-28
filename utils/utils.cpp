@@ -21,10 +21,10 @@ bool Utils::isValidAudioFile(const QString &FileName)
     // Wait until the media has been loaded
     (void) QObject::connect(&tempPlayer, &QMediaPlayer::mediaStatusChanged, [&loop](QMediaPlayer::MediaStatus status)
     {
-        const bool CanExit = (status == QMediaPlayer::LoadedMedia) ||
-                             (status == QMediaPlayer::InvalidMedia) ||
-                             (status == QMediaPlayer::NoMedia);
-        if (CanExit)
+        const bool IsDoneLoading = (status == QMediaPlayer::LoadedMedia) ||
+                                   (status == QMediaPlayer::InvalidMedia) ||
+                                   (status == QMediaPlayer::NoMedia);
+        if (IsDoneLoading)
         {
             loop.quit();
         }

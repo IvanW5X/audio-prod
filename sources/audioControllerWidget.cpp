@@ -7,13 +7,13 @@
  * 
  **********************************************************/
 
-#include "audioController.h"
-#include "ui_audioController.h"
+#include "audioControllerWidget.h"
+#include "ui_audioControllerWidget.h"
 
 // Constructor
-AudioController::AudioController(QWidget *parent) :
+AudioControllerWidget::AudioControllerWidget(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::AudioController),
+    ui(new Ui::AudioControllerWidget),
     audioPlayer(nullptr),
     audioOutput(nullptr)
 {
@@ -22,13 +22,13 @@ AudioController::AudioController(QWidget *parent) :
 }
 
 // Destructor
-AudioController::~AudioController()
+AudioControllerWidget::~AudioControllerWidget()
 {
     delete ui;
 }
 
 // Initializes the audio controller
-void AudioController::init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput)
+void AudioControllerWidget::init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput)
 {
     if (!audioPlayer || !audioOutput)
     {
@@ -38,25 +38,25 @@ void AudioController::init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput)
     this->audioPlayer = audioPlayer;
     this->audioOutput = audioOutput;
 
-    (void) connect(ui->playPauseButton, &QPushButton::clicked, this, &AudioController::onPlayPauseClicked);
-    (void) connect(ui->loadNewAudioFileButton, &QPushButton::clicked, this, &AudioController::onLoadNewAudioFileClicked);
+    (void) connect(ui->playPauseButton, &QPushButton::clicked, this, &AudioControllerWidget::onPlayPauseClicked);
+    (void) connect(ui->loadNewAudioFileButton, &QPushButton::clicked, this, &AudioControllerWidget::onLoadNewAudioFileClicked);
 
-    // Set default state for UI
+    // TODO: Set default state for UI
     
 }
 
-// Update UI
-void AudioController::updateUi(const QString &FileName, const bool Enable)
+// Updates the audio controller widget with the new audio file
+// Assumes that the file a valid audio file
+void AudioControllerWidget::onUpdateAudioController(const QString &FileName)
 {
-    // TODO: finish up
-    return;
+
 }
 
 // Changes the icon and plays/pauses the audio
-void AudioController::onPlayPauseClicked()
+void AudioControllerWidget::onPlayPauseClicked()
 {
     const bool HasNoMedia = (audioPlayer->mediaStatus() == QMediaPlayer::NoMedia);
-    QIcon updatedIcon = QIcon();
+    QIcon updatedIcon;
 
     if (HasNoMedia) return;
 
@@ -74,7 +74,7 @@ void AudioController::onPlayPauseClicked()
 }
 
 // Opens a file dialog to select a new audio file
-void AudioController::onLoadNewAudioFileClicked()
+void AudioControllerWidget::onLoadNewAudioFileClicked()
 {
     const QString FileName = QFileDialog::getOpenFileName(this,
                                                           tr("Select Audio File"),

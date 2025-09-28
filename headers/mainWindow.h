@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "audioPlayer.h"
+#include "audioPlayerWidget.h"
 #include "utils.h"
 #include <QMainWindow>
 #include <QFileDialog>
@@ -55,7 +55,7 @@ class MainWindow : public QMainWindow
     private:
         // Member variables
         Ui::MainWindow *ui;
-        AudioPlayer *audioPlayer;
+        AudioPlayerWidget *audioPlayer;
 
         // Helper functions
         void changePage(const Pages::Pages_T NewPage);

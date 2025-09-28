@@ -32,10 +32,6 @@ int main(int argc, char **argv)
 
 #else
 
-    WaveFormWidget waveForm;
-    waveForm.init();
-
-    waveForm.show();
 
 #endif // DEBUG
 

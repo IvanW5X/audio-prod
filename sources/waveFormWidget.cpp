@@ -14,6 +14,7 @@
 WaveFormWidget::WaveFormWidget(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::WaveFormWidget),
+    audioPlayer(nullptr),
     decoder(new QAudioDecoder(this)),
     audioSamples(std::vector<float_t>(0))
 {
@@ -28,21 +29,26 @@ WaveFormWidget::~WaveFormWidget()
 }
 
 // Initializes the wave form to a default state
-void WaveFormWidget::init()
+void WaveFormWidget::init(QMediaPlayer *player)
 {
-
+    if (!player)
+    {
+        // TODO: add error handling
+        return;
+    }
+    audioPlayer = player;
 }
 
 // Updates the wave form with the new audio file
 // Assumes that the file is a valid audio file
-void WaveFormWidget::onUpdateWaveForm(const QString &FileName)
+void WaveFormWidget::onUpdateWaveForm(QMediaPlayer::MediaStatus status)
 {
-    updateAudioSamples(FileName);
+    updateAudioSamples();
 }
 
 // Gets the data samples from the audio file and stores them into a vector
 // Assumes FileName is a valid audio file
-void WaveFormWidget::updateAudioSamples(const QString &FileName)
+void WaveFormWidget::updateAudioSamples()
 {
     // QAudioBuffer buffer;
     // QEventLoop loop;

@@ -30,28 +30,23 @@ AudioPlayerWidget::~AudioPlayerWidget()
 // Initializes the audio player
 void AudioPlayerWidget::init()
 {
+    ui->audioDataWidget->init(audioPlayer);
     ui->audioControllerWidget->init(audioPlayer, audioOutput);
-    ui->waveFormWidget->init();
+    ui->waveFormWidget->init(audioPlayer);
 
     (void) connect(ui->audioControllerWidget, &AudioControllerWidget::newAudioFileSelected, this, &AudioPlayerWidget::onUpdateAudioPlayer);
-    (void) connect(this, &AudioPlayerWidget::updateAudioController, ui->audioControllerWidget, &AudioControllerWidget::onUpdateAudioController);
-    (void) connect(this, &AudioPlayerWidget::updateWaveForm, ui->waveFormWidget, &WaveFormWidget::onUpdateWaveForm);
+    (void) connect(audioPlayer, &QMediaPlayer::mediaStatusChanged, ui->audioDataWidget, &AudioDataWidget::onUpdateAudioData);
+    (void) connect(audioPlayer, &QMediaPlayer::mediaStatusChanged, ui->audioControllerWidget, &AudioControllerWidget::onUpdateAudioController);
+    (void) connect(audioPlayer, &QMediaPlayer::mediaStatusChanged, ui->waveFormWidget, &WaveFormWidget::onUpdateWaveForm);
 
     // Set default state for audio settings
     audioPlayer->setAudioOutput(audioOutput);
     audioOutput->setVolume(DefaultVolume);
 }
 
-// Updates the audio player and emits signals to wave form and controller
-// to update UI
+// Sets the audio source and setup for new audio file
 // Assumes that the audio file is valid
 void AudioPlayerWidget::onUpdateAudioPlayer(const QString &FileName)
 {
-    const bool EnableUI = true;
-
     audioPlayer->setSource(QUrl::fromLocalFile(FileName));
-
-    // emit update wave form and update audio controller
-    emit updateAudioController(FileName);
-    emit updateWaveForm(FileName);
 }

@@ -11,31 +11,53 @@
 #pragma once
 
 #include <QWidget>
+#include <QMediaPlayer>
+#include <QMediaMetaData>
+#include <QVariant>
+#include <QMap>
 
 namespace Ui
 {
     class AudioDataWidget;
 }
 
+using AudioDataMap_T = QMap<QMediaMetaData::Key, QString>;
+
 class AudioDataWidget : public QWidget
 {
     Q_OBJECT
-
+    
     public:
         // Constructor and destructor
         explicit AudioDataWidget(QWidget *parent = nullptr);
         ~AudioDataWidget();
 
         // Public APIs
-        void init();
+        void init(QMediaPlayer *player);
 
     signals:
 
     public slots:
+        void onUpdateAudioData(QMediaPlayer::MediaStatus status);
 
     private slots:
 
     private:
+        // Static const variables
+        const QList<QMediaMetaData::Key> AudioDataKeys =
+        {
+            QMediaMetaData::Key::Title,
+            QMediaMetaData::Key::AlbumTitle,
+            QMediaMetaData::Key::AudioCodec,
+            QMediaMetaData::Key::AudioBitRate
+            // QMediaMetaData::Key::ContributingArtist
+            // NOTE: ContributingArtist is returned as a QStringLists, so we handle this case separately
+        };
+
         // Member variables
         Ui::AudioDataWidget *ui;
+        QMediaPlayer *audioPlayer;
+
+        // Helper functions
+        AudioDataMap_T getAudioMetaData();
 };

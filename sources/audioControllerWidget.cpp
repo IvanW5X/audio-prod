@@ -46,10 +46,11 @@ void AudioControllerWidget::init(QMediaPlayer *audioPlayer, QAudioOutput *audioO
 }
 
 // Updates the audio controller widget with the new audio file
-// Assumes that the file a valid audio file
-void AudioControllerWidget::onUpdateAudioController(const QString &FileName)
+// Assumes that the audio player has a valid audio file loaded
+void AudioControllerWidget::onUpdateAudioController(QMediaPlayer::MediaStatus status)
 {
-
+    // get the duration and 
+    // update the duration slider and label
 }
 
 // Changes the icon and plays/pauses the audio

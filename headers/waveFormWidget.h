@@ -12,10 +12,10 @@
 
 #include "commonDefines.h"
 #include <QWidget>
+#include <QMediaPlayer>
 #include <QAudioDecoder>
 #include <QAudioFormat>
 #include <QUrl>
-#include <QEventLoop>
 #include <vector>
 
 namespace Ui
@@ -33,21 +33,22 @@ class WaveFormWidget : public QWidget
         ~WaveFormWidget();
 
         // Public APIs
-        void init();
+        void init(QMediaPlayer *player);
         
     signals:
         
     public slots:
-        void onUpdateWaveForm(const QString &FileName);
+        void onUpdateWaveForm(QMediaPlayer::MediaStatus status);
         
     private slots:
         
     private:
         // Member variables
         Ui::WaveFormWidget *ui;
+        QMediaPlayer *audioPlayer;
         QAudioDecoder *decoder;
         std::vector<float_t> audioSamples;
 
         // Helper functions
-        void updateAudioSamples(const QString &FileName);
+        void updateAudioSamples();
 };

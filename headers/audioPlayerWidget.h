@@ -17,20 +17,11 @@
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-#include <QMediaMetaData>
 
 namespace Ui
 {
     class AudioPlayerWidget;
 }
-
-// typedef struct
-// {
-//     QString title;
-//     QString artist;
-//     QString album;
-//     QString Genre;
-// } AudioData_T;
 
 class AudioPlayerWidget : public QWidget
 {
@@ -45,8 +36,6 @@ class AudioPlayerWidget : public QWidget
         void init();
 
     signals:
-        void updateWaveForm(const QString &FileName);
-        void updateAudioController(const QString &FileName);
 
     public slots:
         void onUpdateAudioPlayer(const QString &FileName);

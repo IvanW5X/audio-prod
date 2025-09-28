@@ -38,7 +38,7 @@ class AudioControllerWidget : public QWidget
         void newAudioFileSelected(const QString &FileName);
 
     public slots:
-        void onUpdateAudioController(const QString &FileName);
+        void onUpdateAudioController(QMediaPlayer::MediaStatus status);
 
     private slots:
         void onPlayPauseClicked();

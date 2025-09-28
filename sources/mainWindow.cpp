@@ -9,7 +9,6 @@
 
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
-#include <QFileDialog>
 
 // Constructor, initializes the UI
 MainWindow::MainWindow(QWidget *parent) :
@@ -39,7 +38,6 @@ void MainWindow::init()
     // Initialize member variables
     audioPlayer->init();
 
-    // Connect signals and slots
     (void) connect(ui->actionHome_Page, &QAction::triggered, this, &MainWindow::onHomePageClicked);
     (void) connect(ui->actionDocumentation, &QAction::triggered, this, &MainWindow::onDocumentationClicked);
     (void) connect(ui->actionOpen_Audio_File, &QAction::triggered, this, &MainWindow::onOpenAudioFileClicked);
@@ -62,17 +60,21 @@ void MainWindow::onDocumentationClicked()
 // Gets the name of the selected audio file and emits a signal when successful
 void MainWindow::onOpenAudioFileClicked()
 {
-    const QString FilePath = QFileDialog::getOpenFileName(this,
+    const QString FileName = QFileDialog::getOpenFileName(this,
                                                           tr("Select Audio File"),
                                                           QDir::homePath(),
                                                           tr("Audio Files (*.mp3 *.wav *.flac);;All Files (*.*)"));
 
-    if (FilePath.isEmpty()) return;
+    if (FileName.isEmpty()) return;
 
-    if (audioPlayer->isValidAudioFile(FilePath))
+    if (Utils::isValidAudioFile(FileName))
     {
         changePage(Pages::AudioPlayer);
-        emit audioFileSelected(FilePath);
+        emit audioFileSelected(FileName);
+    }
+    else
+    {
+        // TODO: error handle
     }
 }
 

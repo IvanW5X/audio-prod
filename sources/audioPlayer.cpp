@@ -25,67 +25,46 @@ AudioPlayer::AudioPlayer(QWidget *parent) :
 AudioPlayer::~AudioPlayer()
 {
     delete ui;
-    delete audioPlayer;
-    delete audioOutput;
 }
 
 // Initializes the audio player
 void AudioPlayer::init()
 {
-    // TODO: intialize audio player, default UI, and connect signals
     ui->audioController->init(audioPlayer, audioOutput);
     ui->waveForm->init();
-    return;
+
+    (void) connect(ui->audioController, &AudioController::newAudioFileSelected, this, &AudioPlayer::updateAudioPlayer);
+    (void) connect(this, &AudioPlayer::updateWaveFormUi, ui->waveForm, &WaveForm::updateUi);
+    (void) connect(this, &AudioPlayer::updateAudioControllerUi, ui->audioController, &AudioController::updateUi);
+
+    // Set default state for audio settings
+    audioPlayer->setAudioOutput(audioOutput);
+    audioOutput->setVolume(DefaultVolume);
 }
 
-// Returns a bool if the file can be loaded without any issues
-bool AudioPlayer::isValidAudioFile(const QString &FileName)
-{
-    // Use temporary media player incase user uploads an incompatible audio file 
-    QMediaPlayer tempPlayer;
-    QVariant variantData;
-    QEventLoop loop;
-
-    tempPlayer.setSource(QUrl::fromLocalFile(FileName));
-
-    // Wait until the media has been loaded
-    (void) connect(&tempPlayer, &QMediaPlayer::mediaStatusChanged, [&loop](QMediaPlayer::MediaStatus status)
-    {
-        const bool CanExit = (status == QMediaPlayer::LoadedMedia) ||
-                             (status == QMediaPlayer::InvalidMedia) ||
-                             (status == QMediaPlayer::NoMedia);
-        if (CanExit)
-        {
-            loop.quit();
-        }
-    });
-    loop.exec();
-
-    tempPlayer.disconnect();
-    variantData = tempPlayer.metaData()[QMediaMetaData::AudioCodec];
-
-    const bool HasLoadedProperly = tempPlayer.error() == QMediaPlayer::NoError;
-    const bool HasAudioCodec = variantData.isValid();
-
-    return (HasLoadedProperly && HasAudioCodec);
-}
-
-// Updates the audio player and UI with the meta data of the audio file
+// Updates the audio player and emits signals to wave form and controller
+// to update UI
+// Assumes that the audio file is valid
 void AudioPlayer::updateAudioPlayer(const QString &FileName)
 {
+    const bool EnableUI = true;
     AudioData_T audioData;
 
-    // Setup audio
     audioPlayer->setSource(QUrl::fromLocalFile(FileName));
-    audioPlayer->setAudioOutput(audioOutput);
-
-    // TODO: Get meta data from audio file and emit signals to update 
-    // audio controller and wave form
     audioData = getAudioData(audioPlayer);
+
+    emit updateWaveFormUi(FileName, EnableUI);
+    emit updateAudioControllerUi(FileName, EnableUI);
 }
 
-/// Gets the meta data from the audio file
+// Gets the meta data from the audio file
 AudioData_T AudioPlayer::getAudioData(QMediaPlayer *player)
 {
+    const QMediaPlayer::MediaStatus CurrentStatus = player->mediaStatus();
+    const bool IsValidMedia = (CurrentStatus == QMediaPlayer::LoadedMedia);
+    
+    // if (!IsValidMedia) return;
+
+    QMediaMetaData metaData = player->metaData();
     return AudioData_T();
 }

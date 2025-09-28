@@ -38,17 +38,29 @@ void AudioController::init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput)
     this->audioPlayer = audioPlayer;
     this->audioOutput = audioOutput;
 
-    // Connect signals and slots
     (void) connect(ui->playPauseButton, &QPushButton::clicked, this, &AudioController::onPlayPauseClicked);
+    (void) connect(ui->loadNewAudioFileButton, &QPushButton::clicked, this, &AudioController::onLoadNewAudioFileClicked);
+
+    // Set default state for UI
+    
+}
+
+// Update UI
+void AudioController::updateUi(const QString &FileName, const bool Enable)
+{
+    // TODO: finish up
+    return;
 }
 
 // Changes the icon and plays/pauses the audio
 void AudioController::onPlayPauseClicked()
 {
-    const bool IsAudioPlaying = audioPlayer->isPlaying();
+    const bool HasNoMedia = (audioPlayer->mediaStatus() == QMediaPlayer::NoMedia);
     QIcon updatedIcon = QIcon();
 
-    if (IsAudioPlaying)
+    if (HasNoMedia) return;
+
+    if (audioPlayer->isPlaying())
     {
         updatedIcon = QIcon::fromTheme(QIcon::ThemeIcon::MediaPlaybackStart);
         audioPlayer->pause();
@@ -59,4 +71,23 @@ void AudioController::onPlayPauseClicked()
         audioPlayer->play();
     }
     ui->playPauseButton->setIcon(updatedIcon);
+}
+
+// Opens a file dialog to select a new audio file
+void AudioController::onLoadNewAudioFileClicked()
+{
+    const QString FileName = QFileDialog::getOpenFileName(this,
+                                                          tr("Select Audio File"),
+                                                          QDir::homePath(),
+                                                          tr("Audio Files (*.mp3 *.wav *.flac);;All Files (*.*)"));
+    if (FileName.isEmpty()) return;
+
+    if (Utils::isValidAudioFile(FileName))
+    {
+        emit newAudioFileSelected(FileName);
+    }
+    else
+    {
+        // TODO: error handle
+    }
 }

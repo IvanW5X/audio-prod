@@ -14,6 +14,8 @@
 #include <QMediaPlayer>
 #include <QAudioOutput>
 #include <QIcon>
+#include <QFileDialog>
+#include "utils.h"
 
 namespace Ui
 {
@@ -33,11 +35,14 @@ class AudioController : public QWidget
         void init(QMediaPlayer *audioPlayer, QAudioOutput *audioOutput);
 
     signals:
+        void newAudioFileSelected(const QString &FileName);
 
     public slots:
+        void updateUi(const QString &FileName, const bool Enable);
 
     private slots:
         void onPlayPauseClicked();
+        void onLoadNewAudioFileClicked();
 
     private:
         // Member variables

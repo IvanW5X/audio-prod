@@ -41,9 +41,10 @@ class AudioPlayer : public QWidget
 
         // Public APIs
         void init();
-        bool isValidAudioFile(const QString &FileName);
 
     signals:
+        void updateWaveFormUi(const QString &FileName, const bool Enable);
+        void updateAudioControllerUi(const QString &FileName, const bool Enable);
 
     public slots:
         void updateAudioPlayer(const QString &FileName);
@@ -51,6 +52,9 @@ class AudioPlayer : public QWidget
     private slots:
 
     private:
+        // Static const(expr) values
+        static constexpr float_t DefaultVolume = 100.0;
+
         // Member variables
         Ui::AudioPlayer *ui;
         QMediaPlayer *audioPlayer;

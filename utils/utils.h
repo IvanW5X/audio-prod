@@ -1,5 +1,5 @@
 /**********************************************************
- * Description: Helper functiond for the audio production tool
+ * Description: Common data and functions for the audio production tool
  * 
  * Date: 2025-09-24
  * 
@@ -8,3 +8,13 @@
  **********************************************************/
 
 #pragma once
+
+#include <QObject>
+#include <QMediaPlayer>
+#include <QMediaMetaData>
+#include <QEventLoop>
+
+namespace Utils
+{
+    bool isValidAudioFile(const QString &FileName);
+}

@@ -5,6 +5,7 @@ project(AudioProd VERSION 1.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Standard Qt Setup
 find_package(Qt6 REQUIRED COMPONENTS 
@@ -16,13 +17,18 @@ find_package(Qt6 REQUIRED COMPONENTS
 qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles)
+set(CMAKE_CXX_FLAGS_RELEASE "-O2")
 
 qt_add_executable(AudioProd
     # Resource file
     resources/resources.qrc
 
-    # Headers
+    # Utilities
     utils/commonDefines.h
+    utils/utils.h
+    utils/utils.cpp
+
+    # Headers
     headers/mainWindow.h
     headers/audioPlayer.h
     headers/audioController.h

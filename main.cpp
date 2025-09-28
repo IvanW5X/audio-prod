@@ -9,8 +9,10 @@
 
 #include <QApplication>
 #include "mainWindow.h"
-#include "audioPlayer.h"
 #include "commonDefines.h"
+
+#include "waveForm.h"
+#include "audioPlayer.h"
 
 #define DEBUG
 
@@ -30,9 +32,10 @@ int main(int argc, char **argv)
 
 #else
 
-    AudioPlayer player;
-    player.init();
-    player.show();
+    WaveForm waveForm;
+    waveForm.init();
+
+    waveForm.show();
 
 #endif // DEBUG
 

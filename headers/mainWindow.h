@@ -9,8 +9,10 @@
 
 #pragma once
 
-#include <QMainWindow>
 #include "audioPlayer.h"
+#include "utils.h"
+#include <QMainWindow>
+#include <QFileDialog>
 
 namespace Ui
 {

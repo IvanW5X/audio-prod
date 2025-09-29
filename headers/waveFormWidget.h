@@ -38,7 +38,7 @@ class WaveFormWidget : public QWidget
     signals:
         
     public slots:
-        void onUpdateWaveForm(QMediaPlayer::MediaStatus status);
+        void onUpdateWaveForm();
         
     private slots:
         

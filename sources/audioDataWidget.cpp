@@ -36,18 +36,12 @@ void AudioDataWidget::init(QMediaPlayer *player)
 }
 
 // Updates the audio data widget with the current media when it is ready
-// NOTE: connected to AudioPlayer by mediaStatusChanged signal
-void AudioDataWidget::onUpdateAudioData(QMediaPlayer::MediaStatus status)
+void AudioDataWidget::onUpdateAudioData()
 {
-    const bool IsReady = (status == QMediaPlayer::LoadedMedia);
-    
-    if (!IsReady)
-    {
-        return;
-    }
     AudioDataMap_T audioData;
     QList<QString> audioDataList;
 
+    ui->currentAudioView->clear();
     audioData = getAudioMetaData();
     audioDataList = audioDataToList(&audioData);
 
@@ -72,7 +66,6 @@ AudioDataMap_T AudioDataWidget::getAudioMetaData()
             data.insert(Key, stringBuffer);
         }
     }
-    // Handle the ContributingArtist case seperately since it can return multipe artists
     variantBuffer = metaData.value(QMediaMetaData::ContributingArtist);
 
     if (variantBuffer.isValid())

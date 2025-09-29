@@ -36,20 +36,22 @@ class AudioPlayerWidget : public QWidget
         void init();
 
     signals:
+        void updateAudioData();
+        void updateAudioController();
+        void updateWaveForm();
 
     public slots:
         void onUpdateAudioPlayer(const QString &FileName);
 
     private slots:
+        void onAudioFileLoaded(const QMediaPlayer::MediaStatus Status);
 
     private:
-        // Static const(expr) values
-        static constexpr float_t DefaultVolume = 100.0;
-
         // Member variables
         Ui::AudioPlayerWidget *ui;
         QMediaPlayer *audioPlayer;
         QAudioOutput *audioOutput;
+        QString currentFile;
 
         // Helper functions
 

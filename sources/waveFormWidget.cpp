@@ -41,7 +41,7 @@ void WaveFormWidget::init(QMediaPlayer *player)
 
 // Updates the wave form with the new audio file
 // Assumes that the file is a valid audio file
-void WaveFormWidget::onUpdateWaveForm(QMediaPlayer::MediaStatus status)
+void WaveFormWidget::onUpdateWaveForm()
 {
     updateAudioSamples();
 }

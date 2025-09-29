@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>615</width>
-    <height>250</height>
+    <width>628</width>
+    <height>192</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -51,6 +51,18 @@
         </property>
         <item>
          <widget class="QLabel" name="volume">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>30</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="font">
            <font>
             <pointsize>12</pointsize>
@@ -64,7 +76,10 @@
            <enum>QFrame::Shadow::Plain</enum>
           </property>
           <property name="text">
-           <string>0</string>
+           <string>100</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
           </property>
          </widget>
         </item>
@@ -83,7 +98,7 @@
            <string/>
           </property>
           <property name="icon">
-           <iconset theme="QIcon::ThemeIcon::AudioVolumeMuted"/>
+           <iconset theme="QIcon::ThemeIcon::AudioVolumeMedium"/>
           </property>
           <property name="iconSize">
            <size>
@@ -95,6 +110,18 @@
         </item>
         <item>
          <widget class="QSlider" name="volumeSlider">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Maximum">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>150</height>
+           </size>
+          </property>
           <property name="cursor">
            <cursorShape>PointingHandCursor</cursorShape>
           </property>
@@ -114,29 +141,13 @@
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_3">
         <property name="spacing">
-         <number>2</number>
+         <number>5</number>
         </property>
         <item>
          <layout class="QVBoxLayout" name="durationLayout">
           <property name="spacing">
            <number>0</number>
           </property>
-          <item>
-           <spacer name="verticalSpacer">
-            <property name="orientation">
-             <enum>Qt::Orientation::Vertical</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Policy::Maximum</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>20</width>
-              <height>50</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item>
            <widget class="QSlider" name="durationSlider">
             <property name="cursor">
@@ -148,50 +159,99 @@
            </widget>
           </item>
           <item>
-           <widget class="QLabel" name="durationLabel">
-            <property name="font">
-             <font>
-              <pointsize>14</pointsize>
-              <bold>true</bold>
-             </font>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="spacing">
+             <number>0</number>
             </property>
-            <property name="styleSheet">
-             <string notr="true">#durationLabel {
-	background: transparent;
-}</string>
+            <property name="topMargin">
+             <number>0</number>
             </property>
-            <property name="text">
-             <string>---</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignmentFlag::AlignCenter</set>
-            </property>
-           </widget>
+            <item>
+             <spacer name="horizontalSpacer">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item>
+             <widget class="QLabel" name="currentTimeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>StartTime </string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignmentFlag::AlignRight|Qt::AlignmentFlag::AlignTrailing|Qt::AlignmentFlag::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="endTimeLabel">
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
+              <property name="font">
+               <font>
+                <pointsize>12</pointsize>
+                <bold>true</bold>
+               </font>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">background: transparent;</string>
+              </property>
+              <property name="text">
+               <string>- EndTime</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="horizontalSpacer_2">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
           </item>
          </layout>
         </item>
         <item>
-         <spacer name="verticalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
          <layout class="QHBoxLayout" name="mediaButtonLayout">
           <property name="spacing">
-           <number>10</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QPushButton" name="skipBackButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -213,8 +273,8 @@
             </property>
             <property name="iconSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
            </widget>
@@ -222,7 +282,7 @@
           <item>
            <widget class="QPushButton" name="playPauseButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -244,8 +304,8 @@
             </property>
             <property name="iconSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
            </widget>
@@ -253,7 +313,7 @@
           <item>
            <widget class="QPushButton" name="skipButton">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -275,26 +335,13 @@
             </property>
             <property name="iconSize">
              <size>
-              <width>35</width>
-              <height>35</height>
+              <width>30</width>
+              <height>30</height>
              </size>
             </property>
            </widget>
           </item>
          </layout>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_3">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
         <item>
          <widget class="QPushButton" name="loadNewAudioFileButton">
@@ -317,19 +364,6 @@
            <string>Load New Audio File</string>
           </property>
          </widget>
-        </item>
-        <item>
-         <spacer name="verticalSpacer_4">
-          <property name="orientation">
-           <enum>Qt::Orientation::Vertical</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>20</width>
-            <height>40</height>
-           </size>
-          </property>
-         </spacer>
         </item>
        </layout>
       </item>

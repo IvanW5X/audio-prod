@@ -39,7 +39,7 @@ class AudioDataWidget : public QWidget
     signals:
 
     public slots:
-        void onUpdateAudioData(QMediaPlayer::MediaStatus status);
+        void onUpdateAudioData();
 
     private slots:
 
@@ -51,7 +51,6 @@ class AudioDataWidget : public QWidget
             QMediaMetaData::Key::AlbumTitle,
             QMediaMetaData::Key::AudioCodec,
             QMediaMetaData::Key::AudioBitRate
-            // QMediaMetaData::Key::ContributingArtist
             // NOTE: ContributingArtist is returned as a QStringLists, so we handle this case separately
         };
 

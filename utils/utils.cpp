@@ -34,8 +34,8 @@ bool Utils::isValidAudioFile(const QString &FileName)
     tempPlayer.disconnect();
     variantData = tempPlayer.metaData()[QMediaMetaData::AudioCodec];
 
-    const bool HasLoadedProperly = tempPlayer.error() == QMediaPlayer::NoError;
     const bool HasAudioCodec = variantData.isValid();
+    const bool HasLoadedProperly = tempPlayer.error() == QMediaPlayer::NoError;
 
     return (HasLoadedProperly && HasAudioCodec);
 }

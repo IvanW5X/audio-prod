@@ -15,6 +15,7 @@
 #include <QMediaMetaData>
 #include <QVariant>
 #include <QMap>
+#include <QFileInfo>
 
 namespace Ui
 {
@@ -60,4 +61,5 @@ class AudioDataWidget : public QWidget
 
         // Helper functions
         AudioDataMap_T getAudioMetaData();
+        QList<QString> audioDataToList(AudioDataMap_T *data);
 };

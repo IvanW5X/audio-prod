@@ -46,8 +46,12 @@ void AudioDataWidget::onUpdateAudioData(QMediaPlayer::MediaStatus status)
         return;
     }
     AudioDataMap_T audioData;
+    QList<QString> audioDataList;
 
     audioData = getAudioMetaData();
+    audioDataList = audioDataToList(&audioData);
+
+    ui->currentAudioView->addItems(audioDataList);
 }
 
 // Retrieves the audio data from the QMediaPlayer
@@ -73,7 +77,30 @@ AudioDataMap_T AudioDataWidget::getAudioMetaData()
 
     if (variantBuffer.isValid())
     {
-        data.insert(QMediaMetaData::ContributingArtist, variantBuffer.toStringList().join(','));
+        data.insert(QMediaMetaData::ContributingArtist, variantBuffer.toStringList().join(", "));
     }
     return data;
+}
+
+QList<QString> AudioDataWidget::audioDataToList(AudioDataMap_T *data)
+{
+    QList<QString> dataList;
+    QString buffer;
+    const QString FilePath = audioPlayer->source().toString();
+    const QFileInfo FileInfo = QFileInfo(FilePath);
+
+    dataList << ("CURRENT AUDIO FILE:")
+             << (FileInfo.fileName())
+             << ("\nTITLE:")
+             << (data->value(QMediaMetaData::Title))
+             << ("\nARTIST(S):")
+             << (data->value(QMediaMetaData::ContributingArtist))
+             << ("\nALBUM TITLE:")
+             << (data->value(QMediaMetaData::AlbumTitle))
+             << ("\nAUDIO CODEC:")
+             << (data->value(QMediaMetaData::AudioCodec))
+             << ("\nBIT RATE:")
+             << (QString(data->value(QMediaMetaData::AudioBitRate) + " bits/sec"));
+
+    return dataList;
 }

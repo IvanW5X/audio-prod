@@ -20,6 +20,8 @@ void SyncedAudioQueue::enqueue(const QAudioBuffer &Buffer)
 {
     QMutexLocker lock(&mutex);
     audioBuffer.enqueue(Buffer);
+
+    qDebug() << "Cur Size: " << audioBuffer.size();
 }
 
 // Returns the audio buffer and pops it off the queue if non empty using a mutex, 
@@ -55,7 +57,7 @@ AudioEngine::AudioEngine(SyncedAudioQueue *buffer, QObject *parent) :
 // Destructer
 AudioEngine::~AudioEngine()
 {
-    delete decoder;
+
 }
 
 // Initialize member variables here for thread setup for AudioController
@@ -65,6 +67,7 @@ void AudioEngine::init()
 
     (void) connect(decoder, &QAudioDecoder::finished, this, &AudioEngine::onDecodingFinished);
     (void) connect(decoder, QOverload<QAudioDecoder::Error>::of(&QAudioDecoder::error), this, &AudioEngine::onErrorOccurred);
+    (void) connect(decoder, &QAudioDecoder::bufferReady, this, &AudioEngine::addAudioChunkToBuffer);
 
 }
 
@@ -99,4 +102,15 @@ void AudioEngine::startDecoding(const QString &FilePath)
     }
     decoder->setSource(QUrl::fromLocalFile(FilePath));
     decoder->start();
+}
+
+// Adds a decoded chunk into the thread safe queue/buffer
+void AudioEngine::addAudioChunkToBuffer()
+{
+    const QAudioBuffer DecodedChunk = decoder->read();
+
+    if (DecodedChunk.isValid())
+    {
+        audioBuffer->enqueue(DecodedChunk);
+    }
 }

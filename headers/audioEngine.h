@@ -49,16 +49,19 @@ class AudioEngine : public QObject
         
     signals:
         void statusChanged(const EngineStatus_T Status);
-        void getBuffer();
 
     public slots:
         void init();
         void startDecoding(const QString &FilePath);
         void onDecodingFinished();
         void onErrorOccurred(const QAudioDecoder::Error Error);
-        void onGetBuffer();
+        
+    private slots:    
+        void addAudioChunkToBuffer();
 
     private:
+        static const uint32_t MaxQueueSize = 20;
+
         QAudioDecoder *decoder;
         SyncedAudioQueue *audioBuffer;
 

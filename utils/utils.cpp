@@ -12,30 +12,42 @@
 // Returns a bool if the selected file can be loaded without any issues
 bool Utils::isValidAudioFile(const QString &FileName)
 {
-    QMediaPlayer tempPlayer;
-    QVariant variantData;
+    const QFileInfo FileInfo = QFileInfo(FileName);
+    const bool IsFileExists = (!FileName.isEmpty()) && (FileInfo.exists());
+
+    if (!IsFileExists) return false;
+
+    QAudioDecoder decoder;
     QEventLoop loop;
+    bool success = false;
 
-    tempPlayer.setSource(QUrl::fromLocalFile(FileName));
-
-    // Wait until the media has been loaded
-    (void) QObject::connect(&tempPlayer, &QMediaPlayer::mediaStatusChanged, [&loop](QMediaPlayer::MediaStatus status)
+    (void) QObject::connect(&decoder, &QAudioDecoder::bufferReady, [&]()
     {
-        const bool IsDoneLoading = (status == QMediaPlayer::LoadedMedia) ||
-                                   (status == QMediaPlayer::InvalidMedia) ||
-                                   (status == QMediaPlayer::NoMedia);
-        if (IsDoneLoading)
-        {
-            loop.quit();
+        QAudioBuffer buffer = decoder.read();
+        if (!buffer.isValid()) {
+            success = false;
+        } else {
+            success = true;
         }
+        decoder.stop();
+        loop.quit();
     });
-    loop.exec();
 
-    tempPlayer.disconnect();
-    variantData = tempPlayer.metaData()[QMediaMetaData::AudioCodec];
+    (void) QObject::connect(&decoder, &QAudioDecoder::finished, [&]()
+    {
+        loop.quit();
+    });
 
-    const bool HasAudioCodec = variantData.isValid();
-    const bool HasLoadedProperly = tempPlayer.error() == QMediaPlayer::NoError;
+    (void) QObject::connect(&decoder, QOverload<QAudioDecoder::Error>::of(&QAudioDecoder::error),[&](QAudioDecoder::Error error)
+    {
+        success = false;
+        loop.quit();
+    });
 
-    return (HasLoadedProperly && HasAudioCodec);
+    decoder.setSource(QUrl::fromLocalFile(FileName));
+    decoder.start();
+
+    loop.exec();  // Wait until we either get a buffer, error, or finished
+
+    return success;
 }

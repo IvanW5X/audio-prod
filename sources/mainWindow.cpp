@@ -64,8 +64,6 @@ void MainWindow::onOpenAudioFileClicked()
                                                           QDir::homePath(),
                                                           tr("Audio Files (*.mp3 *.wav *.flac);;All Files (*.*)"));
 
-    if (FileName.isEmpty()) return;
-
     if (Utils::isValidAudioFile(FileName))
     {
         changePage(Pages::AudioPlayer);

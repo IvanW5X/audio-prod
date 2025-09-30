@@ -102,8 +102,6 @@ void AudioControllerWidget::onLoadNewAudioFileClicked()
                                                           tr("Select Audio File"),
                                                           QDir::homePath(),
                                                           tr("Audio Files (*.mp3 *.wav *.flac);;All Files (*.*)"));
-    if (FileName.isEmpty()) return;
-
     if (Utils::isValidAudioFile(FileName))
     {
         emit newAudioFileSelected(FileName);

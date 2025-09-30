@@ -10,8 +10,9 @@
 #pragma once
 
 #include <QObject>
-#include <QMediaPlayer>
-#include <QMediaMetaData>
+#include <QAudioDecoder>
+#include <QUrl>
+#include <QFileInfo>
 #include <QEventLoop>
 
 namespace Utils

@@ -35,7 +35,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
     public:
-        // Constructor and Destructor
+        // Constructor and Destructer
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
 

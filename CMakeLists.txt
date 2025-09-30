@@ -32,6 +32,7 @@ qt_add_executable(AudioProd
     headers/audioEngine.h
     headers/mainWindow.h
     headers/audioControllerWidget.h
+    headers/audioController.h
     headers/audioDataWidget.h
     headers/audioPlayerWidget.h
     headers/waveFormWidget.h
@@ -47,6 +48,7 @@ qt_add_executable(AudioProd
     sources/audioEngine.cpp
     sources/mainWindow.cpp
     sources/audioControllerWidget.cpp
+    sources/audioController.cpp
     sources/audioDataWidget.cpp
     sources/audioPlayerWidget.cpp
     sources/waveFormWidget.cpp

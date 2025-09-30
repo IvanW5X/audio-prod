@@ -11,9 +11,6 @@
 
 #pragma once
 
-#include "audioControllerWidget.h"
-#include "audioDataWidget.h"
-#include "waveFormWidget.h"
 #include <QWidget>
 #include <QMediaPlayer>
 #include <QAudioOutput>

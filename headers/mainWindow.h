@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "audioController.h"
 #include "audioPlayerWidget.h"
 #include "utils.h"
 #include <QMainWindow>

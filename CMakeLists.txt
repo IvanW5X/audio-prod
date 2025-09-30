@@ -17,7 +17,7 @@ find_package(Qt6 REQUIRED COMPONENTS
 qt_standard_project_setup()
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles)
-set(CMAKE_CXX_FLAGS_RELEASE "-O2")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 qt_add_executable(AudioProd
     # Resource file
@@ -29,6 +29,7 @@ qt_add_executable(AudioProd
     utils/utils.cpp
 
     # Headers
+    headers/audioEngine.h
     headers/mainWindow.h
     headers/audioControllerWidget.h
     headers/audioDataWidget.h
@@ -43,6 +44,7 @@ qt_add_executable(AudioProd
     uiFiles/waveFormWidget.ui
     
     # Sources
+    sources/audioEngine.cpp
     sources/mainWindow.cpp
     sources/audioControllerWidget.cpp
     sources/audioDataWidget.cpp

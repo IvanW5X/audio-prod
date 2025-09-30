@@ -11,10 +11,9 @@
 #include "mainWindow.h"
 #include "commonDefines.h"
 
-#include "waveFormWidget.h"
-#include "audioPlayerWidget.h"
+#include "audioEngine.h"
 
-// #define DEBUG
+#define DEBUG
 
 int main(int argc, char **argv)
 {
@@ -31,7 +30,11 @@ int main(int argc, char **argv)
     window.show();
 
 #else
+    SyncedAudioQueue buffer;
+    AudioEngine engine = AudioEngine(&buffer, nullptr);
+    engine.init();
 
+    engine.test();
 
 #endif // DEBUG
 

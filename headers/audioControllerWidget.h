@@ -19,6 +19,19 @@
 #include <QFileDialog>
 #include <QTimer>
 
+
+/*
+
+Major Update in progress:
+
+This class will be removed and replaced with AudioController and will serve as an interface for the AudioEngine, so
+that any audio data requests that need to be made will be encapsulated by this
+higher level class. This will be created as a singleton, so that any other class that
+needs to interact with low level audio data can do so and focus more on UI updates over
+audio processing
+
+*/
+
 namespace Ui
 {
     class AudioControllerWidget;
@@ -29,7 +42,7 @@ class AudioControllerWidget : public QWidget
     Q_OBJECT
 
     public:
-        // Constructor and Destructor
+        // Constructor and Destructer
         explicit AudioControllerWidget(QWidget *parent = nullptr);
         ~AudioControllerWidget();
 

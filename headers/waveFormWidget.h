@@ -28,7 +28,7 @@ class WaveFormWidget : public QWidget
     Q_OBJECT
 
     public:
-        // Constructor and Destructor
+        // Constructor and Destructer
         explicit WaveFormWidget(QWidget *parent = nullptr);
         ~WaveFormWidget();
 

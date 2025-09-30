@@ -28,7 +28,7 @@ class AudioPlayerWidget : public QWidget
     Q_OBJECT
 
     public:
-        // Constructor and destructor
+        // Constructor and destructer
         explicit AudioPlayerWidget(QWidget *parent = nullptr);
         ~AudioPlayerWidget();
 

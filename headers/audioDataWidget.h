@@ -29,7 +29,7 @@ class AudioDataWidget : public QWidget
     Q_OBJECT
     
     public:
-        // Constructor and destructor
+        // Constructor and destructer
         explicit AudioDataWidget(QWidget *parent = nullptr);
         ~AudioDataWidget();
 

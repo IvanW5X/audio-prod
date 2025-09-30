@@ -11,9 +11,10 @@
 #include "mainWindow.h"
 #include "commonDefines.h"
 
+#include "audioController.h"
 #include "audioEngine.h"
 
-#define DEBUG
+// #define DEBUG
 
 int main(int argc, char **argv)
 {
@@ -23,6 +24,7 @@ int main(int argc, char **argv)
 
 #ifndef DEBUG
 
+    AudioController::Instance().init();
     window.init();
 
     // TODO: add loading screen with animation before showing app

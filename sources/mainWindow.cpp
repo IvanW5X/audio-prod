@@ -90,10 +90,6 @@ void MainWindow::changePage(const Pages::Pages_T NewPage)
     }
     else if (CurrentPage == Pages::AudioPlayer)
     {
-        // TODO:
-        // is an audio loaded in the media player?
-            // reset audio player and output -- function from audioPlayer
-
         ui->stackedWidget->setCurrentIndex(NewPage);
     }
 }

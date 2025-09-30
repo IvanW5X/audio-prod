@@ -31,15 +31,15 @@ AudioPlayerWidget::~AudioPlayerWidget()
 // Initializes the audio player
 void AudioPlayerWidget::init()
 {
-    ui->audioDataWidget->init(audioPlayer);
-    ui->audioControllerWidget->init(audioPlayer, audioOutput);
-    ui->waveFormWidget->init(audioPlayer);
+    // ui->audioDataWidget->init(audioPlayer);
+    // ui->audioControllerWidget->init(audioPlayer, audioOutput);
+    // ui->waveFormWidget->init(audioPlayer);
 
-    (void) connect(ui->audioControllerWidget, &AudioControllerWidget::newAudioFileSelected, this, &AudioPlayerWidget::onUpdateAudioPlayer);
-    (void) connect(audioPlayer, &QMediaPlayer::mediaStatusChanged, this, &AudioPlayerWidget::onAudioFileLoaded);
-    (void) connect(this, &AudioPlayerWidget::updateAudioData, ui->audioDataWidget, &AudioDataWidget::onUpdateAudioData);
-    (void) connect(this, &AudioPlayerWidget::updateAudioController, ui->audioControllerWidget, &AudioControllerWidget::onUpdateAudioController);
-    (void) connect(this, &AudioPlayerWidget::updateWaveForm, ui->waveFormWidget, &WaveFormWidget::onUpdateWaveForm);
+    // (void) connect(ui->audioControllerWidget, &AudioControllerWidget::newAudioFileSelected, this, &AudioPlayerWidget::onUpdateAudioPlayer);
+    // (void) connect(audioPlayer, &QMediaPlayer::mediaStatusChanged, this, &AudioPlayerWidget::onAudioFileLoaded);
+    // (void) connect(this, &AudioPlayerWidget::updateAudioData, ui->audioDataWidget, &AudioDataWidget::onUpdateAudioData);
+    // (void) connect(this, &AudioPlayerWidget::updateAudioController, ui->audioControllerWidget, &AudioControllerWidget::onUpdateAudioController);
+    // (void) connect(this, &AudioPlayerWidget::updateWaveForm, ui->waveFormWidget, &WaveFormWidget::onUpdateWaveForm);
 
     audioPlayer->setAudioOutput(audioOutput);
 }

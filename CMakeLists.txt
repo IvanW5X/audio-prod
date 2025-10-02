@@ -12,11 +12,11 @@ set(CMAKE_CXX_FLAGS "-O3" CACHE STRING "Compiler flags")
 set(CMAKE_AUTORCC ON CACHE BOOL "")
 set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles CACHE FILEPATH "UI files directory")
 
-if(DEFINED ENV{TAGLIB_DIR})
-    set(CMAKE_PREFIX_PATH "$ENV{TAGLIB_DIR}")
-    message(STATUS "TagLib library path found at $ENV{TAGLIB_DIR}")
+if(DEFINED ENV{CMAKE_TAGLIB_PATH})
+    set(CMAKE_PREFIX_PATH "$ENV{CMAKE_TAGLIB_PATH}")
+    message(STATUS "TagLib library path found at $ENV{CMAKE_TAGLIB_PATH}")
 else()
-    message(STATUS "TagLib library not found, set the environment variable (TAGLIB_DIR)")
+    message(STATUS "TagLib library not found, set the environment variable (CMAKE_TAGLIB_PATH)")
 endif()
 
 # Qt Setup
@@ -26,7 +26,7 @@ find_package(Qt6 REQUIRED COMPONENTS
     Multimedia
 )
 
-find_package(TagLib REQUIRED)
+find_package(TagLib 2.1.1 REQUIRED)
 
 qt_standard_project_setup()
 

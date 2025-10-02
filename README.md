@@ -23,9 +23,8 @@
 ### Build Instructions
 
 ```bash
-git clone https://github.com/yourusername/audio-prod.git
+git clone https://github.com/IvanW5X/audio-prod.git
 cd audio-prod
-git submodule --init --recursive
 mkdir build && cd build
 cmake ..
 cmake --build .

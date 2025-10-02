@@ -7,12 +7,12 @@
  *
  **********************************************************/
 
-#include <QApplication>
 #include "mainWindow.h"
 #include "commonDefines.h"
-
 #include "audioController.h"
-#include "audioEngine.h"
+#include <QApplication>
+
+#include <taglib/fileref.h>
 
 // #define DEBUG
 
@@ -23,6 +23,8 @@ int main(int argc, char **argv)
     int32_t returnValue = 0;
 
 #ifndef DEBUG
+
+    TagLib::FileRef test;
 
     AudioController::instance().init();
     window.init();

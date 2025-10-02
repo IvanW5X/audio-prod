@@ -32,11 +32,6 @@ int main(int argc, char **argv)
     window.show();
 
 #else
-    SyncedAudioQueue buffer;
-    AudioEngine engine = AudioEngine(&buffer, nullptr);
-    engine.init();
-
-    engine.test();
 
 #endif // DEBUG
 

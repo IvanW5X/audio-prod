@@ -12,10 +12,12 @@
 #pragma once
 
 #include "audioEngine.h"
+#include "syncedAudioQueue.h"
 #include <QObject>
 #include <QThread>
 #include <QAudioSink>
 #include <QApplication>
+#include <QMediaDevices>
 
 class AudioController : public QObject
 {
@@ -23,13 +25,18 @@ class AudioController : public QObject
 
     public:
         // Thread safe as of C++11
-        static AudioController &Instance()
+        static AudioController &instance()
         {
             static AudioController instance;
             return instance;
         }
-    
         void init();
+        bool decodeFile(const QString &FilePath);
+        void playAudio();
+        // bool isBufferEmpty();
+
+    signals:
+        void startDecoding(const QString &FilePath);
 
     private slots:
         void cleanupThread();
@@ -43,7 +50,7 @@ class AudioController : public QObject
         AudioEngine *audioEngine;
         QThread *engineThread;
         QAudioSink *audioSink;
-        SyncedAudioQueue audioBuffer;
+        SyncedAudioQueue *audioBuffer;
 
         // Disable copy constructor and assignment operator overload
         AudioController(const AudioController &) = delete;

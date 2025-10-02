@@ -15,6 +15,7 @@
 
 #pragma once
 
+#include "syncedAudioQueue.h"
 #include <QObject>
 #include <QAudioDecoder>
 #include <QAudioBuffer>
@@ -24,9 +25,6 @@
 #include <QUrl>
 #include <QTimer>
 
-// Forward declaration for a thread safe queue
-class SyncedAudioQueue;
-
 class AudioEngine : public QObject
 {
     Q_OBJECT
@@ -34,27 +32,25 @@ class AudioEngine : public QObject
     public:
         enum EngineStatus_T
         {
-            Error = 0,
-            Success,
-            InvalidFile
+            ErrorDecoding = 0,
+            StartedDecoding,
+            DecodingFinished,
+            DecodingStopped,
+            InvalidAudioFormat
         };
-
         // Constructor and destructer
         explicit AudioEngine(SyncedAudioQueue *buffer, QObject *parent = nullptr);
         ~AudioEngine();
 
-        // DEBUG stuff
-        void test();
-        const QString testFile = "C:/Users/ivanw/OneDrive/Documents/Music/21 Savage, Offset & Metro Boomin - _Ghostface Killers_ Ft Travis Scott (Official Audio) 0.mp3";
-        
     signals:
-        void statusChanged(const EngineStatus_T Status);
+        void decoderStatus(const EngineStatus_T Status);
 
     public slots:
         void init();
         void startDecoding(const QString &FilePath);
+        void stopDecoding();
         void onDecodingFinished();
-        void onErrorOccurred(const QAudioDecoder::Error Error);
+        void onErrorDecoding(const QAudioDecoder::Error Error);
         
     private slots:    
         void addAudioChunkToBuffer();
@@ -63,26 +59,10 @@ class AudioEngine : public QObject
         static const uint32_t MaxQueueSize = 20;
 
         QAudioDecoder *decoder;
+        QAudioFormat *format;
         SyncedAudioQueue *audioBuffer;
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;
         AudioEngine &operator=(const AudioEngine &) = delete;
-};
-
-// Helper Class for a thread safe audio queue
-class SyncedAudioQueue
-{
-    public:
-        // Use default constructor and destructor
-        SyncedAudioQueue() = default;
-        ~SyncedAudioQueue() = default;
-
-        void enqueue(const QAudioBuffer &Buffer);
-        QAudioBuffer dequeue();
-        void clear();
-
-    private:
-        QMutex mutex;
-        QQueue<QAudioBuffer> audioBuffer;
 };

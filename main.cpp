@@ -24,7 +24,7 @@ int main(int argc, char **argv)
 
 #ifndef DEBUG
 
-    AudioController::Instance().init();
+    AudioController::instance().init();
     window.init();
 
     // TODO: add loading screen with animation before showing app

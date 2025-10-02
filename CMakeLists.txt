@@ -15,9 +15,15 @@ find_package(Qt6 REQUIRED COMPONENTS
 )
 
 qt_standard_project_setup()
-set(CMAKE_AUTORCC ON)
-set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles)
-set(CMAKE_CXX_FLAGS_RELEASE "-O3")
+set(CMAKE_AUTORCC ON CACHE BOOL "" FORCE)
+set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles CACHE BOOL "" FORCE)
+set(CMAKE_CXX_FLAGS_RELEASE "-O3" CACHE BOOL "" FORCE)
+
+set(BUILD_SHARED_LIBS ON CACHE BOOL "" FORCE)
+set(TAGLIB_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(TAGLIB_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(libs/taglib)
 
 qt_add_executable(AudioProd
     # Resource file
@@ -29,6 +35,7 @@ qt_add_executable(AudioProd
     utils/utils.cpp
 
     # Headers
+    headers/syncedAudioQueue.h
     headers/audioEngine.h
     headers/mainWindow.h
     headers/audioControllerWidget.h
@@ -45,6 +52,7 @@ qt_add_executable(AudioProd
     uiFiles/waveFormWidget.ui
     
     # Sources
+    sources/syncedAudioQueue.cpp
     sources/audioEngine.cpp
     sources/mainWindow.cpp
     sources/audioControllerWidget.cpp
@@ -57,6 +65,7 @@ qt_add_executable(AudioProd
 
 # Linking externals
 target_link_libraries(AudioProd PRIVATE
+    taglib
     Qt6::Core
     Qt6::Widgets
     Qt6::Multimedia

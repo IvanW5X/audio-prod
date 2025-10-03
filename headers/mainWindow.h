@@ -20,22 +20,19 @@ namespace Ui
     class MainWindow;
 }
 
-// Stacked widget pages
-namespace Pages
-{
-    enum Pages_T
-    {
-        Home = 0,
-        Documentation,
-        AudioPlayer
-    };
-}
-
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
     public:
+        enum Pages_T
+        {
+            Home = 0,
+            Documentation,
+            AudioPlayer
+        };
+        Q_ENUM(Pages_T)
+
         // Constructor and Destructer
         explicit MainWindow(QWidget *parent = nullptr);
         ~MainWindow();
@@ -58,7 +55,7 @@ class MainWindow : public QMainWindow
         AudioPlayerWidget *audioPlayer;
 
         // Helper functions
-        void changePage(const Pages::Pages_T NewPage);
+        void changePage(const Pages_T NewPage);
 
         // Disable copy constructor and assignment operator overload
         MainWindow(const MainWindow &) = delete;

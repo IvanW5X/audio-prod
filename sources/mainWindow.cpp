@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     // Setup UI elements
     ui->setupUi(this);
-    ui->stackedWidget->setCurrentIndex(Pages::Home);
+    ui->stackedWidget->setCurrentIndex(Pages_T::Home);
 
     // Note: The home page and documentation page area already in the stacked widget
     //       by default in the .ui file, so no need to add them in
@@ -46,13 +46,13 @@ void MainWindow::init()
 void MainWindow::onHomePageClicked()
 {
     // TODO: add some logic here before going to home page;
-    changePage(Pages::Home);
+    changePage(Pages_T::Home);
 }
 
 // TODO: Figure out implementation details for this
 void MainWindow::onDocumentationClicked()
 {
-    changePage(Pages::Documentation);
+    changePage(Pages_T::Documentation);
 }
 
 // Gets the name of the selected audio file and emits a signal when successful
@@ -65,7 +65,7 @@ void MainWindow::onOpenAudioFileClicked()
 
     if (Utils::isValidAudioFile(FileName))
     {
-        changePage(Pages::AudioPlayer);
+        changePage(Pages_T::AudioPlayer);
     }
     else
     {
@@ -74,19 +74,19 @@ void MainWindow::onOpenAudioFileClicked()
 }
 
 // Handles logic that needs to happen before switching pages
-void MainWindow::changePage(const Pages::Pages_T NewPage)
+void MainWindow::changePage(const Pages_T NewPage)
 {
     const int32_t CurrentPage = ui->stackedWidget->currentIndex();
 
-    if (CurrentPage == Pages::Home)
+    if (CurrentPage == Pages_T::Home)
     {
         ui->stackedWidget->setCurrentIndex(NewPage);
     }
-    else if (CurrentPage == Pages::Documentation)
+    else if (CurrentPage == Pages_T::Documentation)
     {
         ui->stackedWidget->setCurrentIndex(NewPage);
     }
-    else if (CurrentPage == Pages::AudioPlayer)
+    else if (CurrentPage == Pages_T::AudioPlayer)
     {
         ui->stackedWidget->setCurrentIndex(NewPage);
     }

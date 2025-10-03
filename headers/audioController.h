@@ -19,7 +19,6 @@
 #include <QThread>
 #include <QAudioSink>
 #include <QApplication>
-#include <QMediaDevices>
 
 class AudioController : public QObject
 {
@@ -32,23 +31,24 @@ class AudioController : public QObject
             static AudioController instance;
             return instance;
         }
+        // Public APIs
         void init();
 
         // Interface functions
         void requestAudioMetaData(const QString &FileName);
-        void requestloadAudioFile(const QString &FileName);
-        void requestdecodeAudioFile(const QString &FileName);
+        // void requestloadAudioFile(const QString &FileName);
+        // void requestdecodeAudioFile(const QString &FileName);
 
     signals:
-        // Engine request signal
         // NOTE: No other component should use this signal, as it directly communicates to the engine
-        void sendRequest(AudioCommand::RequestPtr payload);
+        void sendRequest(AudioCommand::PacketPtr payload);
 
         // Ready/done processing signals
+        void audioMetaDataReady();
         void decodeAudioBufferReady();
 
     private slots:
-        void responseReceived(AudioCommand::ResponsePtr package);
+        void responseReceived(AudioCommand::PacketPtr package);
         // on response received, use the commandId to switch to emit ready signals
             // connect these ready signals to the UI components to update them
 
@@ -65,11 +65,11 @@ class AudioController : public QObject
         QAudioSink *audioSink;
         SyncedAudioQueue *audioInBuffer;
         SyncedAudioQueue *audioOutBuffer;
-        uint64_t requestId;
+        uint32_t requestId;
 
         // Helper functions
         inline void incrementId();
-        AudioCommand::RequestPtr createRequest(const AudioCommand::Command_T Command, const QVariant &Payload);
+        AudioCommand::PacketPtr createPacket(const AudioCommand::Command_T Command, const QVariant &Payload);
 
         // Disable copy constructor and assignment operator overload
         AudioController(const AudioController &) = delete;

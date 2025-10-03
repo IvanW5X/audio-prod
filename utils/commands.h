@@ -25,24 +25,14 @@ namespace AudioCommand
         SeekFilePosition,
         PauseAudioFile,
     };
-
-    struct Request
+    struct Packet
     {
-        uint64_t requestId;
+        uint32_t id;
         Command_T commandType;
         QVariant data;
     };
-
-    struct Response
-    {
-        uint64_t responseId;
-        QVariant data;
-    };
-
-    using RequestPtr = QSharedPointer<Request>;
-    using ResponsePtr = QSharedPointer<Response>;
+    using PacketPtr = QSharedPointer<Packet>;
 }
 
 Q_DECLARE_METATYPE(AudioCommand::Command_T)
-Q_DECLARE_METATYPE(AudioCommand::RequestPtr)
-Q_DECLARE_METATYPE(AudioCommand::ResponsePtr)
+Q_DECLARE_METATYPE(AudioCommand::PacketPtr)

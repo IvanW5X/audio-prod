@@ -9,13 +9,13 @@
 
 #pragma once
 
-#include <QObject>
-#include <QAudioDecoder>
-#include <QUrl>
+#include "commands.h"
+#include <QString>
 #include <QFileInfo>
-#include <QEventLoop>
+#include <taglib/fileref.h>
 
 namespace Utils
 {
+    void setupApp();
     bool isValidAudioFile(const QString &FileName);
 }

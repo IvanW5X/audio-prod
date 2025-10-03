@@ -17,14 +17,12 @@
 
 #include "syncedAudioQueue.h"
 #include "commands.h"
+#include "errorHandler.h"
+#include "utils.h"
 #include <QObject>
 #include <QAudioDecoder>
 #include <QAudioBuffer>
 #include <QFileInfo>
-#include <QMutex>
-#include <QQueue>
-#include <QUrl>
-#include <QTimer>
 
 class AudioEngine : public QObject
 {
@@ -36,25 +34,24 @@ class AudioEngine : public QObject
         ~AudioEngine();
 
     signals:
-        void requestFinished(AudioCommand::Response Response);
+        void requestFinished(const AudioCommand::PacketPtr Response);
 
     public slots:
         void init();
-        void processRequest(const AudioCommand::RequestPtr Request);
+        void processRequest(const AudioCommand::PacketPtr Request);
         
     private slots:
         void shutdown();
 
     private:
-        static const uint32_t MaxQueueSize = 20;
-
         QAudioDecoder *decoder;
         QAudioFormat *format;
         SyncedAudioQueue *audioInBuffer;
         SyncedAudioQueue *audioOutBuffer;
 
         // Helper functions
-        void getAudioMetaData(const uint64_t RequestId, const QString &FileName);
+        inline void sendResponse(AudioCommand::PacketPtr &packet, const QVariant &Payload);
+        AudioData::MetaDataMap_T getAudioMetaData(const QString &FileName);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

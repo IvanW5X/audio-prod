@@ -49,7 +49,7 @@ set(AUDIOPROD_SOURCES
     sources/mainWindow.cpp
     sources/audioController.cpp
     sources/audioPlayerWidget.cpp
-    main.cpp
+    sources/main.cpp
 )
 
 set(AUDIOPROD_UI_FILES

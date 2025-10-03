@@ -18,24 +18,24 @@ namespace AudioCommand
 {
     enum Command_T
     {
-        ReadMetaData = 0,
+        GetMetaData = 0,
         StartDecoding,
         StopDecoding,
         PlayAudioFile,
         SeekFilePosition,
-        PauseAudioFile
+        PauseAudioFile,
     };
 
     struct Request
     {
-        uint64_t commandId;
+        uint64_t requestId;
         Command_T commandType;
         QVariant data;
     };
 
     struct Response
     {
-        uint64_t commandId;
+        uint64_t responseId;
         QVariant data;
     };
 
@@ -43,5 +43,6 @@ namespace AudioCommand
     using ResponsePtr = QSharedPointer<Response>;
 }
 
+Q_DECLARE_METATYPE(AudioCommand::Command_T)
 Q_DECLARE_METATYPE(AudioCommand::RequestPtr)
 Q_DECLARE_METATYPE(AudioCommand::ResponsePtr)

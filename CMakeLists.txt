@@ -31,16 +31,13 @@ find_package(TagLib 2.1.1 REQUIRED)
 qt_standard_project_setup()
 
 set(AUDIOPROD_HEADERS
-    utils/commonDefines.h
     utils/utils.h
+    utils/commands.h
     headers/syncedAudioQueue.h
     headers/audioEngine.h
     headers/mainWindow.h
-    headers/audioControllerWidget.h
     headers/audioController.h
-    headers/audioDataWidget.h
     headers/audioPlayerWidget.h
-    headers/waveFormWidget.h
 )
 
 set(AUDIOPROD_SOURCES
@@ -48,20 +45,14 @@ set(AUDIOPROD_SOURCES
     sources/syncedAudioQueue.cpp
     sources/audioEngine.cpp
     sources/mainWindow.cpp
-    sources/audioControllerWidget.cpp
     sources/audioController.cpp
-    sources/audioDataWidget.cpp
     sources/audioPlayerWidget.cpp
-    sources/waveFormWidget.cpp
     main.cpp
 )
 
 set(AUDIOPROD_UI_FILES
     uiFiles/mainWindow.ui
-    uiFiles/audioControllerWidget.ui
-    uiFiles/audioDataWidget.ui
     uiFiles/audioPlayerWidget.ui
-    uiFiles/waveFormWidget.ui
 )
 
 set(AUDIOPROD_RESOURCES

@@ -85,23 +85,11 @@ inline void AudioEngine::sendResponse(AudioCommand::PacketPtr &packet, const QVa
 AudioData::MetaDataMap_T AudioEngine::getAudioMetaData(const QString &FileName)
 {
     AudioData::MetaDataMap_T metaData;
-
-    // Lamda to convert TagLib string to QString
-    const auto ToQString = ([](TagLib::String &Source)
-    {
-        return QString::fromStdWString(Source.toWString());
-    });
-    const auto  = ([]()
-    {
-
-    });
-
-
     const char *FileName_cstr = FileName.toLocal8Bit().constData();
     TagLib::FileRef ref = TagLib::FileRef(FileName_cstr);
-    TagLib::Tag *tag = ref.tag();
+    const TagLib::Tag *Tag = ref.tag();
 
-    if (ref.isNull() || !tag)
+    if (ref.isNull() || !Tag)
     {
         ErrorHandler::instance().handleError
         (
@@ -112,10 +100,74 @@ AudioData::MetaDataMap_T AudioEngine::getAudioMetaData(const QString &FileName)
     else
     {
         const QFileInfo Info = QFileInfo(FileName);
+        QList<AudioData::Keys> dataNotFound;
+
         metaData.insert(AudioData::FileName, QVariant::fromValue(Info.fileName()));
+
+        if (!insertTagData(AudioData::Title, Tag, metaData))
+        {
+            dataNotFound.append(AudioData::Title);
+        }
 
     }
     return metaData;
+}
+
+// Adds the data tag associated with the key to the map, inserts NA if no tag is found
+bool AudioEngine::insertTagData(const AudioData::Keys Key, const TagLib::Tag *Tag, AudioData::MetaDataMap_T &destMap)
+{
+    bool success = true;
+
+    if (!Tag)
+    {
+        ErrorHandler::instance().handleError
+        (
+            Error::ReadingFileFailed,
+            QString("Failed to get tag data.")
+        );
+        return !success;
+    }
+    TagLib::String buffer;
+    QVariant data;
+
+    switch (Key)
+    {
+        case AudioData::Title:
+        {
+            buffer = Tag->title(); 
+            break;
+        }
+        case AudioData::Album:{
+            buffer = Tag->album();
+            break;
+        }
+        case AudioData::Artist:
+        { 
+            buffer = Tag->artist();
+            break;
+        }
+        case AudioData::Genre:
+        {
+            buffer = Tag->genre();
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+    if (buffer.isEmpty())
+    {
+        data = QVariant::fromValue(QString("NA"));
+        success = false;
+    }
+    else
+    {
+        data = QVariant::fromValue(QString::fromStdWString(buffer.toCWString()));
+    }
+    destMap.insert(Key, data);
+
+    return success;
 }
 
 // Adds the audio property associated with the key to the map, errors if the property is missing

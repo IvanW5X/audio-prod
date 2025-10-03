@@ -31,7 +31,7 @@ bool Utils::isValidAudioFile(const QString &FileName)
     }
     else
     {
-        const char *FileName_cstr = FileName.toStdString().c_str();
+        const char *FileName_cstr = FileName.toLocal8Bit().constData();
         TagLib::FileRef ref = TagLib::FileRef(FileName_cstr);
 
         if (!ref.audioProperties())

@@ -13,11 +13,13 @@
 void Utils::setupApp()
 {
     qRegisterMetaType<AudioCommand::Command_T>();
-    qRegisterMetaType<AudioCommand::RequestPtr>();
-    qRegisterMetaType<AudioCommand::ResponsePtr>();
+    qRegisterMetaType<AudioCommand::PacketPtr>();
     qRegisterMetaType<Error::Id>();
+    qRegisterMetaType<AudioData::Keys>();
+    qRegisterMetaType<AudioData::MetaDataMap_T>();
 }
 
+// Returns a bool if the file has audio properties
 bool Utils::isValidAudioFile(const QString &FileName)
 {
     const QFileInfo Info = QFileInfo(FileName);
@@ -37,5 +39,5 @@ bool Utils::isValidAudioFile(const QString &FileName)
             isValid = false;
         }
     }
-    return true;
+    return isValid;
 }

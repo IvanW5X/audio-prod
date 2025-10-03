@@ -20,3 +20,26 @@ namespace Utils
     void setupApp();
     bool isValidAudioFile(const QString &FileName);
 }
+
+namespace AudioData
+{
+    enum Keys
+    {
+        Title = 0,
+        Album,
+        Artist,
+        Duration,
+        Genre,
+        ReleaseYear,
+        TrackNumber,
+        Duration_ms,
+        BitRate_kbs,
+        SampleRate_hz,
+        NumChannels,
+        NumKeys
+    };
+    using MetaDataMap_T = QMap<Keys, QString>;
+}
+
+Q_DECLARE_METATYPE(AudioData::Keys)
+Q_DECLARE_METATYPE(AudioData::MetaDataMap_T)

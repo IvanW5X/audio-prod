@@ -16,6 +16,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QDebug>
 
 namespace Error
 {
@@ -23,6 +24,7 @@ namespace Error
     {
         InvalidAudioFile = 1001u,
         DecodingFailed,
+        UnknownRequest,
         Unknown = 9999u     // Must be the last error id
     };
 }

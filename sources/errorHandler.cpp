@@ -10,10 +10,11 @@
 #include "errorHandler.h"
 
 // Map of all error IDs with a generic error message
-const QMap<Error::Id, QString> ErrorMessages = 
+const QMap<Error::Id, QString> ErrorHandler::ErrorMessages = 
 {
     { Error::InvalidAudioFile, "File not found, access denied, or invalid audio file." },
     { Error::DecodingFailed, "Audio decoding failed" },
+    { Error::UnknownRequest, "Unknown request" },
     { Error::Unknown, "Unknown internal error" }    // Set errors in order relative to Error::Id enum
 };
 

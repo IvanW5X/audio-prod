@@ -23,6 +23,7 @@ namespace Error
     enum Id : uint32_t
     {
         InvalidAudioFile = 1001u,
+        ReadingFileFailed,
         DecodingFailed,
         UnknownRequest,
         Unknown = 9999u     // Must be the last error id

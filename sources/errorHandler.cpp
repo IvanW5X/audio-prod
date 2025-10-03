@@ -13,9 +13,10 @@
 const QMap<Error::Id, QString> ErrorHandler::ErrorMessages = 
 {
     { Error::InvalidAudioFile, "File not found, access denied, or invalid audio file." },
-    { Error::DecodingFailed, "Audio decoding failed" },
-    { Error::UnknownRequest, "Unknown request" },
-    { Error::Unknown, "Unknown internal error" }    // Set errors in order relative to Error::Id enum
+    { Error::DecodingFailed, "Audio decoding failed." },
+    { Error::ReadingFileFailed, "File could not be read." },
+    { Error::UnknownRequest, "Unknown request." },
+    { Error::Unknown, "Unknown internal error." }    // Set errors in order relative to Error::Id enum
 };
 
 ErrorHandler::ErrorHandler(QObject *parent) : QObject(parent)

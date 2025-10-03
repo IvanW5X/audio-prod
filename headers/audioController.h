@@ -14,6 +14,7 @@
 #include "audioEngine.h"
 #include "syncedAudioQueue.h"
 #include "commands.h"
+#include "utils.h"
 #include <QObject>
 #include <QThread>
 #include <QAudioSink>
@@ -33,16 +34,25 @@ class AudioController : public QObject
         }
         void init();
 
+        // Interface functions
+        void requestAudioMetaData(const QString &FileName);
+        void requestloadAudioFile(const QString &FileName);
+        void requestdecodeAudioFile(const QString &FileName);
+
     signals:
-        // Main signal
+        // Engine request signal
+        // NOTE: No other component should use this signal, as it directly communicates to the engine
         void sendRequest(AudioCommand::RequestPtr payload);
+
+        // Ready/ done processing signals
+        void decodeAudioBufferReady();
 
     private slots:
         void responseReceived(AudioCommand::ResponsePtr package);
         // on response received, use the commandId to switch to emit ready signals
             // connect these ready signals to the UI components to update them
 
-        void cleanupThread();
+        void shutdown();
 
     private:
         // Prevent direct instantiation
@@ -53,7 +63,13 @@ class AudioController : public QObject
         AudioEngine *audioEngine;
         QThread *engineThread;
         QAudioSink *audioSink;
-        SyncedAudioQueue *audioBuffer;
+        SyncedAudioQueue *audioInBuffer;
+        SyncedAudioQueue *audioOutBuffer;
+        uint64_t requestId;
+
+        // Helper functions
+        inline void incrementId();
+        AudioCommand::RequestPtr createRequest(const AudioCommand::Command_T Command, const QVariant &Payload);
 
         // Disable copy constructor and assignment operator overload
         AudioController(const AudioController &) = delete;

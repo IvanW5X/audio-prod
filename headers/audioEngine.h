@@ -16,6 +16,7 @@
 #pragma once
 
 #include "syncedAudioQueue.h"
+#include "commands.h"
 #include <QObject>
 #include <QAudioDecoder>
 #include <QAudioBuffer>
@@ -31,22 +32,29 @@ class AudioEngine : public QObject
 
     public:
         // Constructor and destructer
-        explicit AudioEngine(SyncedAudioQueue *buffer, QObject *parent = nullptr);
+        explicit AudioEngine(SyncedAudioQueue *inBuffer, SyncedAudioQueue *outBuffer, QObject *parent = nullptr);
         ~AudioEngine();
 
     signals:
+        void requestFinished(AudioCommand::Response Response);
 
     public slots:
         void init();
+        void processRequest(const AudioCommand::RequestPtr Request);
         
-    private slots:    
+    private slots:
+        void shutdown();
 
     private:
         static const uint32_t MaxQueueSize = 20;
 
         QAudioDecoder *decoder;
         QAudioFormat *format;
-        SyncedAudioQueue *audioBuffer;
+        SyncedAudioQueue *audioInBuffer;
+        SyncedAudioQueue *audioOutBuffer;
+
+        // Helper functions
+        void getAudioMetaData(const uint64_t RequestId, const QString &FileName);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

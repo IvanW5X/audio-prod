@@ -40,7 +40,6 @@ void MainWindow::init()
     (void) connect(ui->actionHome_Page, &QAction::triggered, this, &MainWindow::onHomePageClicked);
     (void) connect(ui->actionDocumentation, &QAction::triggered, this, &MainWindow::onDocumentationClicked);
     (void) connect(ui->actionOpen_Audio_File, &QAction::triggered, this, &MainWindow::onOpenAudioFileClicked);
-    (void) connect(this, &MainWindow::audioFileSelected, audioPlayer, &AudioPlayerWidget::onUpdateAudioPlayer);
 }
 
 // Directs the user to the home page using the menu bar
@@ -67,11 +66,10 @@ void MainWindow::onOpenAudioFileClicked()
     if (Utils::isValidAudioFile(FileName))
     {
         changePage(Pages::AudioPlayer);
-        emit audioFileSelected(FileName);
     }
     else
     {
-        // TODO: error handle
+        // TODO: add error handling
     }
 }
 

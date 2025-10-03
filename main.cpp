@@ -8,13 +8,15 @@
  **********************************************************/
 
 #include "mainWindow.h"
-#include "commonDefines.h"
+#include "commands.h"
 #include "audioController.h"
+#include "utils.h"
 #include <QApplication>
 
-#include <taglib/fileref.h>
+#include "audioEngine.h"
 
-// #define DEBUG
+#define DEBUG
+
 
 int main(int argc, char **argv)
 {
@@ -22,10 +24,9 @@ int main(int argc, char **argv)
     MainWindow window;
     int32_t returnValue = 0;
 
+    Utils::setupApp();
+
 #ifndef DEBUG
-
-    TagLib::FileRef test;
-
     AudioController::instance().init();
     window.init();
 

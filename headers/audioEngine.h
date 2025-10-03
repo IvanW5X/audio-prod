@@ -30,30 +30,16 @@ class AudioEngine : public QObject
     Q_OBJECT
 
     public:
-        enum EngineStatus_T
-        {
-            ErrorDecoding = 0,
-            StartedDecoding,
-            DecodingFinished,
-            DecodingStopped,
-            InvalidAudioFormat
-        };
         // Constructor and destructer
         explicit AudioEngine(SyncedAudioQueue *buffer, QObject *parent = nullptr);
         ~AudioEngine();
 
     signals:
-        void decoderStatus(const EngineStatus_T Status);
 
     public slots:
         void init();
-        void startDecoding(const QString &FilePath);
-        void stopDecoding();
-        void onDecodingFinished();
-        void onErrorDecoding(const QAudioDecoder::Error Error);
         
     private slots:    
-        void addAudioChunkToBuffer();
 
     private:
         static const uint32_t MaxQueueSize = 20;

@@ -13,6 +13,7 @@
 
 #include "audioEngine.h"
 #include "syncedAudioQueue.h"
+#include "commands.h"
 #include <QObject>
 #include <QThread>
 #include <QAudioSink>
@@ -31,14 +32,16 @@ class AudioController : public QObject
             return instance;
         }
         void init();
-        bool decodeFile(const QString &FilePath);
-        void playAudio();
-        // bool isBufferEmpty();
 
     signals:
-        void startDecoding(const QString &FilePath);
+        // Main signal
+        void sendRequest(AudioCommand::RequestPtr payload);
 
     private slots:
+        void responseReceived(AudioCommand::ResponsePtr package);
+        // on response received, use the commandId to switch to emit ready signals
+            // connect these ready signals to the UI components to update them
+
         void cleanupThread();
 
     private:

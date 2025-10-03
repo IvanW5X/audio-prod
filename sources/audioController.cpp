@@ -49,30 +49,14 @@ void AudioController::init()
     }
     (void) connect(QApplication::instance(), &QApplication::aboutToQuit, this, &AudioController::cleanupThread);
     (void) connect(engineThread, &QThread::started, audioEngine, &AudioEngine::init);
-    (void) connect(this, &AudioController::startDecoding, audioEngine, &AudioEngine::startDecoding);
 
     engineThread->start(QThread::HighestPriority);
-    const QString audioFile = "C:/Users/ivanw/OneDrive/Documents/Music/Billie Jean 4.mp3";
-
-    decodeFile(audioFile);
 }
 
-// Sends signal to the engine to start decoding the file
-bool AudioController::decodeFile(const QString &FilePath)
+// Directs the response from the engine to the ready signal
+void AudioController::responseReceived(AudioCommand::ResponsePtr package)
 {
-    const QFileInfo FileInfo = QFileInfo(FilePath);
-    const bool IsFileExists = (!FilePath.isEmpty()) && (FileInfo.exists());
-    bool success = true;
 
-    if (!IsFileExists)
-    {
-        success = false;
-    }
-    else
-    {
-        emit startDecoding(FilePath);
-    }
-    return success;
 }
 
 // Clean up thread usage
@@ -80,9 +64,4 @@ void AudioController::cleanupThread()
 {
     engineThread->quit();
     engineThread->wait();
-}
-
-void AudioController::playAudio()
-{
-
 }

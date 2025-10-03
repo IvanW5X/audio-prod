@@ -44,7 +44,6 @@ class MainWindow : public QMainWindow
         void init();
 
     signals:
-        void audioFileSelected(const QString &FileName);
               
     public slots:
     

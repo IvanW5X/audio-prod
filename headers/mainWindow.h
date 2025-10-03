@@ -11,6 +11,7 @@
 
 #include "audioController.h"
 #include "audioPlayerWidget.h"
+#include "errorHandler.h"
 #include "utils.h"
 #include <QMainWindow>
 #include <QFileDialog>

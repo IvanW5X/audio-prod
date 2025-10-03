@@ -44,7 +44,7 @@ class AudioController : public QObject
         // NOTE: No other component should use this signal, as it directly communicates to the engine
         void sendRequest(AudioCommand::RequestPtr payload);
 
-        // Ready/ done processing signals
+        // Ready/done processing signals
         void decodeAudioBufferReady();
 
     private slots:

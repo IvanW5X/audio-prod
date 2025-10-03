@@ -21,7 +21,9 @@ namespace Error
 {
     enum Id : uint32_t
     {
-        InvalidAudioFile = 1001
+        InvalidAudioFile = 1001u,
+        DecodingFailed,
+        Unknown = 9999u     // Must be the last error id
     };
 }
 
@@ -36,11 +38,17 @@ class ErrorHandler : public QObject
             static ErrorHandler instance;
             return instance;
         }
-        static const QMap<const Error::Id, const QString> ErrorMessages;
+        static const QMap<Error::Id, QString> ErrorMessages;
     
+        void handleError(const Error::Id ErrorId, const QString &Context);
+
     private:
         explicit ErrorHandler(QObject *parent = nullptr);
         ~ErrorHandler();
+
+        // Disable copy constructor and assignment operator overload
+        ErrorHandler(const ErrorHandler &) = delete;
+        ErrorHandler &operator=(const ErrorHandler &) = delete;
 };
 
 Q_DECLARE_METATYPE(Error::Id)

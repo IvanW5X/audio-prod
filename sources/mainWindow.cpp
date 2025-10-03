@@ -69,7 +69,11 @@ void MainWindow::onOpenAudioFileClicked()
     }
     else
     {
-        // TODO: add error handling
+        ErrorHandler::instance().handleError
+        (
+            Error::InvalidAudioFile,
+            QString("Failed to open file at path: %1").arg(FileName)
+        );
     }
 }
 

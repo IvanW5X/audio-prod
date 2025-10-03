@@ -33,6 +33,7 @@ qt_standard_project_setup()
 set(AUDIOPROD_HEADERS
     utils/utils.h
     utils/commands.h
+    utils/errorHandler.h
     headers/syncedAudioQueue.h
     headers/audioEngine.h
     headers/mainWindow.h
@@ -41,7 +42,8 @@ set(AUDIOPROD_HEADERS
 )
 
 set(AUDIOPROD_SOURCES
-    utils/utils.cpp
+    sources/utils.cpp
+    sources/errorHandler.cpp
     sources/syncedAudioQueue.cpp
     sources/audioEngine.cpp
     sources/mainWindow.cpp

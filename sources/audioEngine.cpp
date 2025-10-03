@@ -48,6 +48,7 @@ void AudioEngine::processRequest(AudioCommand::PacketPtr request)
         case GetMetaData:
         {
             responseData = QVariant::fromValue(getAudioMetaData(RequestData.toString()));
+
             break;
         }
         default:
@@ -86,15 +87,40 @@ AudioData::MetaDataMap_T AudioEngine::getAudioMetaData(const QString &FileName)
     AudioData::MetaDataMap_T metaData;
 
     // Lamda to convert TagLib string to QString
-    const auto ToQString = ([]()
+    const auto ToQString = ([](TagLib::String &Source)
+    {
+        return QString::fromStdWString(Source.toWString());
+    });
+    const auto  = ([]()
     {
 
     });
-    const char *FileName_cstr = FileName.toStdString().c_str();
-    TagLib::FileRef ref;
-    TagLib::Tag *tag;
 
 
+    const char *FileName_cstr = FileName.toLocal8Bit().constData();
+    TagLib::FileRef ref = TagLib::FileRef(FileName_cstr);
+    TagLib::Tag *tag = ref.tag();
 
+    if (ref.isNull() || !tag)
+    {
+        ErrorHandler::instance().handleError
+        (
+            Error::ReadingFileFailed,
+            QString("Failed to get meta data from file at path: %1").arg(FileName)
+        );
+    }
+    else
+    {
+        const QFileInfo Info = QFileInfo(FileName);
+        metaData.insert(AudioData::FileName, QVariant::fromValue(Info.fileName()));
+
+    }
     return metaData;
+}
+
+// Adds the audio property associated with the key to the map, errors if the property is missing
+bool AudioEngine::insertPropertyData(const AudioData::Keys Key, const TagLib::AudioProperties *Tag, AudioData::MetaDataMap_T &destMap)
+{
+    // TODO: add functionality
+    return true;
 }

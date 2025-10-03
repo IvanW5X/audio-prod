@@ -10,6 +10,7 @@
 #pragma once
 
 #include "commands.h"
+#include "errorHandler.h"
 #include <QString>
 #include <QFileInfo>
 #include <taglib/fileref.h>

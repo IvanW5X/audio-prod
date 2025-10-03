@@ -19,10 +19,17 @@ namespace Utils
 {
     void setupApp();
     bool isValidAudioFile(const QString &FileName);
+
+    // Returns QEnum name for registered Qt enums
+    template<typename QEnum> QString qEnumToString(const QEnum Value)
+    {
+        return QString( QMetaType::fromType<QEnum>(Value).toValueKey(Value) );
+    }
 }
 
 namespace AudioData
 {
+    Q_NAMESPACE
     enum Keys
     {
         Title = 0,
@@ -39,6 +46,8 @@ namespace AudioData
         FileName,
         NumKeys
     };
+    Q_ENUM_NS(Keys)
+
     using MetaDataMap_T = QMap<Keys, QVariant>;
 }
 

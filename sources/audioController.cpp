@@ -45,22 +45,26 @@ void AudioController::init()
     (void) connect(QApplication::instance(), &QApplication::aboutToQuit, this, &AudioController::shutdown);
     (void) connect(engineThread, &QThread::started, audioEngine, &AudioEngine::init);
     (void) connect(this, &AudioController::sendRequest, audioEngine, &AudioEngine::processRequest);
+    (void) connect(audioEngine, &AudioEngine::requestFinished, this, &AudioController::responseReceived);
 
     engineThread->start(QThread::HighestPriority);
+
+    // requestAudioMetaData("C:/Users/ivanw/OneDrive/Documents/Music/Billie Jean 4.mp3");
 }
 
 // Sends request to engine for the AudioMetaData
 // Assumes the file is a valid audio file
 void AudioController::requestAudioMetaData(const QString &FileName)
 {
-    AudioCommand::RequestPtr request = createRequest(AudioCommand::GetMetaData, FileName);
+    AudioCommand::PacketPtr request = createPacket(AudioCommand::GetMetaData, FileName);
     emit sendRequest(request);
 }
 
 // Directs the response from the engine to the ready signal
-void AudioController::responseReceived(AudioCommand::ResponsePtr package)
+void AudioController::responseReceived(AudioCommand::PacketPtr packet)
 {
-
+    // switch case here for each command
+    // emit the done signal for each command with the same packet to utilize memory efficiently
 }
 
 // Shut down thread and processing in this class
@@ -81,17 +85,17 @@ void AudioController::shutdown()
 // Updates the request Id
 inline void AudioController::incrementId()
 {
-    requestId =  (requestId == UINT64_MAX) ? 0 : requestId++;
+    requestId = (requestId == UINT32_MAX) ? 0 : requestId++;
 }
 
 // Creates a shared pointer request with the command, payload, and request Id
-AudioCommand::RequestPtr AudioController::createRequest(const AudioCommand::Command_T Command, const QVariant &Payload)
+AudioCommand::PacketPtr AudioController::createPacket(const AudioCommand::Command_T Command, const QVariant &Payload)
 {
-    AudioCommand::RequestPtr newRequest = AudioCommand::RequestPtr::create();
+    AudioCommand::PacketPtr newRequest = AudioCommand::PacketPtr::create();
 
     newRequest->commandType = Command;
     newRequest->data = Payload;
-    newRequest->requestId = requestId;
+    newRequest->id = requestId;
     incrementId();
 
     return newRequest;

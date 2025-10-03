@@ -36,9 +36,10 @@ namespace AudioData
         BitRate_kbs,
         SampleRate_hz,
         NumChannels,
+        FileName,
         NumKeys
     };
-    using MetaDataMap_T = QMap<Keys, QString>;
+    using MetaDataMap_T = QMap<Keys, QVariant>;
 }
 
 Q_DECLARE_METATYPE(AudioData::Keys)

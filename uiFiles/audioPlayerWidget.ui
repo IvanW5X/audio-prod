@@ -107,7 +107,7 @@
          <number>10</number>
         </property>
         <item>
-         <widget class="WaveFormWidget" name="waveFormWidget" native="true"/>
+         <widget class="QWidget" name="waveFormWidget" native="true"/>
         </item>
         <item>
          <widget class="QFrame" name="mediaControllerFrame">
@@ -529,14 +529,6 @@ QListWidget::item:hover {
    </item>
   </layout>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>WaveFormWidget</class>
-   <extends>QWidget</extends>
-   <header>waveFormWidget.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
   <include location="../resources/resources.qrc"/>
  </resources>

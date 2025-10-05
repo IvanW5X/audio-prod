@@ -1,7 +1,7 @@
 # Standard CMake Setup
 cmake_minimum_required(VERSION 3.25)
 
-project(AudioProd VERSION 1.0.0 LANGUAGES CXX)
+project(AudioProd VERSION 1.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -22,8 +22,6 @@ endif()
 # Qt Setup
 find_package(Qt6 REQUIRED COMPONENTS 
     Core 
-    Widgets
-    Multimedia
 )
 
 find_package(TagLib 2.1.1 REQUIRED)
@@ -31,29 +29,14 @@ find_package(TagLib 2.1.1 REQUIRED)
 qt_standard_project_setup()
 
 set(AUDIOPROD_HEADERS
-    utils/utils.h
-    utils/commands.h
-    utils/errorHandler.h
-    utils/syncedQueue.h
-    headers/audioEngine.h
-    headers/mainWindow.h
-    headers/audioController.h
-    headers/audioPlayerWidget.h
+
 )
 
 set(AUDIOPROD_SOURCES
-    sources/utils.cpp
-    sources/errorHandler.cpp
-    sources/audioEngine.cpp
-    sources/mainWindow.cpp
-    sources/audioController.cpp
-    sources/audioPlayerWidget.cpp
-    sources/main.cpp
+
 )
 
 set(AUDIOPROD_UI_FILES
-    uiFiles/mainWindow.ui
-    uiFiles/audioPlayerWidget.ui
 )
 
 set(AUDIOPROD_RESOURCES
@@ -69,8 +52,6 @@ qt_add_executable(AudioProd
 
 target_link_libraries(AudioProd PUBLIC
     Qt6::Core
-    Qt6::Widgets
-    Qt6::Multimedia
     TagLib::TagLib
 )
 

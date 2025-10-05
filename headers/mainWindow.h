@@ -44,6 +44,8 @@ class MainWindow : public QMainWindow
     signals:
               
     public slots:
+        //DEBUG
+        void test(const AudioData::MetaDataMap_T &map);
     
     private slots:
         void onHomePageClicked();
@@ -51,6 +53,7 @@ class MainWindow : public QMainWindow
         void onOpenAudioFileClicked();
 
     private:
+
         // Member variables
         Ui::MainWindow *ui;
         AudioPlayerWidget *audioPlayer;

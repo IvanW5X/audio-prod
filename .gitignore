@@ -1,3 +1,6 @@
 # Generated Files
 build
+build-qt-creator
+.cache
+CMakeLists.txt.user
 .vscode

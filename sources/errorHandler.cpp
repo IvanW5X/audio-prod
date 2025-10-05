@@ -12,26 +12,32 @@
 // Map of all error IDs with a generic error message
 const QMap<Error::Id, QString> ErrorHandler::ErrorMessages = 
 {
+    // Add error messages in sequence with the Error ID enum
+    // Not necessary, but keeps it more organized
     { Error::InvalidAudioFile, "File not found, access denied, or invalid audio file." },
     { Error::DecodingFailed, "Audio decoding failed." },
     { Error::ReadingFileFailed, "File could not be read." },
+    { Error::DataNotFound, "Requested data could not be found." },
     { Error::UnknownRequest, "Unknown request." },
-    { Error::Unknown, "Unknown internal error." }    // Set errors in order relative to Error::Id enum
+    { Error::Unknown, "Unknown internal error." }
 };
 
-ErrorHandler::ErrorHandler(QObject *parent) : QObject(parent)
+// Constructor
+ErrorHandler::ErrorHandler(QObject *parent) :
+    QObject(parent)
 {
 
 }
 
+// Destructor
 ErrorHandler::~ErrorHandler()
 {
 
 }
 
+// Displays the error Id string, detail, and context from where/why the error occurred
 void ErrorHandler::handleError(const Error::Id ErrorId, const QString &Context)
 {
-    
     QString errorMessage;
 
     if (!ErrorMessages.contains(ErrorId))
@@ -42,6 +48,5 @@ void ErrorHandler::handleError(const Error::Id ErrorId, const QString &Context)
     {
         errorMessage = ErrorMessages[ErrorId];
     }
-    // TODO: add more robust error display
-    qDebug() << ErrorId << ": " << errorMessage << " " << Context;
+    qDebug() << ": " << errorMessage << " " << Context;
 }

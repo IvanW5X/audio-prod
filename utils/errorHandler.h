@@ -14,20 +14,24 @@
 
 #pragma once
 
+#include "utils.h"
 #include <QObject>
 #include <QMap>
 #include <QDebug>
 
 namespace Error
 {
+    Q_NAMESPACE
     enum Id : uint32_t
     {
         InvalidAudioFile = 1001u,
         ReadingFileFailed,
         DecodingFailed,
+        DataNotFound,
         UnknownRequest,
         Unknown = 9999u     // Must be the last error id
     };
+    Q_ENUM_NS(Error::Id)
 }
 
 class ErrorHandler : public QObject
@@ -46,8 +50,12 @@ class ErrorHandler : public QObject
         void handleError(const Error::Id ErrorId, const QString &Context);
 
     private:
+        // Prevent direct instantiation
         explicit ErrorHandler(QObject *parent = nullptr);
         ~ErrorHandler();
+
+        // Helper functions
+        QString errorIdToString(const Error::Id ErrorId);
 
         // Disable copy constructor and assignment operator overload
         ErrorHandler(const ErrorHandler &) = delete;

@@ -15,7 +15,7 @@
 
 #pragma once
 
-#include "syncedAudioQueue.h"
+#include "syncedQueue.h"
 #include "commands.h"
 #include "errorHandler.h"
 #include "utils.h"
@@ -23,6 +23,7 @@
 #include <QAudioDecoder>
 #include <QAudioBuffer>
 #include <QFileInfo>
+#include <QThread>
 
 class AudioEngine : public QObject
 {
@@ -30,30 +31,38 @@ class AudioEngine : public QObject
 
     public:
         // Constructor and destructer
-        explicit AudioEngine(SyncedAudioQueue *inBuffer, SyncedAudioQueue *outBuffer, QObject *parent = nullptr);
+        explicit AudioEngine(SyncedQueue<AudioCommand::PacketPtr> *requestBuffer, SyncedQueue<QAudioBuffer> *inBuffer, SyncedQueue<QAudioBuffer> *outBuffer, QObject *parent = nullptr);
         ~AudioEngine();
 
     signals:
+        void initFinished();
         void requestFinished(const AudioCommand::PacketPtr Response);
+        void finished();
 
     public slots:
         void init();
-        void processRequest(const AudioCommand::PacketPtr Request);
+        void bootEngine();
         
     private slots:
-        void shutdown();
 
     private:
         QAudioDecoder *decoder;
         QAudioFormat *format;
-        SyncedAudioQueue *audioInBuffer;
-        SyncedAudioQueue *audioOutBuffer;
+        SyncedQueue<AudioCommand::PacketPtr> *requestBuffer;
+        SyncedQueue<QAudioBuffer> *audioInBuffer;
+        SyncedQueue<QAudioBuffer> *audioOutBuffer;
 
-        // Helper functions
-        inline void sendResponse(AudioCommand::PacketPtr &packet, const QVariant &Payload);
-        AudioData::MetaDataMap_T getAudioMetaData(const QString &FileName);
+        // Main private functions
+        std::optional<QVariant> processRequest(const AudioCommand::PacketPtr Request);
+        void shutdownEngine();
+
+        // Process command functions
+        std::optional<AudioData::MetaDataMap_T> getAudioMetaData(const QString &FileName);
+
+        // Helpers
+        // QVariant unpackOptional();
         bool insertTagData(const AudioData::Keys Key, const TagLib::Tag *Tag, AudioData::MetaDataMap_T &destMap);
-        bool insertPropertyData(const AudioData::Keys Key, const TagLib::AudioProperties *Tag, AudioData::MetaDataMap_T &destMap);
+        bool insertPropertyData(const AudioData::Keys Key, const TagLib::AudioProperties *Properties, AudioData::MetaDataMap_T &destMap);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

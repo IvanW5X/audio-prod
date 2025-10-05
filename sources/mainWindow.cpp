@@ -40,6 +40,15 @@ void MainWindow::init()
     (void) connect(ui->actionHome_Page, &QAction::triggered, this, &MainWindow::onHomePageClicked);
     (void) connect(ui->actionDocumentation, &QAction::triggered, this, &MainWindow::onDocumentationClicked);
     (void) connect(ui->actionOpen_Audio_File, &QAction::triggered, this, &MainWindow::onOpenAudioFileClicked);
+
+    // DEBUG
+    (void) connect(&AudioController::instance(), &AudioController::audioMetaDataReady, this, &MainWindow::test);
+}
+
+// DEBUG
+void MainWindow::test(const AudioData::MetaDataMap_T &map)
+{
+    qDebug() << map[AudioData::Title].toString();
 }
 
 // Directs the user to the home page using the menu bar
@@ -65,6 +74,8 @@ void MainWindow::onOpenAudioFileClicked()
 
     if (Utils::isValidAudioFile(FileName))
     {
+        // DEBUG
+        // AudioController::instance().requestAudioMetaData("C:/Users/ivanw/OneDrive/Documents/Music/Billie Jean 4.mp3");
         changePage(Pages_T::AudioPlayer);
     }
     else

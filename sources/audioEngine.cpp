@@ -9,11 +9,17 @@
 
 #include "audioEngine.h"
 
+namespace Internal
+{
+    
+}
+
 // Constructor
-AudioEngine::AudioEngine(SyncedAudioQueue *inBuffer, SyncedAudioQueue *outBuffer, QObject *parent) :
+AudioEngine::AudioEngine(SyncedQueue<AudioCommand::PacketPtr> *requestBuffer, SyncedQueue<QAudioBuffer> *inBuffer, SyncedQueue<QAudioBuffer> *outBuffer, QObject *parent) :
     QObject(parent),
     decoder(nullptr),
     format(nullptr),
+    requestBuffer(requestBuffer),
     audioInBuffer(inBuffer),
     audioOutBuffer(outBuffer)
 {
@@ -34,39 +40,60 @@ void AudioEngine::init()
     format = new QAudioFormat();
 }
 
+// Start the processing loop
+void AudioEngine::bootEngine()
+{
+    while (true)
+    {
+        auto request = requestBuffer->waitAndTake();
+
+        if (request->commandType == AudioCommand::RequestShutdown)
+        {
+            break;
+        }
+        auto response = std::move(processRequest(request));
+
+        if (response.has_value())
+        {
+            request->data = std::move(response.value());
+            emit requestFinished(request);
+        }
+    }
+    shutdownEngine();
+    emit finished();
+}
+
 // Directs request to the desired function
-void AudioEngine::processRequest(AudioCommand::PacketPtr request)
+std::optional<QVariant> AudioEngine::processRequest(AudioCommand::PacketPtr request)
 {
     using namespace AudioCommand;
 
     const Command_T Command = request->commandType;
     const QVariant RequestData = request->data;
-    QVariant responseData;
 
     switch (Command)
     {
         case GetMetaData:
         {
-            responseData = QVariant::fromValue(getAudioMetaData(RequestData.toString()));
+            auto metaData_opt = getAudioMetaData(RequestData.value<QString>());
 
+            if (metaData_opt.has_value())
+            {
+                return QVariant::fromValue(metaData_opt.value());
+            }
             break;
         }
+        case RequestShutdown:
+            return QVariant();
         default:
-        {
-            // Wrap response QVariant to since Qt will read as uint32_t if not
-            responseData = QVariant::fromValue(Error::UnknownRequest);
-            break;
-        }
+            // Wrap response QVariant to since Qt will read as uint32_t if we don't
+            return QVariant::fromValue(Error::UnknownRequest);
     }
-    if (responseData.isValid())
-    {
-        qDebug() << responseData;
-        sendResponse(request, responseData);
-    }
+    return std::nullopt;
 }
 
 // Stops processing audio data
-void AudioEngine::shutdown()
+void AudioEngine::shutdownEngine()
 {
     if (decoder->isDecoding())
     {
@@ -74,18 +101,14 @@ void AudioEngine::shutdown()
     }
 }
 
-// Modifies the payload in the packet and sends signal indicating that processing is done
-inline void AudioEngine::sendResponse(AudioCommand::PacketPtr &packet, const QVariant &Payload)
-{
-    packet->data = Payload;
-    emit requestFinished(packet);
-}
-
 // Gets the audio meta data
-AudioData::MetaDataMap_T AudioEngine::getAudioMetaData(const QString &FileName)
+std::optional<AudioData::MetaDataMap_T> AudioEngine::getAudioMetaData(const QString &FileName)
 {
-    AudioData::MetaDataMap_T metaData;
+    const bool ReadAudio = true;
+    const TagLib::AudioProperties::ReadStyle Style = TagLib::AudioProperties::Accurate;
     const char *FileName_cstr = FileName.toLocal8Bit().constData();
+
+    AudioData::MetaDataMap_T metaData;
     TagLib::FileRef ref = TagLib::FileRef(FileName_cstr);
     const TagLib::Tag *Tag = ref.tag();
 
@@ -96,19 +119,37 @@ AudioData::MetaDataMap_T AudioEngine::getAudioMetaData(const QString &FileName)
             Error::ReadingFileFailed,
             QString("Failed to get meta data from file at path: %1").arg(FileName)
         );
+        return std::nullopt;
     }
-    else
+    const QFileInfo Info = QFileInfo(FileName);
+    const TagLib::AudioProperties *Properties = ref.audioProperties();
+    QList<AudioData::Keys> dataNotFound;
+
+    metaData.insert(AudioData::FileName, QVariant::fromValue(Info.fileName()));
+    qDebug() << metaData[AudioData::FileName].toString();
+
+    // Add one to index since we already added the file name. View utils.h for enum order
+    for (int i = AudioData::STRING_VALUE_BEGIN + 1; i < AudioData::STRING_VALUE_END; i++)
     {
-        const QFileInfo Info = QFileInfo(FileName);
-        QList<AudioData::Keys> dataNotFound;
+        const AudioData::Keys CurrentKey = static_cast<AudioData::Keys>(i);
 
-        metaData.insert(AudioData::FileName, QVariant::fromValue(Info.fileName()));
+        qDebug() << CurrentKey;
 
-        if (!insertTagData(AudioData::Title, Tag, metaData))
+        if (!insertTagData(CurrentKey, Tag, metaData))
         {
-            dataNotFound.append(AudioData::Title);
+            dataNotFound.append(CurrentKey);
         }
+    }
+    for (int i = AudioData::INT_VALUE_BEGIN; i < AudioData::INT_VALUE_END; i++)
+    {
+        const AudioData::Keys CurrentKey = static_cast<AudioData::Keys>(i);
 
+        qDebug() << CurrentKey;
+
+        if (!insertPropertyData(CurrentKey, Properties, metaData))
+        {
+            dataNotFound.append(CurrentKey);
+        }
     }
     return metaData;
 }
@@ -120,11 +161,6 @@ bool AudioEngine::insertTagData(const AudioData::Keys Key, const TagLib::Tag *Ta
 
     if (!Tag)
     {
-        ErrorHandler::instance().handleError
-        (
-            Error::ReadingFileFailed,
-            QString("Failed to get tag data.")
-        );
         return !success;
     }
     TagLib::String buffer;
@@ -132,38 +168,44 @@ bool AudioEngine::insertTagData(const AudioData::Keys Key, const TagLib::Tag *Ta
 
     switch (Key)
     {
+        case AudioData::ReleaseYear:
+            data = static_cast<int32_t>(Tag->year());
+            break;
+        case AudioData::TrackNumber:
+            data = static_cast<int32_t>(Tag->track());
+            break;
         case AudioData::Title:
-        {
             buffer = Tag->title(); 
             break;
-        }
-        case AudioData::Album:{
+        case AudioData::Album:
             buffer = Tag->album();
             break;
-        }
         case AudioData::Artist:
-        { 
             buffer = Tag->artist();
             break;
-        }
         case AudioData::Genre:
-        {
             buffer = Tag->genre();
             break;
-        }
         default:
-        {
             break;
-        }
     }
-    if (buffer.isEmpty())
+    // Meta data using strings
+    if (data.isNull())
     {
-        data = QVariant::fromValue(QString("NA"));
-        success = false;
+        if (buffer.isEmpty())
+        {
+            data = QVariant::fromValue(QString("NA"));
+            success = false;
+        }
+        else
+        {
+            data = QVariant::fromValue(QString::fromStdWString(buffer.toCWString()));
+        }
     }
     else
     {
-        data = QVariant::fromValue(QString::fromStdWString(buffer.toCWString()));
+        // When no tags found for int types, TagLib returns 0 
+        success = (QVariant::fromValue(data).toInt() != 0);
     }
     destMap.insert(Key, data);
 
@@ -171,8 +213,41 @@ bool AudioEngine::insertTagData(const AudioData::Keys Key, const TagLib::Tag *Ta
 }
 
 // Adds the audio property associated with the key to the map, errors if the property is missing
-bool AudioEngine::insertPropertyData(const AudioData::Keys Key, const TagLib::AudioProperties *Tag, AudioData::MetaDataMap_T &destMap)
+bool AudioEngine::insertPropertyData(const AudioData::Keys Key, const TagLib::AudioProperties *Properties, AudioData::MetaDataMap_T &destMap)
 {
-    // TODO: add functionality
-    return true;
+    // Use this to denote an error
+    const int32_t PropertyDataError = -1;
+    bool success = true;
+
+    if (!Properties)
+    {
+        return !success;
+    }
+    QVariant data;
+
+    switch (Key)
+    {
+        case AudioData::Duration_ms:
+            data = Properties->lengthInMilliseconds();
+            break;
+        case AudioData::BitRate_kbs:
+            data = Properties->bitrate();
+            break;
+        case AudioData::SampleRate_hz:
+            data = Properties->sampleRate();
+            break;
+        case AudioData::NumChannels:
+            data = Properties->channels();
+            break;
+        default:
+            data = PropertyDataError;
+            break;
+    }
+    if (data == PropertyDataError)
+    {
+        success = false;
+    }
+    destMap.insert(Key, data);
+
+    return success;
 }

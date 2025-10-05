@@ -12,12 +12,14 @@
 #pragma once
 
 #include "audioEngine.h"
-#include "syncedAudioQueue.h"
+#include "syncedQueue.h"
 #include "commands.h"
 #include "utils.h"
 #include <QObject>
 #include <QThread>
 #include <QAudioSink>
+#include <QAudioOutput>
+#include <QMediaDevices>
 #include <QApplication>
 
 class AudioController : public QObject
@@ -36,25 +38,24 @@ class AudioController : public QObject
 
         // Interface functions
         void requestAudioMetaData(const QString &FileName);
-        // void requestloadAudioFile(const QString &FileName);
-        // void requestdecodeAudioFile(const QString &FileName);
 
     signals:
-        // NOTE: No other component should use this signal, as it directly communicates to the engine
-        void sendRequest(AudioCommand::PacketPtr payload);
-
+        void startEngine();
+        
         // Ready/done processing signals
-        void audioMetaDataReady();
-        void decodeAudioBufferReady();
+        void audioMetaDataReady(const AudioData::MetaDataMap_T &audioMetaData);
+        // void decodingDone();
 
     private slots:
         void responseReceived(AudioCommand::PacketPtr package);
         // on response received, use the commandId to switch to emit ready signals
             // connect these ready signals to the UI components to update them
 
-        void shutdown();
+        void shutdownController();
 
     private:
+        const uint32_t MaxThreadTimeout_ms = 5000u;
+
         // Prevent direct instantiation
         explicit AudioController(QObject *parent = nullptr);
         ~AudioController();
@@ -62,14 +63,18 @@ class AudioController : public QObject
         // Member variables
         AudioEngine *audioEngine;
         QThread *engineThread;
+        SyncedQueue<AudioCommand::PacketPtr> *requestBuffer;
+
         QAudioSink *audioSink;
-        SyncedAudioQueue *audioInBuffer;
-        SyncedAudioQueue *audioOutBuffer;
+        QAudioDevice *audioDevice;
+        QAudioOutput *audioOutput;
+        SyncedQueue<QAudioBuffer> *audioInBuffer;
+        SyncedQueue<QAudioBuffer> *audioOutBuffer;
         uint32_t requestId;
 
         // Helper functions
         inline void incrementId();
-        AudioCommand::PacketPtr createPacket(const AudioCommand::Command_T Command, const QVariant &Payload);
+        AudioCommand::PacketPtr createPacket(const AudioCommand::Command_T Command, const QVariant &Payload = QVariant());
 
         // Disable copy constructor and assignment operator overload
         AudioController(const AudioController &) = delete;

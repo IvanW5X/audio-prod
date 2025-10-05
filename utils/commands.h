@@ -16,6 +16,7 @@
 
 namespace AudioCommand
 {
+    Q_NAMESPACE
     enum Command_T
     {
         GetMetaData = 0,
@@ -24,7 +25,10 @@ namespace AudioCommand
         PlayAudioFile,
         SeekFilePosition,
         PauseAudioFile,
+        RequestShutdown
     };
+    Q_ENUM_NS(Command_T)
+
     struct Packet
     {
         uint32_t id;

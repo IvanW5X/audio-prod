@@ -34,7 +34,7 @@ set(AUDIOPROD_HEADERS
     utils/utils.h
     utils/commands.h
     utils/errorHandler.h
-    headers/syncedAudioQueue.h
+    utils/syncedQueue.h
     headers/audioEngine.h
     headers/mainWindow.h
     headers/audioController.h
@@ -44,7 +44,6 @@ set(AUDIOPROD_HEADERS
 set(AUDIOPROD_SOURCES
     sources/utils.cpp
     sources/errorHandler.cpp
-    sources/syncedAudioQueue.cpp
     sources/audioEngine.cpp
     sources/mainWindow.cpp
     sources/audioController.cpp

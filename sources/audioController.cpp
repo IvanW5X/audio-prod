@@ -18,38 +18,52 @@ AudioController::AudioController(QObject *parent) :
     audioSink(nullptr),
     audioInBuffer(nullptr),
     audioOutBuffer(nullptr),
-    requestId(0)
+    requestId(0u)
 {
 
 }
 
+// Free memory and exit thread
 AudioController::~AudioController()
 {
-    delete audioEngine;
+    engineThread->quit();
+
+    if (!engineThread->wait(MaxThreadTimeout_ms))
+    {
+        engineThread->terminate();
+    }
+    delete requestBuffer;
     delete audioInBuffer;
     delete audioOutBuffer;
+    delete audioSink;
 }
 
 // Creates the worker thread and connects signals
 void AudioController::init()
 {
-    // Pass in shared thread safe buffer for the engine
-    audioInBuffer = new SyncedAudioQueue();
-    audioOutBuffer = new SyncedAudioQueue();
+    audioSink = new QAudioSink(QAudioFormat(), this);
+    requestBuffer = new SyncedQueue<AudioCommand::PacketPtr>();
+    audioInBuffer = new SyncedQueue<QAudioBuffer>();
+    audioOutBuffer = new SyncedQueue<QAudioBuffer>();
 
-    audioEngine = new AudioEngine(audioInBuffer, audioOutBuffer);
+    // Pass in shared thread safe buffers for the engine
+    audioEngine = new AudioEngine(requestBuffer, audioInBuffer, audioOutBuffer);
     engineThread = new QThread(this);
-
+    
+    // Thread management
     audioEngine->moveToThread(engineThread);
-
-    (void) connect(QApplication::instance(), &QApplication::aboutToQuit, this, &AudioController::shutdown);
     (void) connect(engineThread, &QThread::started, audioEngine, &AudioEngine::init);
-    (void) connect(this, &AudioController::sendRequest, audioEngine, &AudioEngine::processRequest);
+    (void) connect(QApplication::instance(), &QApplication::aboutToQuit, this, &AudioController::shutdownController);
+    (void) connect(audioEngine, &AudioEngine::finished, audioEngine, &QObject::deleteLater);
+    (void) connect(engineThread, &QThread::finished, engineThread, &QObject::deleteLater);
+
+    // Engine processing connections
+    (void) connect(this, &AudioController::startEngine, audioEngine, &AudioEngine::bootEngine);
     (void) connect(audioEngine, &AudioEngine::requestFinished, this, &AudioController::responseReceived);
 
     engineThread->start(QThread::HighestPriority);
 
-    // requestAudioMetaData("C:/Users/ivanw/OneDrive/Documents/Music/Billie Jean 4.mp3");
+    emit startEngine();
 }
 
 // Sends request to engine for the AudioMetaData
@@ -57,29 +71,32 @@ void AudioController::init()
 void AudioController::requestAudioMetaData(const QString &FileName)
 {
     AudioCommand::PacketPtr request = createPacket(AudioCommand::GetMetaData, FileName);
-    emit sendRequest(request);
+    requestBuffer->enqueue(request);
 }
 
 // Directs the response from the engine to the ready signal
-void AudioController::responseReceived(AudioCommand::PacketPtr packet)
+void AudioController::responseReceived(AudioCommand::PacketPtr response)
 {
-    // switch case here for each command
-    // emit the done signal for each command with the same packet to utilize memory efficiently
+    using namespace AudioCommand;
+
+    const Command_T Command = response->commandType;
+    const QVariant ResponseData = response->data;
+    
+    switch (Command)
+    {
+        case GetMetaData:
+            emit audioMetaDataReady(ResponseData.value<AudioData::MetaDataMap_T>());
+            break;
+        default:
+            break;
+    }
 }
 
-// Shut down thread and processing in this class
-void AudioController::shutdown()
+// Sends request to exit engine loop
+void AudioController::shutdownController()
 {
-    if (engineThread->isRunning())
-    {
-        QMetaObject::invokeMethod(audioEngine, "shutdown", Qt::BlockingQueuedConnection);
-        engineThread->quit();
-        engineThread->wait();
-    }
-    if (audioSink->state() == QAudio::ActiveState)
-    {
-        audioSink->stop();
-    }
+    AudioCommand::PacketPtr shutdownRequest = createPacket(AudioCommand::RequestShutdown);
+    requestBuffer->enqueue(shutdownRequest);
 }
 
 // Updates the request Id

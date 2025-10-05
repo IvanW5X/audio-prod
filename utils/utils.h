@@ -13,6 +13,7 @@
 #include "errorHandler.h"
 #include <QString>
 #include <QFileInfo>
+#include <QVariant>
 #include <taglib/fileref.h>
 
 namespace Utils
@@ -23,7 +24,7 @@ namespace Utils
     // Returns QEnum name for registered Qt enums
     template<typename QEnum> QString qEnumToString(const QEnum Value)
     {
-        return QString( QMetaType::fromType<QEnum>(Value).toValueKey(Value) );
+        return QVariant::fromValue(Value).toString();
     }
 }
 
@@ -32,19 +33,24 @@ namespace AudioData
     Q_NAMESPACE
     enum Keys
     {
-        Title = 0,
+        STRING_VALUE_BEGIN = 0,
+        FileName = STRING_VALUE_BEGIN,
+        Title,
         Album,
         Artist,
-        Duration,
         Genre,
-        ReleaseYear,
+        STRING_VALUE_END,
+
+        INT_VALUE_BEGIN = STRING_VALUE_END,
+        ReleaseYear = INT_VALUE_BEGIN,
         TrackNumber,
         Duration_ms,
         BitRate_kbs,
         SampleRate_hz,
         NumChannels,
-        FileName,
-        NumKeys
+        INT_VALUE_END,
+
+        NumKeys = INT_VALUE_END
     };
     Q_ENUM_NS(Keys)
 

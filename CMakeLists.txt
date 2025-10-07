@@ -10,23 +10,28 @@ set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_FLAGS "-O3" CACHE STRING "Compiler flags")
 
 set(CMAKE_AUTORCC ON CACHE BOOL "")
-set(CMAKE_AUTOUIC_SEARCH_PATHS ${CMAKE_SOURCE_DIR}/uiFiles CACHE FILEPATH "UI files directory")
 
 if(DEFINED ENV{CMAKE_TAGLIB_PATH})
-    set(CMAKE_PREFIX_PATH "$ENV{CMAKE_TAGLIB_PATH}")
+    list(APPEND CMAKE_PREFIX_PATH
+        "$ENV{CMAKE_TAGLIB_PATH}"
+        "$ENV{LIBSNDFILE_DIR}"
+    )
     message(STATUS "TagLib library path found at $ENV{CMAKE_TAGLIB_PATH}")
+    message(STATUS "libsndfile library path found at $ENV{LIBSNDFILE_DIR}")
 else()
     message(STATUS "TagLib library not found, set the environment variable (CMAKE_TAGLIB_PATH)")
+    message(STATUS "libsndfile library not found, set the environment variable (CMAKE_LIBSNDFILE_DIR)")
 endif()
 
 # Qt Setup
 find_package(Qt6 REQUIRED COMPONENTS 
-    Core 
+    Quick
 )
 
 find_package(TagLib 2.1.1 REQUIRED)
+find_package(SndFile REQUIRED)
 
-qt_standard_project_setup()
+qt_standard_project_setup(REQUIRES 6.8)
 
 set(AUDIOPROD_HEADERS
 
@@ -46,13 +51,15 @@ set(AUDIOPROD_RESOURCES
 qt_add_executable(AudioProd
     ${AUDIOPROD_HEADERS}
     ${AUDIOPROD_SOURCES}
-    ${AUDIOPROD_UI_FILES}
-    ${AUDIOPROD_RESOURCES}    
+    ${AUDIOPROD_RESOURCES}
 )
 
+
+
 target_link_libraries(AudioProd PUBLIC
-    Qt6::Core
+    Qt6::Quick
     TagLib::TagLib
+    SndFile::sndfile
 )
 
 target_include_directories(AudioProd PRIVATE

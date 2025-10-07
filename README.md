@@ -7,7 +7,7 @@
 - All-in-one audio player, mixer, and synthesizer
 - Multi-track audio editing
 - Real-time effects and processing
-- Import/export support for popular audio formats (WAV, MP3, FLAC)
+- Import/export support for popular audio formats
 - Non-destructive editing workflow
 - Customizable interface
 
@@ -22,13 +22,7 @@
 
 ### Build Instructions
 
-```bash
-git clone https://github.com/IvanW5X/audio-prod.git
-cd audio-prod
-mkdir build && cd build
-cmake ..
-cmake --build .
-```
+TBD
 
 ## Usage
 

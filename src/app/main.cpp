@@ -12,14 +12,12 @@
 #include <iostream>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <taglib/fileref.h>
-// #include <sndfile.h>
 
 int main(int argc, char *argv[])
 {
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine qmlEngine;
-    int32_t returnVal;
+    int32_t returnVal = 0;
 
     QObject::connect(&qmlEngine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
     QObject::connect(&qmlEngine, &QQmlApplicationEngine::objectCreationFailed, &app, []

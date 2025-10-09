@@ -12,6 +12,9 @@ set(CMAKE_CXX_FLAGS "-O3" CACHE STRING "Compiler flags")
 set(CMAKE_AUTORCC ON CACHE BOOL "")
 set(CMAKE_AUTOMOC ON CACHE BOOL "")
 
+# Testing is off by default
+option(ENABLE_TESTING "Enable building test executables" OFF)
+
 message(STATUS "Loading project: ${CMAKE_PROJECT_NAME} for C++20")
 
 if (DEFINED ENV{CMAKE_TAGLIB_PATH})
@@ -54,8 +57,6 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 add_subdirectory(src)
 
-# TODO: move this somewhere else later
-set(ENABLE_TESTING true)
 if (ENABLE_TESTING)
     enable_testing()
     message(STATUS "Testing enabled")

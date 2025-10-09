@@ -2,7 +2,7 @@
 
 if (NOT DEFINED ENV{CMAKE_GOOGLETEST_PATH})
     list(APPEND CMAKE_PREFIX_PATH
-        "C:/libs/googletest"
+        $ENV{CMAKE_GOOGLETEST_PATH}
     )
     message(STATUS "GoogleTest library path found at $ENV{CMAKE_GOOGLETEST_PATH}")
 else()

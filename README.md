@@ -17,12 +17,14 @@
 
 - Qt 6.9
 - CMake 3.25+
-- C++17 compatible compiler
+- C++20 compatible compiler
 - Git/GitHub
 
 ### Build Instructions
 
+```bash
 TBD
+```
 
 ## Usage
 

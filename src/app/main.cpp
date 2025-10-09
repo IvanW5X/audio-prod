@@ -9,26 +9,38 @@
  * 
  ************************************************************/
 
-#include <iostream>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
+#define TEST
+
 int main(int argc, char *argv[])
 {
+    #ifndef TEST
+
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine qmlEngine;
-    int32_t returnVal = 0;
+
+    QGuiApplication::setOrganizationName("My super cool known organization");
+    QGuiApplication::setApplicationName("Audio Prod");
 
     QObject::connect(&qmlEngine, &QQmlApplicationEngine::quit, &app, &QGuiApplication::quit);
     QObject::connect(&qmlEngine, &QQmlApplicationEngine::objectCreationFailed, &app, []
-    { 
+    {
         qCritical() << "Error: Failed to load";
-        QCoreApplication::exit(-1); 
+        QCoreApplication::exit(EXIT_FAILURE); 
     },
     Qt::QueuedConnection);
 
     qmlEngine.loadFromModule("AudioProd.Main", "Main");
-    returnVal = app.exec();
 
-    return returnVal;
+    if (qmlEngine.rootObjects().isEmpty())
+        return EXIT_FAILURE;
+
+    return app.exec();
+    
+    #else
+    
+
+    #endif
 }

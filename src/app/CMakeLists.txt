@@ -1,30 +1,35 @@
 # Defines the application and links submodules and libraries to it
 
-list(APPEND THIRD_PARTY
-    TagLib::TagLib
-    SndFile::sndfile
+# list(APPEND THIRD_PARTY
+#     TagLib::TagLib
+#     SndFile::sndfile
+#     RtAudio::rtaudio
+# )
+
+list(APPEND QML_MODULE_FILES
+    ui/Main.qml
 )
 
-list(APPEND RESOURCE_SOURCES
-    # Empty for now
+list(APPEND RESOURCE_MODULE_SOURCES
+    #empty for now
 )
 
-qt_add_executable(${CMAKE_PROJECT_NAME}
+qt_add_executable(audioprod
     main.cpp
 )
 
-qt_add_qml_module(${CMAKE_PROJECT_NAME}
+qt_add_qml_module(audioprod
     URI AudioProd.Main
     VERSION 1.0
     QML_FILES
-        Main.qml
+        ${QML_MODULE_FILES}
     RESOURCES
-        ${RESOURCE_SOURCES}
+        ${RESOURCE_MODULE_SOURCES}
 )
 
-target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+target_link_libraries(audioprod PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Quick
-    ${THIRD_PARTY}
+    # ${THIRD_PARTY}
 )

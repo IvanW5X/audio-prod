@@ -32,8 +32,18 @@ else ()
     message(STATUS "libsndfile library path not found, set the env variable (CMAKE_LIBSNDFILE_PATH)")
 endif ()
 
+if (DEFINED ENV{CMAKE_RTAUDIO_PATH})
+    list(APPEND CMAKE_PREFIX_PATH
+        "$ENV{CMAKE_RTAUDIO_PATH}"
+    )
+    message(STATUS "RtAudio library path found at $ENV{CMAKE_RTAUDIO_PATH}")
+else()
+    message(STATUS "RtAudio library path not found, set the env variable (CMAKE_RTAUDIO_PATH)")
+endif()
+
 find_package(TagLib 2.1.1 REQUIRED)
 find_package(SndFile 1.2.2 REQUIRED)
+find_package(RtAudio REQUIRED)
 find_package(Qt6 6.8 REQUIRED COMPONENTS 
     Core
     Gui
@@ -44,7 +54,7 @@ qt_standard_project_setup(REQUIRES 6.8)
 
 add_subdirectory(src)
 
-set_target_properties(${CMAKE_PROJECT_NAME} PROPERTIES
+set_target_properties(audioprod PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE

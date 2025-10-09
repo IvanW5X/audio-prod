@@ -31,5 +31,4 @@ target_link_libraries(audioprod PRIVATE
     Qt6::Core
     Qt6::Gui
     Qt6::Quick
-    # ${THIRD_PARTY}
 )

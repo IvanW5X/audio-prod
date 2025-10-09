@@ -1,5 +1,5 @@
 /************************************************************
- * File: syncedQueue.h
+ * File: common.h
  * 
  * Description: 
  * 
@@ -8,3 +8,7 @@
  * Author: Ivan Wong
  * 
  ************************************************************/
+
+#pragma once
+
+#define TaskQueueCapacity 512u

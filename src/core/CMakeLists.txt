@@ -1,3 +1,3 @@
 # Defines the core application library for processing logic
 
-add_subdirectory(AudioProdEngine)
+add_subdirectory(engine)

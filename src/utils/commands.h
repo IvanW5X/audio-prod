@@ -9,6 +9,8 @@
  * 
  ************************************************************/
 
+#pragma once
+
 namespace AudioCmd
 {
     enum Command_T
@@ -18,9 +20,11 @@ namespace AudioCmd
         PlayAudioFile,
         RequestShutdown
     };
-    template<typename T> struct Task_T
+    
+    template<typename T> 
+    struct Task_T
     {
         Command_T command;
-        T data
+        T data;
     };
 }

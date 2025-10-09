@@ -19,9 +19,9 @@ if (DEFINED ENV{CMAKE_TAGLIB_PATH})
         "$ENV{CMAKE_TAGLIB_PATH}"
     )
     message(STATUS "TagLib library path found at $ENV{CMAKE_TAGLIB_PATH}")
-else ()
+else()
     message(STATUS "TagLib library path not found, set the env variable (CMAKE_TAGLIB_PATH)")
-endif ()
+endif()
 
 if (DEFINED ENV{CMAKE_LIBSNDFILE_PATH})
     list(APPEND CMAKE_PREFIX_PATH
@@ -53,6 +53,14 @@ find_package(Qt6 6.8 REQUIRED COMPONENTS
 qt_standard_project_setup(REQUIRES 6.8)
 
 add_subdirectory(src)
+
+# TODO: move this somewhere else later
+set(ENABLE_TESTING true)
+if (ENABLE_TESTING)
+    enable_testing()
+    message(STATUS "Testing enabled")
+    add_subdirectory(tests)
+endif()
 
 set_target_properties(audioprod PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}

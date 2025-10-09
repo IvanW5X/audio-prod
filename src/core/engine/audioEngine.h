@@ -11,10 +11,33 @@
  * 
  ************************************************************/
 
+#pragma once
+
+#include "common.h"
+#include "commands.h"
+#include "syncedQueue.h"
+
+using TaskQueue_T = SyncedQueue<AudioCmd::Command_T, TaskQueueCapacity>;
+
 class AudioEngine
 {
     public:
+        //--------------------------------------------------
+        // Constructor
+        AudioEngine();
+
+        //--------------------------------------------------
+        // Destructer
+        ~AudioEngine();
+
+        //--------------------------------------------------
+        // Initialize funxtion
+        void init(TaskQueue_T *tasksQueue);
 
     private:
+        TaskQueue_T *tasksQueue;
 
+        // Disable copy constructor and assignment operator overload
+        AudioEngine(const AudioEngine &) = delete;
+        AudioEngine &operator=(const AudioEngine &) = delete;
 };

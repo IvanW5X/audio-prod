@@ -11,3 +11,21 @@
 
 #include "audioEngine.h"
 
+// Constructor
+AudioEngine::AudioEngine() :
+    tasksQueue(nullptr)
+{
+
+}
+
+// Destructer
+AudioEngine::~AudioEngine()
+{
+    
+}
+
+// Initializes the engine
+void AudioEngine::init(TaskQueue_T *tasksQueue)
+{
+    this->tasksQueue = tasksQueue;
+}

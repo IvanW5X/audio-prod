@@ -40,7 +40,10 @@ int main(int argc, char *argv[])
     return app.exec();
     
     #else
+
     
+
+    return 0;
 
     #endif
 }

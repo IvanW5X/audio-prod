@@ -9,8 +9,6 @@
  * 
  ************************************************************/
 
-#include <variant>
-
 namespace AudioCmd
 {
     enum Command_T
@@ -23,6 +21,6 @@ namespace AudioCmd
     template<typename T> struct Task_T
     {
         Command_T command;
-        std::variant<T> data
+        T data
     };
 }

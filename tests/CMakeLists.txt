@@ -21,7 +21,9 @@ find_package(GTest REQUIRED)
 
 # Unit tests
 add_executable(unitTests
-    unit/initEngineTests.cpp
+    unit/runTests.cpp
+    unit/initTest.cpp
+    unit/audioFilesTest.cpp
 )
 
 target_link_libraries(unitTests PRIVATE

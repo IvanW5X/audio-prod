@@ -29,4 +29,5 @@ qt_add_qml_module(audioprod
 
 target_link_libraries(audioprod PUBLIC
     ${THIRD_PARTY}
+    core
 )

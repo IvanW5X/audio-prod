@@ -11,4 +11,4 @@
 
 #pragma once
 
-#define TaskQueueCapacity 512u
+#define TaskQueueCapacity 64u

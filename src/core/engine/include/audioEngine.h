@@ -13,9 +13,11 @@
 
 #pragma once
 
-#include "common.h"
-#include "commands.h"
-#include "syncedQueue.h"
+#include "RtAudio.h"
+#include <cmath>
+#include <common.h>
+#include <commands.h>
+#include <syncedQueue.h>
 
 using TaskQueue_T = SyncedQueue<AudioCmd::Command_T, TaskQueueCapacity>;
 
@@ -33,6 +35,14 @@ class AudioEngine
         //--------------------------------------------------
         // Initialize funxtion
         void init(TaskQueue_T *tasksQueue);
+
+        //--------------------------------------------------
+        // TODO: debug
+        void playSinWave(void* outputBuffer, void* /*inputBuffer*/,
+                  unsigned int nBufferFrames,
+                  double streamTime,
+                  RtAudioStreamStatus status,
+                  void* userData);
 
     private:
         TaskQueue_T *tasksQueue;

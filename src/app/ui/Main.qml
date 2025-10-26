@@ -10,7 +10,7 @@
  ************************************************************/
 
 import QtQuick
-// import QtQuick.Controls
+import QtQuick.Controls
 import QtQuick.Layouts
 
 Window
@@ -21,21 +21,11 @@ Window
     visible: true
     title: qsTr("Audio Prod")
 
-    Item
+    Button
     {
-        id: quickListButtons
-        width: 400
-        height: 300
-
-        GridLayout
-        {
-            anchors.centerIn: parent
-            columns: 2
-            rowSpacing: 10
-            layoutDirection: Qt.LeftToRight
-            uniformCellHeights: true
-            uniformCellWidths: true
-        }
-
+        id: todo_test_button
+        width: 100
+        height: 50
+        anchors.centerIn: parent
     }
 }

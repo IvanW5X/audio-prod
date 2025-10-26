@@ -1,10 +1,10 @@
 # Defines the application and links submodules and libraries to it
 
-# list(APPEND THIRD_PARTY
-#     TagLib::TagLib
-#     SndFile::sndfile
-#     RtAudio::rtaudio
-# )
+list(APPEND THIRD_PARTY
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Quick
+)
 
 list(APPEND QML_MODULE_FILES
     ui/Main.qml
@@ -27,8 +27,6 @@ qt_add_qml_module(audioprod
         ${RESOURCE_MODULE_SOURCES}
 )
 
-target_link_libraries(audioprod PRIVATE
-    Qt6::Core
-    Qt6::Gui
-    Qt6::Quick
+target_link_libraries(audioprod PUBLIC
+    ${THIRD_PARTY}
 )

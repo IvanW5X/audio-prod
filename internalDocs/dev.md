@@ -4,7 +4,7 @@
 
 ### Build Command
 
-Before building, see dependencies section for installing outside packages
+NOTE: Before building, see dependencies section for installing outside packages
 
 ```bash
 git clone https://github.com/IvanW5X/audio-prod.git
@@ -28,8 +28,7 @@ To build and run test executables, run
 cmake -S . -B ./build -DENABLE_TESTING=ON
 
 # To run
-cd build
-ctest
+cd build; ctest; cd ..
 ```
 
 ### Handle Dependencies

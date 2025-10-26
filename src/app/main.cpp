@@ -12,12 +12,8 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 
-#define TEST
-
 int main(int argc, char *argv[])
 {
-    #ifndef TEST
-
     QGuiApplication app(argc, argv);
     QQmlApplicationEngine qmlEngine;
 
@@ -38,12 +34,4 @@ int main(int argc, char *argv[])
         return EXIT_FAILURE;
 
     return app.exec();
-    
-    #else
-
-    
-
-    return 0;
-
-    #endif
 }

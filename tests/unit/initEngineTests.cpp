@@ -11,11 +11,17 @@
 
 #include <iostream>
 #include <gtest/gtest.h>
+#include "audioController.h"
+
+TEST(AudioControllerTest, Initialization) {
+    AudioController::instance().init();
+
+    SUCCEED();
+}
 
 int main(int argc, char *argv[])
 {
     ::testing::InitGoogleTest(&argc, argv);
-    std::cout << "Hello Testing!" << std::endl;
 
     return RUN_ALL_TESTS();
 }

@@ -1,6 +1,14 @@
-# TODO: add header for tests
+# CMake file for testing
 
-if (NOT DEFINED ENV{CMAKE_GOOGLETEST_PATH})
+list(APPEND THIRD_PARTY
+    GTest::gtest_main
+)
+
+list(APPEND AUDIOPROD_LIBS
+    engine
+)
+
+if (DEFINED ENV{CMAKE_GOOGLETEST_PATH})
     list(APPEND CMAKE_PREFIX_PATH
         $ENV{CMAKE_GOOGLETEST_PATH}
     )
@@ -11,12 +19,15 @@ endif()
 
 find_package(GTest REQUIRED)
 
-add_executable(FirstTest
-    firstTest.cpp
+# Unit tests
+add_executable(unitTests
+    unit/initEngineTests.cpp
 )
 
-add_test(NAME example COMMAND FirstTest)
-
-target_link_libraries(FirstTest PRIVATE
-    GTest::GTest
+target_link_libraries(unitTests PRIVATE
+    ${AUDIOPROD_LIBS}
+    ${THIRD_PARTY}
 )
+
+include(GoogleTest)
+gtest_discover_tests(unitTests)

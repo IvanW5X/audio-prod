@@ -31,8 +31,8 @@ class AudioController
         }
 
         //--------------------------------------------------
-        // Initialize function
-        void init();
+        // Initialize function, returns true on success
+        bool init();
 
         //--------------------------------------------------
         

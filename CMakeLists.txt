@@ -47,7 +47,7 @@ endif()
 find_package(TagLib 2.1.1 REQUIRED)
 find_package(SndFile 1.2.2 REQUIRED)
 find_package(RtAudio REQUIRED)
-find_package(Qt6 6.8 REQUIRED COMPONENTS 
+find_package(Qt6 6.8 REQUIRED COMPONENTS
     Core
     Gui
     Quick

@@ -14,6 +14,7 @@
 #pragma once
 
 #include "RtAudio.h"
+#include <sndfile.h>
 #include <cmath>
 #include <common.h>
 #include <commands.h>
@@ -33,16 +34,12 @@ class AudioEngine
         ~AudioEngine();
 
         //--------------------------------------------------
-        // Initialize funxtion
-        void init(TaskQueue_T *tasksQueue);
+        // Initialize function, returns true on success
+        bool init(TaskQueue_T *tasksQueue);
 
         //--------------------------------------------------
-        // TODO: debug
-        void playSinWave(void* outputBuffer, void* /*inputBuffer*/,
-                  unsigned int nBufferFrames,
-                  double streamTime,
-                  RtAudioStreamStatus status,
-                  void* userData);
+        // Loads an audio file into memory, returns true on success
+        bool loadAudioFile(const std::string& filePath, AudioFileData_T &outAudioData);
 
     private:
         TaskQueue_T *tasksQueue;

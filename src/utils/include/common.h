@@ -11,4 +11,15 @@
 
 #pragma once
 
+#include <vector>
+#include <stdint.h>
+
 #define TaskQueueCapacity 64u
+
+// TODO: might change later
+struct AudioFileData_T
+{
+    std::vector<float_t> samples;
+    uint32_t channels;
+    size_t readIndex;
+};

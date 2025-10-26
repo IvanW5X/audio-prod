@@ -25,29 +25,60 @@ AudioEngine::~AudioEngine()
 }
 
 // Initializes the engine
-void AudioEngine::init(TaskQueue_T *tasksQueue)
+bool AudioEngine::init(TaskQueue_T *tasksQueue)
 {
+    bool success = true;
+
+    if (!tasksQueue)
+    {
+        // TODO: handle error in a different way
+        success = false;
+    }
     this->tasksQueue = tasksQueue;
+
+    return success;
 }
 
-// TODO: simple test for input output
-void AudioEngine::playSinWave(void* outputBuffer, void* /*inputBuffer*/,
-                  unsigned int nBufferFrames,
-                  double streamTime,
-                  RtAudioStreamStatus status,
-                  void* userData)
+// Loads an audio file into memory
+bool AudioEngine::loadAudioFile(const std::string &filePath,
+                                AudioFileData_T &outAudioData)
 {
-    double* buffer = static_cast<double*>(outputBuffer);
-    double* phase = static_cast<double*>(userData);
-    double frequency = 440.0; // A4
-    double sampleRate = 48000.0;
-
-    if (status) std::cout << "Stream underflow detected!" << std::endl;
-
-    for (unsigned int i = 0; i < nBufferFrames; ++i)
+    SF_INFO sfInfo;
+    SNDFILE *inFile = sf_open(filePath.c_str(), SFM_READ, &sfInfo);
+    
+    if (!inFile)
     {
-        buffer[i] = 0.2 * sin(2.0 * 3.1415926 * frequency * (*phase) / sampleRate);
-        (*phase) += 1.0;
-        if (*phase >= sampleRate) *phase -= sampleRate;
+        std::cerr << "Error: could not open audio file: "
+                  << filePath << "\n"
+                  << "Error message: " << sf_strerror(nullptr) << std::endl;
+
+        return false;
     }
+    // Read audio data
+    int64_t numFrames = sfInfo.frames;
+    outAudioData.channels = sfInfo.channels;
+    outAudioData.readIndex = 0;
+    outAudioData.samples.resize(numFrames * sfInfo.channels);
+    sf_count_t framesRead = sf_read_float(inFile, outAudioData.samples.data(), numFrames);
+
+    // TODO: handle error better later
+    if (framesRead != numFrames)
+    {
+        sf_close(inFile);
+
+        std::cerr << "Error: could not read all frames from audio file: "
+                  << filePath << "\n"
+                  << "Frames read: " << framesRead << "\nExpected frames: " << numFrames << std::endl;
+
+        return false;
+    }
+    sf_close(inFile);
+
+    // TODO: remove later
+    std::cout << "Loaded audio file: " << filePath << "\n"
+              << "Sample rate: " << sfInfo.samplerate << "\n"
+              << "Channels: " << sfInfo.channels << "\n"
+              << "Total frames: " << sfInfo.frames << std::endl;
+
+    return true;
 }

@@ -23,12 +23,22 @@ AudioController::~AudioController()
 
 }
 
-void AudioController::init()
+bool AudioController::init()
 {
-    audioEngine = std::make_unique<AudioEngine>();
+    bool success = true;
 
-    audioEngine->init(&taskQueue);
+    audioEngine = std::make_unique<AudioEngine>();
+    
+    if (!audioEngine)
+    {
+        success = false;
+    }
+    success &= audioEngine->init(&taskQueue);
+
 
     // TODO: this should be last thing to do
     // audioEngine->start();
+
+    // TODO: handle failure cases better
+    return success;
 }

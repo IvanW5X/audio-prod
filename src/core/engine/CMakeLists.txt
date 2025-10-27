@@ -27,4 +27,3 @@ target_include_directories(engine PUBLIC
 target_link_libraries(engine PUBLIC
     ${THIRD_PARTY}
 )
-

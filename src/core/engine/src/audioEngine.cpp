@@ -98,7 +98,6 @@ void AudioEngine::playAudioData(const AudioFileData_T &AudioData)
     RtAudio::StreamParameters outputParams;
     outputParams.deviceId = dac.getDefaultOutputDevice();
     outputParams.nChannels = AudioData.channels;
-    outputParams.firstChannel = 0u;
 
     uint32_t numBufferFrames = 512u;
     const bool IsErrorOccurred = RTAUDIO_SYSTEM_ERROR == dac.openStream(&outputParams, nullptr /* inputParams */,
@@ -111,12 +110,6 @@ void AudioEngine::playAudioData(const AudioFileData_T &AudioData)
         return;
     }
     dac.startStream();
-
-    char input;
-    std::cout << "Playing, press enter to stop" << std::endl;
-    std::cin.get(input);
-
-    dac.stopStream();
 }
 
 // RtAudio callback function
@@ -134,8 +127,6 @@ int32_t AudioEngine::audioCallback(void *outputBuffer, void * /*inputBuffer*/,
     float_t *out = static_cast<float_t *>(outputBuffer);
     const std::vector<float_t> *Samples = &audioData->samples;
     const int32_t NumChannels = audioData->channels;
-    
-    // TODO: assume 2 channels for now, change later when refactoring to support multiple channels
     size_t totalFrames = Samples->size() / NumChannels;
 
     // Fill the interleaved output buffer from the sample buffer, advancing readIndex.
@@ -154,6 +145,7 @@ int32_t AudioEngine::audioCallback(void *outputBuffer, void * /*inputBuffer*/,
             }
             else
             {
+                // TODO: add better handling later
                 // Silence
                 out[outIndex] = 0.0f;
                 std::cerr << "Warning: Run out of samples" << std::endl;

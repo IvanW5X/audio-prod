@@ -21,7 +21,7 @@ void AudioFileSource::render(float32_t *outputBuffer, uint32_t numFrames)
 {
     const uint32_t TotalSamples = data.samples.size() / data.channels;
 
-    for (uint32_t frame = 0; frame < TotalSamples; frame++)
+    for (uint32_t frame = 0; frame < numFrames; frame++)
     {
         for (uint32_t ch = 0; ch < data.channels; ch++)
         {
@@ -29,7 +29,7 @@ void AudioFileSource::render(float32_t *outputBuffer, uint32_t numFrames)
 
             if (sampleIndex < TotalSamples)
             {
-                outputBuffer[OutIndex] = data.samples.at(sampleIndex++);
+                outputBuffer[OutIndex] = data.samples[sampleIndex++];
             }
             else
             {

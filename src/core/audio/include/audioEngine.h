@@ -48,6 +48,7 @@ class AudioEngine
 
     private:
         TaskQueue_T *tasksQueue;
+        PlaybackContext currentContext;
 
         // TODO: move to device manager class later
         std::unique_ptr<RtAudio> dac;

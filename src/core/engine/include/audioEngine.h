@@ -39,10 +39,19 @@ class AudioEngine
 
         //--------------------------------------------------
         // Loads an audio file into memory, returns true on success
-        bool loadAudioFile(const std::string& filePath, AudioFileData_T &outAudioData);
+        bool loadAudioFile(const std::string& FilePath, AudioFileData_T &outAudioData);
+
+        //--------------------------------------------------
+        // Plays an audio file given a populated AudioFileData_T
+        void playAudioData(const AudioFileData_T &AudioData);
 
     private:
         TaskQueue_T *tasksQueue;
+
+        // 
+        static int32_t audioCallback(void *outputBuffer, void * /*inputBuffer*/,
+                                     uint32_t bufferFrames, double /*streamTime*/,
+                                     RtAudioStreamStatus status, void *userData);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

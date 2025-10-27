@@ -20,6 +20,7 @@
 struct AudioFileData_T
 {
     std::vector<float_t> samples;
+    int32_t sampleRate_hz;
     uint32_t channels;
     size_t readIndex;
 };

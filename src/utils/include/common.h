@@ -17,10 +17,9 @@
 #define TaskQueueCapacity 64u
 
 // TODO: might change later
-struct AudioFileData_T
+struct AudioData_T
 {
-    std::vector<float_t> samples;
-    int32_t sampleRate_hz;
+    std::vector<float> samples;
+    uint32_t sampleRate_hz;
     uint32_t channels;
-    size_t readIndex;
 };

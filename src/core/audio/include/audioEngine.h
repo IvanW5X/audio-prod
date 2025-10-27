@@ -16,6 +16,7 @@
 #include "RtAudio.h"
 #include <sndfile.h>
 #include <cmath>
+#include "audioFileSource.h"
 #include <common.h>
 #include <commands.h>
 #include <syncedQueue.h>
@@ -39,17 +40,17 @@ class AudioEngine
 
         //--------------------------------------------------
         // Loads an audio file into memory, returns true on success
-        bool loadAudioFile(const std::string& FilePath, AudioFileData_T &outAudioData);
+        bool loadAudioFile(const std::string& FilePath, AudioData_T &outAudioData);
 
         //--------------------------------------------------
-        // Plays an audio file given a populated AudioFileData_T
-        void playAudioData(const AudioFileData_T &AudioData);
+        // Plays an audio file source
+        void playAudioFile(AudioFileSource &audioData);
 
     private:
         TaskQueue_T *tasksQueue;
 
-        // 
-        static int32_t audioCallback(void *outputBuffer, void * /*inputBuffer*/,
+        // Call back function when audio output stream requested
+        static int32_t streamAudioCallback(void *outputBuffer, void * /*inputBuffer*/,
                                      uint32_t bufferFrames, double /*streamTime*/,
                                      RtAudioStreamStatus status, void *userData);
 

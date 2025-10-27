@@ -40,7 +40,7 @@ bool AudioEngine::init(TaskQueue_T *tasksQueue)
 }
 
 // Loads an audio file into memory
-bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioFileData_T &outAudioData)
+bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioData_T &outAudioData)
 {
     SF_INFO sfInfo;
     SNDFILE *inFile = sf_open(FilePath.c_str(), SFM_READ, &sfInfo);
@@ -57,23 +57,20 @@ bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioFileData_T &ou
     int64_t numFrames = sfInfo.frames;
     outAudioData.sampleRate_hz = sfInfo.samplerate;
     outAudioData.channels = sfInfo.channels;
-    outAudioData.readIndex = 0;
     outAudioData.samples.resize(numFrames * sfInfo.channels);
     sf_count_t framesRead = sf_read_float(inFile, outAudioData.samples.data(), numFrames);
+
+    sf_close(inFile);
 
     // TODO: handle error better later
     if (framesRead != numFrames)
     {
-        sf_close(inFile);
-
         std::cerr << "Error: could not read all frames from audio file: "
                   << FilePath << "\n"
                   << "Frames read: " << framesRead << "\nExpected frames: " << numFrames << std::endl;
 
         return false;
     }
-    sf_close(inFile);
-
     // TODO: remove later
     std::cout << "Loaded audio file: " << FilePath << "\n"
               << "Sample rate: " << sfInfo.samplerate << "\n"
@@ -83,8 +80,8 @@ bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioFileData_T &ou
     return true;
 }
 
-// Plays audio given a valid AudioFileData_T
-void AudioEngine::playAudioData(const AudioFileData_T &AudioData)
+// Plays audio given a valid AudioFileSource
+void AudioEngine::playAudioFile(AudioFileSource &audioData)
 {
     // TODO: Move to different function later
     RtAudio dac;
@@ -95,15 +92,17 @@ void AudioEngine::playAudioData(const AudioFileData_T &AudioData)
         std::cerr << "Error: No output device found" << std::endl;
         return;
     }
+    PlaybackContext context { &audioData };
     RtAudio::StreamParameters outputParams;
     outputParams.deviceId = dac.getDefaultOutputDevice();
-    outputParams.nChannels = AudioData.channels;
+    outputParams.nChannels = audioData.getNumChannels();
 
-    uint32_t numBufferFrames = 512u;
-    const bool IsErrorOccurred = RTAUDIO_SYSTEM_ERROR == dac.openStream(&outputParams, nullptr /* inputParams */,
-                                                                RTAUDIO_FLOAT32, AudioData.sampleRate_hz, &numBufferFrames, // Audio settings
-                                                                &AudioEngine::audioCallback, (void *)&AudioData); // Function and user data
-    
+    uint32_t bufferSize = 512u;
+    const bool IsErrorOccurred = dac.openStream(&outputParams, nullptr /* inputParams */,
+                                                RTAUDIO_FLOAT32, audioData.getSampleRate_hz(), &bufferSize, // Audio settings
+                                                &AudioEngine::streamAudioCallback, (void *)&context) // Function and user data
+                                                == RTAUDIO_SYSTEM_ERROR;
+
     if (IsErrorOccurred || !dac.isStreamOpen())
     {
         std::cerr << "Error: could not open audio stream" << std::endl;
@@ -112,10 +111,10 @@ void AudioEngine::playAudioData(const AudioFileData_T &AudioData)
     dac.startStream();
 }
 
-// RtAudio callback function
-int32_t AudioEngine::audioCallback(void *outputBuffer, void * /*inputBuffer*/,
-                      uint32_t bufferFrames, double /*streamTime*/,
-                      RtAudioStreamStatus status, void *userData)
+// RtAudio callback function, plays audio from arbitrary source
+int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffer*/,
+                                         uint32_t bufferFrames, double /*streamTime*/,
+                                         RtAudioStreamStatus status, void *userData)
 {
     // TODO: may not need error handling
     if (status == RTAUDIO_OUTPUT_UNDERFLOW)
@@ -123,36 +122,19 @@ int32_t AudioEngine::audioCallback(void *outputBuffer, void * /*inputBuffer*/,
         std::cerr << "Error: Output buffer underflow, too slow to process data" << std::endl;
         return 1;
     }
-    AudioFileData_T *audioData = static_cast<AudioFileData_T *>(userData);
+    auto context = static_cast<PlaybackContext *>(userData);
     float_t *out = static_cast<float_t *>(outputBuffer);
-    const std::vector<float_t> *Samples = &audioData->samples;
-    const int32_t NumChannels = audioData->channels;
-    size_t totalFrames = Samples->size() / NumChannels;
+    
+    // TODO: support multiple channels later
+    const uint32_t NumChannels = 2u;
 
-    // Fill the interleaved output buffer from the sample buffer, advancing readIndex.
-    size_t sampleIndex = static_cast<size_t>(audioData->readIndex);
-    const size_t totalSamples = Samples->size();
-    const int32_t channels = NumChannels;
-
-    for (uint32_t frame = 0; frame < bufferFrames; frame++)
+    if (context->source)
     {
-        for (int32_t ch = 0; ch < channels; ch++)
-        {
-            size_t outIndex = static_cast<size_t>(frame) * channels + static_cast<size_t>(ch);
-            if (sampleIndex < totalSamples)
-            {
-                out[outIndex] = (*Samples)[sampleIndex++];
-            }
-            else
-            {
-                // TODO: add better handling later
-                // Silence
-                out[outIndex] = 0.0f;
-                std::cerr << "Warning: Run out of samples" << std::endl;
-            }
-        }
+        context->source->render(out, bufferFrames, NumChannels);
     }
-    audioData->readIndex = static_cast<int64_t>(sampleIndex);
-
+    else
+    {
+        std::fill(out, out + (bufferFrames * NumChannels), 0.0f);
+    }
     return 0;
 }

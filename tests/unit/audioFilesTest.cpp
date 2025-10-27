@@ -18,10 +18,10 @@ TEST(AudioEngineTest, LoadValidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
+    bool loadSuccess = engine.loadAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
 
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
@@ -31,10 +31,10 @@ TEST(AudioEngineTest, LoadInvalidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadDoesNotExist = engine.loadAudioFile("tests/testFiles/fakeFile.mp3", audioData);
+    bool loadDoesNotExist = engine.loadAudioFile("../../tests/testFiles/fakeFile.mp3", audioData);
     EXPECT_FALSE(loadDoesNotExist);
 }
 
@@ -42,10 +42,10 @@ TEST(AudioEngineTest, LoadEmptyAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadInvalid = engine.loadAudioFile("tests/testFiles/emptyFile.mp3", audioData);
+    bool loadInvalid = engine.loadAudioFile("../../tests/testFiles/emptyFile.mp3", audioData);
     EXPECT_FALSE(loadInvalid);
 }
 
@@ -53,17 +53,21 @@ TEST(AudioEngineTest, PlayAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
+    bool loadSuccess = engine.loadAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
     
-    engine.playAudioData(audioData);
+    AudioFileSource source(audioData);
+    bool createdSource = source.getSampleRate_hz() > 0;
+    ASSERT_TRUE(createdSource);
+
+    engine.playAudioFile(source);
 
     std::string ans;
-    std::cout << "Did you hear data?\n (y) (n): " << std::endl;
+    std::cout << "Did you hear audio?\n (y) (n): " << std::endl;
     std::cin >> ans;
 
     if (ans.empty() || ans[0] == 'n')

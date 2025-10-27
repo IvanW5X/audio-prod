@@ -1,7 +1,7 @@
 /************************************************************
- * File: audioSource.h
+ * File: abstractAudioSource.h
  * 
- * Description: The AudioSource class provides an abstract
+ * Description: The AbstractAudioSource class provides an abstract
  *  class for an audio source interface. Sources can come from
  *  any sound source, such as a file or tone.
  * 
@@ -24,7 +24,13 @@ class AbstractAudioSource
 
         //--------------------------------------------------
         // Virtual function to populate output buffer with numFrames across numChannels
-        virtual bool render(float *outputBuffer, size_t numFrames, uint32_t numChannels) = 0;
+        virtual bool render(float *outputBuffer, uint32_t numFrames, uint32_t numChannels) = 0;
 
     private:
+};
+
+// Wrapper to use abstract audio sources
+struct PlaybackContext
+{
+    AbstractAudioSource *source = nullptr;
 };

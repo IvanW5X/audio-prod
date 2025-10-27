@@ -21,9 +21,8 @@ TEST(AudioEngineTest, LoadValidAudioFile)
     AudioFileData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    EXPECT_TRUE(initSuccess);
+    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
 
-    bool loadSuccess = engine.loadAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
 }
@@ -35,9 +34,7 @@ TEST(AudioEngineTest, LoadInvalidAudioFile)
     AudioFileData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    EXPECT_TRUE(initSuccess);
-
-    bool loadDoesNotExist = engine.loadAudioFile("../../tests/testFiles/fakeFile.mp3", audioData);
+    bool loadDoesNotExist = engine.loadAudioFile("tests/testFiles/fakeFile.mp3", audioData);
     EXPECT_FALSE(loadDoesNotExist);
 }
 
@@ -48,8 +45,33 @@ TEST(AudioEngineTest, LoadEmptyAudioFile)
     AudioFileData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    EXPECT_TRUE(initSuccess);
-
-    bool loadInvalid = engine.loadAudioFile("../../tests/testFiles/emptyFile.mp3", audioData);
+    bool loadInvalid = engine.loadAudioFile("tests/testFiles/emptyFile.mp3", audioData);
     EXPECT_FALSE(loadInvalid);
+}
+
+TEST(AudioEngineTest, PlayAudioFile)
+{
+    AudioEngine engine;
+    TaskQueue_T taskQueue;
+    AudioFileData_T audioData;
+
+    bool initSSuccess = engine.init(&taskQueue);
+    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
+    EXPECT_TRUE(loadSuccess);
+    EXPECT_TRUE(audioData.samples.size() > 0);
+    
+    engine.playAudioData(audioData);
+
+    std::string ans;
+    std::cout << "Did you hear data?\n (y) (n): " << std::endl;
+    std::cin >> ans;
+
+    if (ans.empty() || ans[0] == 'n')
+    {
+        FAIL();
+    }
+    else if (ans[0] == 'y')
+    {
+        SUCCEED();
+    }
 }

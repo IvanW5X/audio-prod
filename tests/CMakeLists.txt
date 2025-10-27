@@ -5,7 +5,7 @@ list(APPEND THIRD_PARTY
 )
 
 list(APPEND AUDIOPROD_LIBS
-    engine
+    core
 )
 
 if (DEFINED ENV{CMAKE_GOOGLETEST_PATH})

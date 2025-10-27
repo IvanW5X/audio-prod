@@ -24,19 +24,19 @@ class AudioFileSource : public AbstractAudioSource
 
         //--------------------------------------------------
         // Populate output buffer with audio data
-        bool render(float32_t *outputBuffer, uint32_t numFrames, uint32_t numChannels) override;
+        void render(float32_t *outputBuffer, uint32_t numFrames) override;
 
         //--------------------------------------------------
         // Getters for internal data
         uint32_t getSampleRate_hz() const { return data.sampleRate_hz; }
         uint32_t getNumChannels() const { return data.channels; }
-        uint32_t getCurrentFrame() const { return currentFrame; }
+        uint32_t getCurrentSampleIndex() const { return sampleIndex; }
 
         //--------------------------------------------------
         // Setters for internal data
-        void setCurrentFrame(const uint32_t NewFrame) { this->currentFrame = NewFrame; }
+        void setCurrentFrame(const uint32_t NewIndex) { this->sampleIndex = NewIndex; }
     
     private:
         const AudioData_T &data;
-        uint32_t currentFrame;
+        uint32_t sampleIndex;
 };

@@ -95,6 +95,7 @@ void AudioEngine::playAudioFile(AudioFileSource &audioData)
     RtAudio::StreamParameters outputParams;
     outputParams.deviceId = dac->getDefaultOutputDevice();
     outputParams.nChannels = audioData.getNumChannels();
+    outputParams.firstChannel = 0u;
 
     uint32_t bufferSize = 512u;
     const bool IsErrorOccurred = dac->openStream(&outputParams, nullptr /* inputParams */,
@@ -129,11 +130,12 @@ int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffe
 
     if (context->source)
     {
-        context->source->render(out, bufferFrames, NumChannels);
+        context->source->render(out, bufferFrames);
     }
     else
     {
         std::fill(out, out + (bufferFrames * NumChannels), 0.0f);
+        return 1;
     }
     return 0;
 }

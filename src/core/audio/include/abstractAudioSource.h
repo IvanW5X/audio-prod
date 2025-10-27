@@ -25,7 +25,7 @@ class AbstractAudioSource
 
         //--------------------------------------------------
         // Virtual function to populate output buffer with numFrames across numChannels
-        virtual bool render(float32_t *outputBuffer, uint32_t numFrames, uint32_t numChannels) = 0;
+        virtual void render(float32_t *outputBuffer, uint32_t numFrames) = 0;
 
     private:
 };

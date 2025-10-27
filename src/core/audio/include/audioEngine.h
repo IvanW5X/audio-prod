@@ -15,7 +15,7 @@
 
 #include "RtAudio.h"
 #include <sndfile.h>
-#include <cmath>
+#include <memory>
 #include "audioFileSource.h"
 #include <common.h>
 #include <commands.h>
@@ -48,6 +48,9 @@ class AudioEngine
 
     private:
         TaskQueue_T *tasksQueue;
+
+        // TODO: move to device manager class later
+        std::unique_ptr<RtAudio> dac;
 
         // Call back function when audio output stream requested
         static int32_t streamAudioCallback(void *outputBuffer, void * /*inputBuffer*/,

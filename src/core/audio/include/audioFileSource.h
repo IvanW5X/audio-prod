@@ -24,7 +24,7 @@ class AudioFileSource : public AbstractAudioSource
 
         //--------------------------------------------------
         // Populate output buffer with audio data
-        bool render(float *outputBuffer, uint32_t numFrames, uint32_t numChannels) override;
+        bool render(float32_t *outputBuffer, uint32_t numFrames, uint32_t numChannels) override;
 
         //--------------------------------------------------
         // Getters for internal data

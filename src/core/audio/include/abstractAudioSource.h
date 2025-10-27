@@ -14,6 +14,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <common.h>
 
 class AbstractAudioSource
 {
@@ -24,7 +25,7 @@ class AbstractAudioSource
 
         //--------------------------------------------------
         // Virtual function to populate output buffer with numFrames across numChannels
-        virtual bool render(float *outputBuffer, uint32_t numFrames, uint32_t numChannels) = 0;
+        virtual bool render(float32_t *outputBuffer, uint32_t numFrames, uint32_t numChannels) = 0;
 
     private:
 };

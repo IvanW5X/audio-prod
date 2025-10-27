@@ -13,7 +13,8 @@
 
 // Constructor
 AudioEngine::AudioEngine() :
-    tasksQueue(nullptr)
+    tasksQueue(nullptr),
+    dac(nullptr)
 {
 
 }
@@ -35,6 +36,7 @@ bool AudioEngine::init(TaskQueue_T *tasksQueue)
         success = false;
     }
     this->tasksQueue = tasksQueue;
+    this->dac = std::make_unique<RtAudio>();
 
     return success;
 }
@@ -83,32 +85,29 @@ bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioData_T &outAud
 // Plays audio given a valid AudioFileSource
 void AudioEngine::playAudioFile(AudioFileSource &audioData)
 {
-    // TODO: Move to different function later
-    RtAudio dac;
-    
     // TODO: error handle better
-    if (dac.getDeviceCount() < 1)
+    if (dac->getDeviceCount() < 1)
     {
         std::cerr << "Error: No output device found" << std::endl;
         return;
     }
     PlaybackContext context { &audioData };
     RtAudio::StreamParameters outputParams;
-    outputParams.deviceId = dac.getDefaultOutputDevice();
+    outputParams.deviceId = dac->getDefaultOutputDevice();
     outputParams.nChannels = audioData.getNumChannels();
 
     uint32_t bufferSize = 512u;
-    const bool IsErrorOccurred = dac.openStream(&outputParams, nullptr /* inputParams */,
+    const bool IsErrorOccurred = dac->openStream(&outputParams, nullptr /* inputParams */,
                                                 RTAUDIO_FLOAT32, audioData.getSampleRate_hz(), &bufferSize, // Audio settings
                                                 &AudioEngine::streamAudioCallback, (void *)&context) // Function and user data
                                                 == RTAUDIO_SYSTEM_ERROR;
 
-    if (IsErrorOccurred || !dac.isStreamOpen())
+    if (IsErrorOccurred || !dac->isStreamOpen())
     {
         std::cerr << "Error: could not open audio stream" << std::endl;
         return;
     }
-    dac.startStream();
+    dac->startStream();
 }
 
 // RtAudio callback function, plays audio from arbitrary source
@@ -123,7 +122,7 @@ int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffe
         return 1;
     }
     auto context = static_cast<PlaybackContext *>(userData);
-    float_t *out = static_cast<float_t *>(outputBuffer);
+    float32_t *out = static_cast<float32_t *>(outputBuffer);
     
     // TODO: support multiple channels later
     const uint32_t NumChannels = 2u;

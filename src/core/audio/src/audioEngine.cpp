@@ -99,10 +99,11 @@ void AudioEngine::playAudioFile(AudioFileSource &audioData)
     outputParams.firstChannel = 0u;
 
     uint32_t bufferSize = 512u;
-    const bool IsErrorOccurred = dac->openStream(&outputParams, nullptr /* inputParams */,
-                                                RTAUDIO_FLOAT32, audioData.getSampleRate_hz(), &bufferSize, // Audio settings
-                                                &AudioEngine::streamAudioCallback, (void *)&currentContext) // Function and user data
-                                                == RTAUDIO_SYSTEM_ERROR;
+    const bool IsErrorOccurred = dac->openStream(
+        &outputParams, nullptr /* inputParams */,
+        RTAUDIO_FLOAT32, audioData.getSampleRate_hz(), &bufferSize, // Audio settings
+        &AudioEngine::streamAudioCallback, (void *)&currentContext // Function and user data
+    ) == RTAUDIO_SYSTEM_ERROR;
 
     if (IsErrorOccurred || !dac->isStreamOpen())
     {

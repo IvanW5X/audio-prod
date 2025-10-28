@@ -53,10 +53,10 @@ class AudioEngine
         // TODO: move to device manager class later
         std::unique_ptr<RtAudio> dac;
 
-        // Call back function when audio output stream requested
+        // Call back function when audio output stream starts
         static int32_t streamAudioCallback(void *outputBuffer, void * /*inputBuffer*/,
-                                     uint32_t bufferFrames, double /*streamTime*/,
-                                     RtAudioStreamStatus status, void *userData);
+                                           uint32_t bufferFrames, double /*streamTime*/,
+                                           RtAudioStreamStatus status, void *userData);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

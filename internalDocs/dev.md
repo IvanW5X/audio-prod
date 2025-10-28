@@ -25,7 +25,11 @@ This should create the executable, so you can run the program using
 To build and run test executables, run
 
 ```bash
+# Create build files with testing
 cmake -S . -B ./build -DENABLE_TESTING=ON
+
+# Compile exe and tests
+cmake --build build --config Release --target all
 
 # To run
 cd build; ctest; cd ..

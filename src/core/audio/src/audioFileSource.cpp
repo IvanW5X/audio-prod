@@ -19,7 +19,7 @@ AudioFileSource::AudioFileSource(const AudioData_T &data) :
 
 void AudioFileSource::render(float32_t *outputBuffer, uint32_t numFrames)
 {
-    const uint32_t TotalSamples = data.samples.size() / data.channels;
+    const uint32_t TotalFrames = static_cast<uint32_t>(data.samples.size() / data.channels);
 
     for (uint32_t frame = 0; frame < numFrames; frame++)
     {
@@ -27,9 +27,10 @@ void AudioFileSource::render(float32_t *outputBuffer, uint32_t numFrames)
         {
             const uint32_t OutIndex = (frame * data.channels) + ch;
 
-            if (sampleIndex < TotalSamples)
+            if (sampleIndex < TotalFrames)
             {
-                outputBuffer[OutIndex] = data.samples[sampleIndex++];
+                const uint32_t InIndex = (sampleIndex * data.channels) + ch;
+                outputBuffer[OutIndex] = data.samples[InIndex];
             }
             else
             {
@@ -37,5 +38,6 @@ void AudioFileSource::render(float32_t *outputBuffer, uint32_t numFrames)
                 outputBuffer[OutIndex] = 0.0f;
             }
         }
+        sampleIndex++;
     }
 }

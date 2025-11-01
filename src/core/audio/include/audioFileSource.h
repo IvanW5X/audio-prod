@@ -28,13 +28,13 @@ class AudioFileSource : public AbstractAudioSource
 
         //--------------------------------------------------
         // Getters for internal data
-        uint32_t getSampleRate_hz() const { return data.sampleRate_hz; }
-        uint32_t getNumChannels() const { return data.channels; }
-        uint32_t getCurrentSampleIndex() const { return sampleIndex; }
+        uint32_t getNumChannels() const override { return this->data.channels; }
+        uint32_t getSampleRate_hz() const override { return this->data.sampleRate_hz; }
+        uint32_t getCurrentSampleIndex() const { return this->sampleIndex; }
 
         //--------------------------------------------------
         // Setters for internal data
-        void setCurrentFrame(const uint32_t NewIndex) { this->sampleIndex = NewIndex; }
+        // void setSampleIndex(const uint32_t NewIndex) { this->sampleIndex = NewIndex; }
     
     private:
         const AudioData_T &data;

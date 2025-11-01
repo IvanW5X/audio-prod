@@ -9,12 +9,14 @@ list(APPEND AUDIOPROD_HEADERS
     include/audioController.h
     include/abstractAudioSource.h
     include/audioFileSource.h
+    include/toneGenerator.h
 )
 
 list(APPEND AUDIOPROD_SOURCES
     src/audioEngine.cpp
     src/audioController.cpp
     src/audioFileSource.cpp
+    src/toneGenerator.cpp
 )
 
 add_library(audio STATIC

@@ -24,6 +24,7 @@ add_executable(unitTests
     unit/runTests.cpp
     unit/initTest.cpp
     unit/audioFilesTest.cpp
+    unit/toneTest.cpp
 )
 
 target_link_libraries(unitTests PRIVATE

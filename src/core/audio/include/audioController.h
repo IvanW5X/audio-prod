@@ -43,7 +43,7 @@ class AudioController
         AudioController();
         
         //--------------------------------------------------
-        // Destructer
+        // Destructor
         ~AudioController();
 
         // Member variables

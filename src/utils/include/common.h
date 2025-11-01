@@ -1,11 +1,12 @@
 /************************************************************
- * File: common.h
+ * FILE: common.h
  * 
- * Description: 
+ * DESCRIPTION: Commong definitions and types used across
+ *  the project
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

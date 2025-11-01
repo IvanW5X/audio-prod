@@ -1,12 +1,12 @@
 /************************************************************
- * File: audioFileSource.h
+ * FILE: audioFileSource.h
  * 
- * Description: The AudioFileSource class provides an audio
+ * DESCRIPTION: The AudioFileSource class provides an audio
  *  source interface for file like sources 
  * 
- * Date: 2025-10-26
+ * DATE: 2025-10-26
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

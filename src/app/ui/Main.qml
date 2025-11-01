@@ -1,12 +1,12 @@
 /************************************************************
- * File: main.qml
+ * FILE: main.qml
  * 
- * Description: Entry UI file for audio production tool
+ * DESCRIPTION: Entry UI file for audio production tool
  * 
- * Date: 2025-10-06
- * 
- * Author: Ivan Wong
- * 
+ * DATE: 2025-10-06
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 import QtQuick

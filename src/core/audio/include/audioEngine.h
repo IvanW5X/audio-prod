@@ -1,13 +1,13 @@
 /************************************************************
- * File: audioEngine.h
+ * FILE: audioEngine.h
  * 
- * Description: The AudioEngine class should serve as a worker
+ * DESCRIPTION: The AudioEngine class should serve as a worker
  *  thread for the AudioController and is the low level class
  *  responsible for processing audio data
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 
@@ -51,7 +51,7 @@ class AudioEngine
         void startAudioOutputStream();
 
         //--------------------------------------------------
-        // Stops the audio utput streaming process
+        // Stops the audio output streaming process
         void stopAudioOutputStream();
 
     private:

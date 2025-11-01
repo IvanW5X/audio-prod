@@ -1,13 +1,13 @@
 /************************************************************
- * File: abstractAudioSource.h
+ * FILE: abstractAudioSource.h
  * 
- * Description: The AbstractAudioSource class provides an abstract
+ * DESCRIPTION: The AbstractAudioSource class provides an abstract
  *  class for an audio source interface. Sources can come from
  *  any sound source, such as a file or tone.
  * 
- * Date: 2025-10-26
+ * DATE: 2025-10-26
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

@@ -1,17 +1,17 @@
 /************************************************************
- * File: audioController.cpp
+ * FILE: audioController.cpp
  * 
- * Description: The AudioController class is a API wrapper
+ * DESCRIPTION: The AudioController class is a API wrapper
  *  for the low level AudioEngine class and handles the
  *  multithreading architecture for backend/audio processing.
  * 
  * This singleton class is the class that handles the interface
- *  for the engine and should be used to 
- * 
- * Date: 2025-10-08
- * 
- * Author: Ivan Wong
- * 
+ *  for the engine and should be used to
+ *
+ * DATE: 2025-10-08
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 #pragma once

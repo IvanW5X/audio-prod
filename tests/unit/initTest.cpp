@@ -1,11 +1,11 @@
 /************************************************************
- * File: initTests.cpp
+ * FILE: initTests.cpp
  * 
- * Description: Tests for major class initialization functions
+ * DESCRIPTION: Tests for major class initialization functions
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

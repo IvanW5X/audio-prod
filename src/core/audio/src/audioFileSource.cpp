@@ -1,11 +1,11 @@
 /************************************************************
- * File: audioFileSource.cpp
+ * FILE: audioFileSource.cpp
  * 
- * Description: Implementation file for AudioFileSource class
+ * DESCRIPTION: Implementation file for AudioFileSource class
  * 
- * Date: 2025-10-26
+ * DATE: 2025-10-26
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

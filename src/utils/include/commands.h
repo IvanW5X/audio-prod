@@ -1,11 +1,12 @@
 /************************************************************
- * File: commands.h
+ * FILE: commands.h
  * 
- * Description: 
+ * DESCRIPTION: Defines the audio commands and task struct
+ *  used for communication between audio controller and engine  
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

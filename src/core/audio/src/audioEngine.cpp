@@ -1,11 +1,11 @@
 /************************************************************
- * File: audioEngine.cpp
+ * FILE: audioEngine.cpp
  * 
- * Description: Implementation file for AudioEngine class
+ * DESCRIPTION: Implementation file for AudioEngine class
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

@@ -1,12 +1,12 @@
 /************************************************************
- * File: audioTests.cpp
+ * FILE: audioTests.cpp
  * 
- * Description: Tests for sending audio data to output device
+ * DESCRIPTION: Tests for sending audio file to output device
  * 
- * Date: 2025-10-25
- * 
- * Author: Ivan Wong
- * 
+ * DATE: 2025-10-25
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 #include <gtest/gtest.h>

@@ -19,7 +19,7 @@ AudioEngine::AudioEngine() :
 
 }
 
-// Destructer
+// Destructor
 AudioEngine::~AudioEngine()
 {
     
@@ -42,7 +42,7 @@ bool AudioEngine::init(TaskQueue_T *tasksQueue)
 }
 
 // Loads an audio file into memory
-bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioData_T &outAudioData)
+bool AudioEngine::readAudioFile(const std::string &FilePath, AudioData_T &outAudioData)
 {
     SF_INFO sfInfo;
     SNDFILE *inFile = sf_open(FilePath.c_str(), SFM_READ, &sfInfo);
@@ -82,35 +82,46 @@ bool AudioEngine::loadAudioFile(const std::string &FilePath, AudioData_T &outAud
     return true;
 }
 
-// Plays audio given a valid AudioFileSource
-void AudioEngine::playAudioFile(AudioFileSource &audioData)
+// Loads an audio source into the engine
+void AudioEngine::loadAudioSource(AbstractAudioSource &audioSource, uint32_t bufferSize)
 {
-    // TODO: error handle better
-    if (dac->getDeviceCount() < 1)
-    {
-        std::cerr << "Error: No output device found" << std::endl;
-        return;
-    }
     // TODO: support multiple context sources later
-    currentContext.source = &audioData;
+    currentContext.source = &audioSource;
     RtAudio::StreamParameters outputParams;
     outputParams.deviceId = dac->getDefaultOutputDevice();
-    outputParams.nChannels = audioData.getNumChannels();
+    outputParams.nChannels = audioSource.getNumChannels();
     outputParams.firstChannel = 0u;
 
-    uint32_t bufferSize = 512u;
-    const bool IsErrorOccurred = dac->openStream(
+    const bool HasErrorOccurred = dac->openStream(
         &outputParams, nullptr /* inputParams */,
-        RTAUDIO_FLOAT32, audioData.getSampleRate_hz(), &bufferSize, // Audio settings
+        RTAUDIO_FLOAT32, audioSource.getSampleRate_hz(), &bufferSize, // Audio settings
         &AudioEngine::streamAudioCallback, (void *)&currentContext // Function and user data
     ) == RTAUDIO_SYSTEM_ERROR;
 
-    if (IsErrorOccurred || !dac->isStreamOpen())
+    if (HasErrorOccurred || !dac->isStreamOpen())
     {
         std::cerr << "Error: could not open audio stream" << std::endl;
         return;
     }
-    dac->startStream();
+}
+
+// Starts the audio output stream
+void AudioEngine::startAudioOutputStream()
+{
+    if (dac && dac->isStreamOpen())
+    {
+        dac->startStream();
+    }
+}
+
+// Stops the audio output stream
+void AudioEngine::stopAudioOutputStream()
+{
+    if (dac && dac->isStreamOpen())
+    {
+        dac->stopStream();
+        dac->closeStream();
+    }
 }
 
 // RtAudio callback function, plays audio from arbitrary context source
@@ -125,10 +136,11 @@ int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffe
         return 1;
     }
     auto context = static_cast<PlaybackContext *>(userData);
-    float32_t *out = static_cast<float32_t *>(outputBuffer);
+    auto *out = static_cast<float32_t *>(outputBuffer);
     
     // TODO: support multiple channels later
-    const uint32_t NumChannels = 2u;
+    // const uint32_t NumChannels = 2u;
+    const uint32_t NumChannels = context->source->getNumChannels();
 
     if (context->source)
     {
@@ -137,6 +149,7 @@ int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffe
     else
     {
         std::fill(out, out + (bufferFrames * NumChannels), 0.0f);
+        std::cerr << "Error: No audio source found in playback context" << std::endl;
         return 1;
     }
     return 0;

@@ -31,7 +31,7 @@ class AudioEngine
         AudioEngine();
 
         //--------------------------------------------------
-        // Destructer
+        // Destructor
         ~AudioEngine();
 
         //--------------------------------------------------
@@ -40,11 +40,19 @@ class AudioEngine
 
         //--------------------------------------------------
         // Loads an audio file into memory, returns true on success
-        bool loadAudioFile(const std::string& FilePath, AudioData_T &outAudioData);
+        bool readAudioFile(const std::string& FilePath, AudioData_T &outAudioData);
 
         //--------------------------------------------------
-        // Plays an audio file source
-        void playAudioFile(AudioFileSource &audioData);
+        // Loads an audio source into the engine
+        void loadAudioSource(AbstractAudioSource &audioSource, uint32_t bufferSize);
+
+        //--------------------------------------------------
+        // Starts the audio streaming process
+        void startAudioOutputStream();
+
+        //--------------------------------------------------
+        // Stops the audio utput streaming process
+        void stopAudioOutputStream();
 
     private:
         TaskQueue_T *tasksQueue;

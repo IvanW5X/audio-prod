@@ -25,5 +25,5 @@ struct AudioData_T
 {
     std::vector<float32_t> samples;
     uint32_t sampleRate_hz;
-    uint32_t channels;
+    uint32_t channels = 1u;
 };

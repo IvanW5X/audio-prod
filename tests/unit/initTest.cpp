@@ -13,7 +13,7 @@
 #include "audioController.h"
 #include "audioEngine.h"
 
-TEST(AudioEngineTest, Initialization) {
+TEST(EngineTest, Initialization) {
     AudioEngine engine;
     TaskQueue_T taskQueue;
 
@@ -22,7 +22,7 @@ TEST(AudioEngineTest, Initialization) {
     EXPECT_TRUE(success);
 }
 
-TEST(AudioControllerTest, Initialization) {
+TEST(ControllerTest, Initialization) {
     bool success = AudioController::instance().init();
 
     EXPECT_TRUE(success);

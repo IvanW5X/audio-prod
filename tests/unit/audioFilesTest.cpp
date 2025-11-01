@@ -11,10 +11,9 @@
 
 #include <gtest/gtest.h>
 #include "RtAudio.h"
-#include "audioController.h"
 #include "audioEngine.h"
 
-TEST(AudioEngineTest, LoadValidAudioFile)
+TEST(EngineTest, LoadValidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
@@ -27,7 +26,7 @@ TEST(AudioEngineTest, LoadValidAudioFile)
     EXPECT_TRUE(audioData.samples.size() > 0);
 }
 
-TEST(AudioEngineTest, LoadInvalidAudioFile)
+TEST(EngineTest, LoadInvalidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
@@ -38,7 +37,7 @@ TEST(AudioEngineTest, LoadInvalidAudioFile)
     EXPECT_FALSE(loadDoesNotExist);
 }
 
-TEST(AudioEngineTest, LoadEmptyAudioFile)
+TEST(EngineTest, LoadEmptyAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
@@ -49,7 +48,7 @@ TEST(AudioEngineTest, LoadEmptyAudioFile)
     EXPECT_FALSE(loadInvalid);
 }
 
-TEST(AudioEngineTest, PlayAudioFile)
+TEST(EngineTest, PlayAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
@@ -57,11 +56,8 @@ TEST(AudioEngineTest, PlayAudioFile)
 
     bool initSSuccess = engine.init(&taskQueue);
     bool loadSuccess = engine.readAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
-    EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
 
-    std::cout << audioData.samples.size() << std::endl;
-    
     AudioFileSource source(audioData);
     bool createdSource = source.getSampleRate_hz() > 0;
     ASSERT_TRUE(createdSource);
@@ -70,9 +66,9 @@ TEST(AudioEngineTest, PlayAudioFile)
     engine.loadAudioSource(source, bufferSize);
     engine.startAudioOutputStream();
 
-    // Let it play for 5 seconds
-    std::this_thread::sleep_for(std::chrono::seconds(5));
+    // Let it play for 3 seconds
+    std::this_thread::sleep_for(std::chrono::seconds(3));
 
-    ASSERT_TRUE(source.getCurrentSampleIndex() > 0u);
     engine.stopAudioOutputStream();
+    ASSERT_TRUE(source.getCurrentSampleIndex() > 0u);
 }

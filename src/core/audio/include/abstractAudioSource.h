@@ -20,12 +20,17 @@ class AbstractAudioSource
 {
     public:
         //--------------------------------------------------
-        // Virtual Destructer
+        // Virtual Destructor
         virtual ~AbstractAudioSource() = default;
 
         //--------------------------------------------------
-        // Virtual function to populate output buffer with numFrames across numChannels
+        // Virtual function to populate output buffer with numFrames
         virtual void render(float32_t *outputBuffer, uint32_t numFrames) = 0;
+
+        //--------------------------------------------------
+        // Required getters
+        virtual uint32_t getNumChannels() const = 0;
+        virtual uint32_t getSampleRate_hz() const = 0;
 
     private:
 };

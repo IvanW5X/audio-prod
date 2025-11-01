@@ -20,7 +20,7 @@ class AudioFileSource : public AbstractAudioSource
     public:
         //--------------------------------------------------
         // Constructor
-        AudioFileSource(const AudioData_T &data);
+        AudioFileSource(const AudioData_T data);
 
         //--------------------------------------------------
         // Populate output buffer with audio data
@@ -37,6 +37,6 @@ class AudioFileSource : public AbstractAudioSource
         // void setSampleIndex(const uint32_t NewIndex) { this->sampleIndex = NewIndex; }
     
     private:
-        const AudioData_T &data;
+        const AudioData_T data;
         uint32_t sampleIndex;
 };

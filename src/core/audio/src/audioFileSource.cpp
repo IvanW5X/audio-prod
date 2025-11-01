@@ -12,7 +12,8 @@
 #include "audioFileSource.h"
 #include <iostream>
 
-AudioFileSource::AudioFileSource(const AudioData_T &data) :
+// Constructor
+AudioFileSource::AudioFileSource(const AudioData_T data) :
     data(data),
     sampleIndex(0)
 {}

@@ -12,10 +12,11 @@
 #include "toneGenerator.h"
 
 // Constructor
-ToneGenerator::ToneGenerator()
-{
-
-}
+ToneGenerator::ToneGenerator() :
+    // TODO: may not need this
+    frequency_hz(DefaultFrequency_hz),
+    amplitude(DefaultAmplitude)
+{}
 
 // Destructor
 ToneGenerator::~ToneGenerator()
@@ -24,10 +25,10 @@ ToneGenerator::~ToneGenerator()
 }
 
 AudioData_T ToneGenerator::generateTone(const ToneType_T ToneType,
-                                        const uint32_t Frequency_hz,
-                                        const uint32_t SampleRate_hz,
+                                        const float32_t Duration_sec,
                                         const float32_t Amplitude,
-                                        const float32_t Duration_s)
+                                        const uint32_t Frequency_hz,
+                                        const uint32_t SampleRate_hz)
 {
     AudioData_T audioData;
     audioData.sampleRate_hz = SampleRate_hz;
@@ -35,7 +36,7 @@ AudioData_T ToneGenerator::generateTone(const ToneType_T ToneType,
     // TODO: support multiple channels later
     audioData.channels = 1u;
 
-    const uint32_t TotalSamples = SampleRate_hz * static_cast<uint32_t>(Duration_s);
+    const uint32_t TotalSamples = SampleRate_hz * static_cast<uint32_t>(Duration_sec);
     audioData.samples.resize(TotalSamples);
 
     const float32_t TwoPiF = 2.0f * static_cast<float32_t>(M_PI) * static_cast<float32_t>(Frequency_hz);

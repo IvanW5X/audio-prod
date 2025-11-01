@@ -21,7 +21,7 @@ TEST(AudioEngineTest, LoadValidAudioFile)
     AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
+    bool loadSuccess = engine.readAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
 
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
@@ -34,7 +34,7 @@ TEST(AudioEngineTest, LoadInvalidAudioFile)
     AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadDoesNotExist = engine.loadAudioFile("../../tests/testFiles/fakeFile.mp3", audioData);
+    bool loadDoesNotExist = engine.readAudioFile("../../tests/testFiles/fakeFile.mp3", audioData);
     EXPECT_FALSE(loadDoesNotExist);
 }
 
@@ -45,7 +45,7 @@ TEST(AudioEngineTest, LoadEmptyAudioFile)
     AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadInvalid = engine.loadAudioFile("../../tests/testFiles/emptyFile.mp3", audioData);
+    bool loadInvalid = engine.readAudioFile("../../tests/testFiles/emptyFile.mp3", audioData);
     EXPECT_FALSE(loadInvalid);
 }
 
@@ -56,26 +56,23 @@ TEST(AudioEngineTest, PlayAudioFile)
     AudioData_T audioData;
 
     bool initSSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
+    bool loadSuccess = engine.readAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
+
+    std::cout << audioData.samples.size() << std::endl;
     
     AudioFileSource source(audioData);
     bool createdSource = source.getSampleRate_hz() > 0;
     ASSERT_TRUE(createdSource);
 
-    engine.playAudioFile(source);
+    const uint32_t bufferSize = 512u;
+    engine.loadAudioSource(source, bufferSize);
+    engine.startAudioOutputStream();
 
-    std::string ans;
-    std::cout << "Did you hear audio?\n (y) (n): " << std::endl;
-    std::cin >> ans;
+    // Let it play for 5 seconds
+    std::this_thread::sleep_for(std::chrono::seconds(5));
 
-    if (ans.empty() || ans[0] == 'n')
-    {
-        FAIL();
-    }
-    else if (ans[0] == 'y')
-    {
-        SUCCEED();
-    }
+    ASSERT_TRUE(source.getCurrentSampleIndex() > 0u);
+    engine.stopAudioOutputStream();
 }

@@ -14,7 +14,8 @@
 // Constructor
 AudioEngine::AudioEngine() :
     tasksQueue(nullptr),
-    dac(nullptr)
+    dac(nullptr),
+    toneGenerator(nullptr)
 {
 
 }
@@ -37,6 +38,7 @@ bool AudioEngine::init(TaskQueue_T *tasksQueue)
     }
     this->tasksQueue = tasksQueue;
     this->dac = std::make_unique<RtAudio>();
+    this->toneGenerator = std::make_unique<ToneGenerator>();
 
     return success;
 }
@@ -85,8 +87,8 @@ bool AudioEngine::readAudioFile(const std::string &FilePath, AudioData_T &outAud
 // Loads an audio source into the engine
 void AudioEngine::loadAudioSource(AbstractAudioSource &audioSource, uint32_t bufferSize)
 {
-    // TODO: support multiple context sources later
-    currentContext.source = &audioSource;
+    this->currentContext.source = &audioSource;
+
     RtAudio::StreamParameters outputParams;
     outputParams.deviceId = dac->getDefaultOutputDevice();
     outputParams.nChannels = audioSource.getNumChannels();
@@ -136,10 +138,7 @@ int32_t AudioEngine::streamAudioCallback(void *outputBuffer, void * /*inputBuffe
         return 1;
     }
     auto context = static_cast<PlaybackContext *>(userData);
-    auto *out = static_cast<float32_t *>(outputBuffer);
-    
-    // TODO: support multiple channels later
-    // const uint32_t NumChannels = 2u;
+    auto out = static_cast<float32_t *>(outputBuffer);
     const uint32_t NumChannels = context->source->getNumChannels();
 
     if (context->source)

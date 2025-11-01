@@ -17,6 +17,7 @@
 #include <sndfile.h>
 #include <memory>
 #include "audioFileSource.h"
+#include "toneGenerator.h"
 #include <common.h>
 #include <commands.h>
 #include <syncedQueue.h>
@@ -57,6 +58,7 @@ class AudioEngine
     private:
         TaskQueue_T *tasksQueue;
         PlaybackContext currentContext;
+        std::unique_ptr<ToneGenerator> toneGenerator;
 
         // TODO: move to device manager class later
         std::unique_ptr<RtAudio> dac;

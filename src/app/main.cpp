@@ -1,12 +1,12 @@
 /************************************************************
- * File: main.cpp
+ * FILE: main.cpp
  * 
- * Description: Entry file for audio production tool
+ * DESCRIPTION: Entry file for audio production tool
  * 
- * Date: 2025-10-06
- * 
- * Author: Ivan Wong
- * 
+ * DATE: 2025-10-06
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 #include <QGuiApplication>

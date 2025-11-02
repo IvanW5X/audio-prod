@@ -1,77 +1,74 @@
 /************************************************************
- * File: audioTests.cpp
+ * FILE: audioTests.cpp
  * 
- * Description: Tests for sending audio data to output device
+ * DESCRIPTION: Tests for sending audio file to output device
  * 
- * Date: 2025-10-25
- * 
- * Author: Ivan Wong
- * 
+ * DATE: 2025-10-25
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 #include <gtest/gtest.h>
 #include "RtAudio.h"
-#include "audioController.h"
 #include "audioEngine.h"
 
-TEST(AudioEngineTest, LoadValidAudioFile)
+TEST(EngineTest, LoadValidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
+    bool loadSuccess = engine.readAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
 
     EXPECT_TRUE(loadSuccess);
     EXPECT_TRUE(audioData.samples.size() > 0);
 }
 
-TEST(AudioEngineTest, LoadInvalidAudioFile)
+TEST(EngineTest, LoadInvalidAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadDoesNotExist = engine.loadAudioFile("tests/testFiles/fakeFile.mp3", audioData);
+    bool loadDoesNotExist = engine.readAudioFile("../../tests/testFiles/fakeFile.mp3", audioData);
     EXPECT_FALSE(loadDoesNotExist);
 }
 
-TEST(AudioEngineTest, LoadEmptyAudioFile)
+TEST(EngineTest, LoadEmptyAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSuccess = engine.init(&taskQueue);
-    bool loadInvalid = engine.loadAudioFile("tests/testFiles/emptyFile.mp3", audioData);
+    bool loadInvalid = engine.readAudioFile("../../tests/testFiles/emptyFile.mp3", audioData);
     EXPECT_FALSE(loadInvalid);
 }
 
-TEST(AudioEngineTest, PlayAudioFile)
+TEST(EngineTest, PlayAudioFile)
 {
     AudioEngine engine;
     TaskQueue_T taskQueue;
-    AudioFileData_T audioData;
+    AudioData_T audioData;
 
     bool initSSuccess = engine.init(&taskQueue);
-    bool loadSuccess = engine.loadAudioFile("tests/testFiles/Billie Jean 4.mp3", audioData);
-    EXPECT_TRUE(loadSuccess);
+    bool loadSuccess = engine.readAudioFile("../../tests/testFiles/Billie Jean 4.mp3", audioData);
     EXPECT_TRUE(audioData.samples.size() > 0);
-    
-    engine.playAudioData(audioData);
 
-    std::string ans;
-    std::cout << "Did you hear data?\n (y) (n): " << std::endl;
-    std::cin >> ans;
+    AudioFileSource source(audioData);
+    bool createdSource = source.getSampleRate_hz() > 0;
+    ASSERT_TRUE(createdSource);
 
-    if (ans.empty() || ans[0] == 'n')
-    {
-        FAIL();
-    }
-    else if (ans[0] == 'y')
-    {
-        SUCCEED();
-    }
+    const uint32_t bufferSize = 512u;
+    engine.loadAudioSource(source, bufferSize);
+    engine.startAudioOutputStream();
+
+    // Let it play for 3 seconds
+    std::this_thread::sleep_for(std::chrono::seconds(3));
+
+    engine.stopAudioOutputStream();
+    ASSERT_TRUE(source.getCurrentSampleIndex() > 0u);
 }

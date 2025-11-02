@@ -1,11 +1,16 @@
 /************************************************************
- * File: runTests.cpp
+ * FILE: runTests.cpp
  * 
- * Description: Runs all unit tests by default or specific tests
+ * DESCRIPTION: Runs all unit tests by default or specific
+ *  tests if running executable directly.
+ *  
+ * NOTE: The audioFilesTest may fail due to incorrect path.
+ *       The tests were written assuming ctest will be
+ *       running from the build/tests/unit/ directory.
  * 
- * Date: 2025-10-25
+ * DATE: 2025-10-25
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 

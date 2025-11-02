@@ -67,5 +67,7 @@ set_target_properties(audioprod PROPERTIES
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
+
+    # TODO: change to true terminal is no longer needed for debugging
     WIN32_EXECUTABLE FALSE
 )

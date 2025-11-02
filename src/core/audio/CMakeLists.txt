@@ -7,24 +7,30 @@ list(APPEND THIRD_PARTY
 list(APPEND AUDIOPROD_HEADERS
     include/audioEngine.h
     include/audioController.h
+    include/abstractAudioSource.h
+    include/audioFileSource.h
+    include/toneGenerator.h
+    include/toneSource.h
 )
 
 list(APPEND AUDIOPROD_SOURCES
     src/audioEngine.cpp
     src/audioController.cpp
+    src/audioFileSource.cpp
+    src/toneGenerator.cpp
+    src/toneSource.cpp
 )
 
-add_library(engine STATIC
+add_library(audio STATIC
     ${AUDIOPROD_HEADERS}
     ${AUDIOPROD_SOURCES}
 )
 
-target_include_directories(engine PUBLIC
-    ${PROJECT_SOURCE_DIR}/src/core/engine/include
+target_include_directories(audio PUBLIC
+    ${PROJECT_SOURCE_DIR}/src/core/audio/include
     ${PROJECT_SOURCE_DIR}/src/utils/include
 )
 
-target_link_libraries(engine PUBLIC
+target_link_libraries(audio PUBLIC
     ${THIRD_PARTY}
 )
-

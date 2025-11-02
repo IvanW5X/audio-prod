@@ -1,13 +1,13 @@
 /************************************************************
- * File: audioEngine.h
+ * FILE: audioEngine.h
  * 
- * Description: The AudioEngine class should serve as a worker
+ * DESCRIPTION: The AudioEngine class should serve as a worker
  *  thread for the AudioController and is the low level class
  *  responsible for processing audio data
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 
@@ -15,7 +15,9 @@
 
 #include "RtAudio.h"
 #include <sndfile.h>
-#include <cmath>
+#include <memory>
+#include "audioFileSource.h"
+#include "toneGenerator.h"
 #include <common.h>
 #include <commands.h>
 #include <syncedQueue.h>
@@ -30,7 +32,7 @@ class AudioEngine
         AudioEngine();
 
         //--------------------------------------------------
-        // Destructer
+        // Destructor
         ~AudioEngine();
 
         //--------------------------------------------------
@@ -39,19 +41,32 @@ class AudioEngine
 
         //--------------------------------------------------
         // Loads an audio file into memory, returns true on success
-        bool loadAudioFile(const std::string& FilePath, AudioFileData_T &outAudioData);
+        bool readAudioFile(const std::string& FilePath, AudioData_T &outAudioData);
 
         //--------------------------------------------------
-        // Plays an audio file given a populated AudioFileData_T
-        void playAudioData(const AudioFileData_T &AudioData);
+        // Loads an audio source into the engine
+        void loadAudioSource(AbstractAudioSource &audioSource, uint32_t bufferSize);
+
+        //--------------------------------------------------
+        // Starts the audio streaming process
+        void startAudioOutputStream();
+
+        //--------------------------------------------------
+        // Stops the audio output streaming process
+        void stopAudioOutputStream();
 
     private:
         TaskQueue_T *tasksQueue;
+        PlaybackContext currentContext;
+        std::unique_ptr<ToneGenerator> toneGenerator;
 
-        // 
-        static int32_t audioCallback(void *outputBuffer, void * /*inputBuffer*/,
-                                     uint32_t bufferFrames, double /*streamTime*/,
-                                     RtAudioStreamStatus status, void *userData);
+        // TODO: move to device manager class later
+        std::unique_ptr<RtAudio> dac;
+
+        // Call back function when audio output stream starts
+        static int32_t streamAudioCallback(void *outputBuffer, void * /*inputBuffer*/,
+                                           uint32_t bufferFrames, double /*streamTime*/,
+                                           RtAudioStreamStatus status, void *userData);
 
         // Disable copy constructor and assignment operator overload
         AudioEngine(const AudioEngine &) = delete;

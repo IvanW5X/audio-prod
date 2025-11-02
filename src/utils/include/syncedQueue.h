@@ -1,15 +1,15 @@
 /************************************************************
- * File: syncedQueue.h
+ * FILE: syncedQueue.h
  * 
- * Description: The SyncedQueue class provides a thread safe
+ * DESCRIPTION: The SyncedQueue class provides a thread safe
  *  queue with a fixed size. The use of memory order and
  *  atomics are meant to provide efficiency, but will be
  *  reviewed at a later time
  * 
- * Date: 2025-10-08
- * 
- * Author: Ivan Wong
- * 
+ * DATE: 2025-10-08
+ *
+ * AUTHOR: Ivan Wong
+ *
  ************************************************************/
 
 #pragma once
@@ -30,7 +30,7 @@ class SyncedQueue
         {}
 
         //--------------------------------------------------
-        // Destructer
+        // Destructor
         ~SyncedQueue() = default;
 
         //--------------------------------------------------

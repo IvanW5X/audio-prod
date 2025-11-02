@@ -1,11 +1,12 @@
 /************************************************************
- * File: common.h
+ * FILE: common.h
  * 
- * Description: 
+ * DESCRIPTION: Commong definitions and types used across
+ *  the project
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 
@@ -16,11 +17,13 @@
 
 #define TaskQueueCapacity 64u
 
+typedef float float32_t;
+typedef double float64_t;
+
 // TODO: might change later
-struct AudioFileData_T
+struct AudioData_T
 {
-    std::vector<float_t> samples;
-    int32_t sampleRate_hz;
-    uint32_t channels;
-    size_t readIndex;
+    std::vector<float32_t> samples;
+    uint32_t sampleRate_hz;
+    uint32_t channels = 1u;
 };

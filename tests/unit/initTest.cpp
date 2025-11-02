@@ -1,11 +1,11 @@
 /************************************************************
- * File: initTests.cpp
+ * FILE: initTests.cpp
  * 
- * Description: Tests for major class initialization functions
+ * DESCRIPTION: Tests for major class initialization functions
  * 
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  * 
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  * 
  ************************************************************/
 
@@ -13,7 +13,7 @@
 #include "audioController.h"
 #include "audioEngine.h"
 
-TEST(AudioEngineTest, Initialization) {
+TEST(EngineTest, Initialization) {
     AudioEngine engine;
     TaskQueue_T taskQueue;
 
@@ -22,7 +22,7 @@ TEST(AudioEngineTest, Initialization) {
     EXPECT_TRUE(success);
 }
 
-TEST(AudioControllerTest, Initialization) {
+TEST(ControllerTest, Initialization) {
     bool success = AudioController::instance().init();
 
     EXPECT_TRUE(success);

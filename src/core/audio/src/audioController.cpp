@@ -1,11 +1,11 @@
 /************************************************************
- * File: audioController.h
+ * FILE: audioController.h
  *
- * Description: Implementation file for AudioController class
+ * DESCRIPTION: Implementation file for AudioController class
  *
- * Date: 2025-10-08
+ * DATE: 2025-10-08
  *
- * Author: Ivan Wong
+ * AUTHOR: Ivan Wong
  *
  ************************************************************/
 

@@ -14,8 +14,7 @@
 // Constructor
 AudioEngine::AudioEngine() :
     tasksQueue(nullptr),
-    dac(nullptr),
-    toneGenerator(nullptr)
+    dac(nullptr)
 {
 
 }
@@ -38,7 +37,6 @@ bool AudioEngine::init(TaskQueue_T *tasksQueue)
     }
     this->tasksQueue = tasksQueue;
     this->dac = std::make_unique<RtAudio>();
-    this->toneGenerator = std::make_unique<ToneGenerator>();
 
     return success;
 }

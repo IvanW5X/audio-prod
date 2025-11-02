@@ -11,10 +11,12 @@ git clone https://github.com/IvanW5X/audio-prod.git
 cd audio-prod
 mkdir build
 cmake -G "MinGW Makefiles" -S . -B ./build
+
+# This should create the executable
 cmake --build build
 ```
 
-This should create the executable, so you can run the program using
+### Run Command
 
 ```bash
 ./build/audioprod.exe

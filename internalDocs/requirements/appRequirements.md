@@ -6,5 +6,6 @@
 
 ## Audio Processing
 
-* The audio production tool shall allow users to play mp3 files from their local machine.
+* The audio production tool shall allow users to play popular audio file formats from their local machine.
 * The audio production tool shall allow users to pause, play, skip, rewind, and loop with a loaded audio track.
+* The audio production tool shall allow users to sythesize and generate sounds on command.
